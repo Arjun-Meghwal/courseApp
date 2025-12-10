@@ -1,0 +1,45 @@
+ const mongoose=require("mongoose");
+ const courseSchema=new mongoose.Schema({
+  courseName:{
+    type:String
+  },
+  courseDescription:{
+    type:String
+  },
+  instructor:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"user",
+    required:true
+  },
+  whatYouWillLearn:{
+    type:String
+  },
+  courseContent:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"section"
+    }
+  ],
+  ratingAnReview:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"ratinAnReview"
+  },
+price:{
+  type:Number
+},
+thunbnail:{
+  type:mongoose.Schema.Types.ObjectId,
+  ref:"Tag",
+},
+tag:{
+  type:mongoose.Schema.ObjectId,
+  ref:"Tag",
+},
+studentsEnrolled:[{
+  type:mongoose.Schema.ObjectId,
+  required:true,
+  ref:"user"
+}
+],
+ });
+ module.exports=mongoose.model("course",courseSchema);
