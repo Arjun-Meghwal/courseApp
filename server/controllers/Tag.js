@@ -53,3 +53,25 @@ exports.showAlltag=async(req,res)=>{
 
   }
 }
+
+const User = require("../models/user");
+
+exports.getEnrolledCourses = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId)
+      .populate("courses")
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      enrolledCourses: user.courses,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

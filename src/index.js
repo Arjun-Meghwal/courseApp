@@ -27,5 +27,3 @@ root.render(
 );
 
 reportWebVitals();
-
-//inistal npm i @reduxjs/toolkit

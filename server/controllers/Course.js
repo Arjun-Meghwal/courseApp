@@ -3,6 +3,7 @@ const tag=require("../models.tag");
 const user=require("../models/user");
 const {uploadImageCloudinary}=require("../utils/imageUpload");
 const { isInstructor } = require("../middlewares/auth");
+const { getCategoryPageDetails } = require("../controllers/Course");
 
 // create course handler function
 exports.createCourse=async(req,res)=>{
@@ -114,3 +115,28 @@ const allCourse=await Course.find({},{
     })
   }
 }
+
+exports.getCategoryPageDetails = async (req, res) => {
+  try {
+    const { categoryId } = req.body;
+
+    const selectedCategory = await Tag.findById(categoryId)
+      .populate("courses")
+      .exec();
+
+    const differentCategories = await Tag.find({
+      _id: { $ne: categoryId },
+    }).populate("courses");
+
+    res.status(200).json({
+      success: true,
+      selectedCategory,
+      differentCategories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

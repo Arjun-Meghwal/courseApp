@@ -221,8 +221,70 @@ res.cookie("token",token,option).status(200).json({
   }
 };
 
-//changepassword
-exports.changePassword=async(req,res)=>{
-  
+// change password
+exports.changePassword = async (req, res) => {
+  try {
+    // get user id from auth middleware
+    const userId = req.user.id;
 
-}
+    // fetch data from request body
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+
+    // validation
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    // check new password match
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password and confirm password do not match",
+      });
+    }
+
+    // find user
+    const existingUser = await user.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // compare old password
+    const isPasswordMatch = await bycrpt.compare(
+      oldPassword,
+      existingUser.password
+    );
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Old password is incorrect",
+      });
+    }
+
+    // hash new password
+    const hashedNewPassword = await bycrpt.hash(newPassword, 10);
+
+    // update password
+    existingUser.password = hashedNewPassword;
+    await existingUser.save();
+
+    // success response
+    return res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error while changing password",
+    });
+  }
+};

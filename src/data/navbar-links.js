@@ -14,6 +14,6 @@ export const NavbarLinks=[
   },
   {
     title:"Contact us",
-    path:"/constact",
+    path:"/Contact",
   }
 ];
