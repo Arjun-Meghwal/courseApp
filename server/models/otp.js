@@ -32,4 +32,4 @@ otpSchema.pre("save",async function(next){
   next();
 
 })
-module.exports=monggoose.model("otp",otpSchema);
+module.exports=mongoose.model("otp",otpSchema);

@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import HighlightText from "../components/HighlightText";
 import CTAButton from "../components/core/HomePage/Button";
 import CodeBlocks from "../components/core/HomePage/CodeBlocks";
-import TimelineSection from "../components/core/HomePage/TimelineSection";
-import LearningLanguage from "../components/core/HomePage/LearningLanguage";
+// import TimelineSection from "../components/core/HomePage/TimelineSection";
+// import LearningLanguage from "../components/core/HomePage/LearningLanguage";
 import InstructorSection from "../components/core/HomePage/InstructorSection";
 import Banner from "../assets/Banner.mp4";
 import Footer from '../components/core/HomePage/Footer';
 import ReviewsSection from '../components/core/HomePage/ReviewsSection';
 import ExploreNow from '../components/core/HomePage/ExploreNow';
+import LearningLanguage from '../components/core/HomePage/LearningLanguage';
 
 const Home = () => {
   return (
@@ -124,7 +125,7 @@ greet();`}
       </div>
 
 <ExploreNow/>
-     
+<LearningLanguage/>     
 
       {/* ===== instructor section ===== */}
       <div className="w-11/12 mx-auto max-w-maxContent flex flex-col

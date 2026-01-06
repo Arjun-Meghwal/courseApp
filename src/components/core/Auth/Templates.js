@@ -34,7 +34,7 @@ const Templates = ({ title, desc1, desc2, formtype, setIsLoggedIn }) => {
           </div>
 
           {/* ===== DIVIDER ===== */}
-          <div className="flex items-center gap-4 my-6">
+          <div className="flex items-center ">
             <div className="h-[1px] w-full bg-richblack-600"></div>
             <p className="text-sm text-richblack-300 font-medium">OR</p>
             <div className="h-[1px] w-full bg-richblack-600"></div>

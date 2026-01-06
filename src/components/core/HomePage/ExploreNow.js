@@ -16,7 +16,6 @@ const ExploreNow = () => {
   const [activeTab, setActiveTab] = useState("Free");
   const [activeCard, setActiveCard] = useState(0);
 
-  // get courses based on active tab
   const selectedTabData = HomePageExplore.find(
     (item) => item.tag === activeTab
   );
@@ -28,7 +27,6 @@ const ExploreNow = () => {
 
       {/* ================= TOP SECTION ================= */}
       <div className="text-center">
-
         <h2 className="text-4xl font-bold text-white">
           Unlock the <span className="text-cyan-400">Power of Code</span>
         </h2>
@@ -81,9 +79,7 @@ const ExploreNow = () => {
                   {course.heading}
                 </h3>
 
-                <p className="text-sm mb-6">
-                  {course.description}
-                </p>
+                <p className="text-sm mb-6">{course.description}</p>
 
                 <hr className="border-dashed border-richblack-400 mb-4" />
 
@@ -103,9 +99,9 @@ const ExploreNow = () => {
         </div>
 
         {/* Buttons */}
-        <div className="mt-16 flex justify-center gap-6">
+        <div className="mt-6 flex justify-center gap-6">
           <CTAButton active={true} linkto="/signup">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               Explore Full Catalog <FaArrowRight />
             </div>
           </CTAButton>
@@ -117,9 +113,8 @@ const ExploreNow = () => {
       </div>
 
       {/* ================= SECTION 2 ================= */}
-      <div className="mt-24 py-24">
+      <div className="mt-4 py-4 w-11/12">
         <div className="w-11/12 max-w-maxContent mx-auto flex justify-between items-start gap-16">
-
           <h2 className="text-4xl font-semibold text-richblack-900 w-[45%]">
             Get the skills you need for a{" "}
             <HighlightText text="job that is in demand." />
@@ -138,7 +133,124 @@ const ExploreNow = () => {
         </div>
       </div>
 
-    </div>
+      {/* =================  IMAGE ================= */}
+      <div className="w-11/12 max-w-7xl mx-auto my-3">
+        <div className="flex flex-col lg:flex-row gap- items-center">
+
+          {/* LEFT CONTENT */}
+          <div className="flex flex-col gap-8 w-full lg:w-[45%]">
+
+            {/* ITEM 1 */}
+            <div className="flex gap-5 items-start">
+              <div className="w-12 h-12 rounded-full bg-blue-100
+                    flex items-center justify-center shadow">
+                <FaUser className="text-blue-600 text-xl" />
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-richblack-900">
+                  Leadership
+                </h3>
+                <p className="text-sm text-richblack-500">
+                  Fully committed to guiding students towards success.
+                </p>
+              </div>
+            </div>
+
+            {/* ITEM 2 */}
+            <div className="flex gap-5 items-start">
+              <div className="w-12 h-12 rounded-full bg-pink-100
+                    flex items-center justify-center shadow">
+                <FaBook className="text-pink-600 text-xl" />
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-richblack-900">
+                  Responsibility
+                </h3>
+                <p className="text-sm text-richblack-500">
+                  Students’ growth and learning is always our top priority.
+                </p>
+              </div>
+            </div>
+
+            {/* ITEM 3 */}
+            <div className="flex gap-5 items-start">
+              <div className="w-12 h-12 rounded-full bg-emerald-100
+                    flex items-center justify-center shadow">
+                <FaArrowRight className="text-emerald-600 text-xl" />
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-richblack-900">
+                  Flexibility
+                </h3>
+                <p className="text-sm text-richblack-500">
+                  Learn anytime, anywhere with flexible course structures.
+                </p>
+              </div>
+            </div>
+
+            {/* ITEM 4 */}
+            <div className="flex gap-5 items-start">
+              <div className="w-12 h-12 rounded-full bg-yellow-100
+                    flex items-center justify-center shadow">
+                <FaBook className="text-yellow-600 text-xl" />
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-richblack-900">
+                  Problem Solving
+                </h3>
+                <p className="text-sm text-richblack-500">
+                  Build real-world solutions by writing practical code.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+
+          {/* RIGHT IMAGE */}
+          <div className="relative w-full lg:w-[45%] h-[320px] sm:h-[380px] lg:h-[420px]">
+
+            {/* IMAGE */}
+            <img
+              src={require("../../../assets/learning.avif")}
+              alt="learning"
+              className="w-full h-full object-cover rounded-xl"
+            />
+
+            {/* STATS CARD */}
+            <div
+              className="absolute -bottom-10 left-1/2 -translate-x-1/2
+               bg-[#064E3B] text-white
+               w-[90%] sm:w-[80%]
+               flex justify-around items-center
+               py-5 rounded-xl shadow-2xl"
+            >
+              <div className="text-center">
+                <p className="text-3xl font-bold">10</p>
+                <p className="text-xs sm:text-sm text-white/80">
+                  YEARS OF EXPERIENCE
+                </p>
+              </div>
+
+              <div className="w-[1px] h-12 bg-white/30"></div>
+
+              <div className="text-center">
+                <p className="text-3xl font-bold">250</p>
+                <p className="text-xs sm:text-sm text-white/80">
+                  TYPE OF COURSES
+                </p>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+        </div>
+      </div>
   );
 };
 

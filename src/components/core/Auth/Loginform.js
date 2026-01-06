@@ -22,14 +22,14 @@ const Loginform = ({ setIsLoggedIn }) => {
     event.preventDefault();
     setIsLoggedIn(true);
     toast.success("Logged in successfully!");
-    navigate("/Home");
+    navigate("/home");
   }
 
   return (
     <form
       onSubmit={onSubmitHandler}
       className="w-full max-w-md mx-auto rounded-2xl
-                 bg-richblack-800/90 backdrop-blur-md
+                 backdrop-blur-md
                  p-8 shadow-[0_20px_50px_rgba(0,0,0,0.45)]
                  flex flex-col gap-6"
     >

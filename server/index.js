@@ -1,22 +1,22 @@
-
 const express = require("express");
 const app = express();
-
-const authRoutes = require("./routes/User");
-const profileRoutes = require("./routes/Profile");
-const paymentRoutes = require("./routes/Payment");
-const courseRoutes = require("./routes/Course");
+require("dotenv").config();
 
 const connectDB = require("./config/database");
+const { cloudinaryConnect } = require("./config/cloudinary");
+
+const userRoutes = require("./routes/User");
+const profileRoutes = require("./routes/Profile");
+const courseRoutes = require("./routes/Course");
+const paymentRoutes = require("./routes/Payments");
+
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
-require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
 
-// database connect
+
 connectDB();
 
 // middlewares
@@ -28,6 +28,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -35,23 +36,20 @@ app.use(
   })
 );
 
-// cloudinary connect
+// cloudinary
 cloudinaryConnect();
 
 // routes
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
-app.use("/api/v1/payment", paymentRoutes);
+app.use("/api/v1/payments", paymentRoutes);
 
-// default route
+// test route
 app.get("/", (req, res) => {
-  return res.json({
-    message: "your server is running",
-  });
+  res.json({ message: "Server is running" });
 });
 
-// server start
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

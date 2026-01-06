@@ -12,7 +12,10 @@ import Footer from "./components/core/HomePage/Footer";
 import UpdatePassword from "./pages/UpdatePassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
-
+import Catalog from "./pages/Catalog";
+import MyProfile from "./components/core/dashboard.js/MyProfile";
+import Dashboard from "./pages/Dashboard"
+import PrivateRoute from "./components/core/Auth/PrivateRoute"; 
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +31,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+
+
+
+          <Route path="catalog"
+           element={<Catalog />} />
 
           <Route
             path="/login"
@@ -54,6 +62,17 @@ function App() {
            path="/about" element={<About />} />
 
 
+<Route
+element={
+  <privateRoute>
+                <Dashboard />
+  </privateRoute>
+}
+/>   
+        <Route
+        path="dashboard/my-profile"
+        element={<MyProfile/>}
+        />
         </Routes>
         <Footer/>
       </div>

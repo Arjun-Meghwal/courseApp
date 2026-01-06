@@ -1,5 +1,7 @@
 import React from "react";
-import {HighlightText} from "../components/HighlightText";
+import CountryDropdown from "../components/common/CountryDropdown";
+import { useState } from "react";
+// import {HighlightText} from "../components/HighlightText";
 
 const stats = [
   { value: "5K+", label: "Active Students" },
@@ -8,7 +10,9 @@ const stats = [
   { value: "50+", label: "Awards" },
 ];
 
+
 const About = () => {
+  const [countryCode, setCountryCode] = useState("+91");
   return (
     <div className="bg-[#020617] text-white">
 
@@ -25,7 +29,7 @@ const About = () => {
           offering cutting-edge courses, leveraging engaging technologies,
           and nurturing a vibrant learning community.
         </p>
-      </section>
+       </section>
 
       {/* ========== IMAGE STRIP ========== */}
       <section className="flex flex-col md:flex-row gap-6 justify-center px-4">
@@ -169,6 +173,7 @@ const About = () => {
       </section>
 
       {/* ========== CONTACT FORM ========== */}
+
       <section className="mx-auto max-w-maxContent px-4 py-20">
         <h2 className="text-3xl sm:text-4xl font-semibold text-center mb-2">
           Get in Touch
@@ -178,10 +183,10 @@ const About = () => {
           We'd love to hear from you. Please fill out this form.
         </p>
 
-        <form className="max-w-xl mx-auto space-y-4">
+        <form className="max-w-xl mx-auto space-y-4 bg-richblack-700" >
 
           {/* First & Last Name */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 bg-richblack-900">
             <input
               type="text"
               className="w-full p-3 rounded-md text-black placeholder-gray-400 caret-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
@@ -202,16 +207,23 @@ const About = () => {
           />
 
           {/* Phone */}
+          <div className="flex gap-2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ">
+            <CountryDropdown
+              value={countryCode}
+              onChange={setCountryCode}
+            />
+
           <input
             type="tel"
             className="w-full p-3 rounded-md bg-richblack-800 text-black placeholder-gray-400 caret-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             placeholder="Phone Number"
           />
-
+          
+</div>
           {/* Message */}
           <textarea
             rows="4"
-            className="w-full p-3 rounded-md bg-richblack-800 text-black placeholder-gray-400 caret-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+            className="w-full p-3 rounded-md bg-richblack-900 text-black placeholder-gray-400 caret-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
             placeholder="Message"
           />
 

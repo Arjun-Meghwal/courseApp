@@ -10,4 +10,14 @@ const rootReducer=combineReducers({
   profile:profileReducer,
   cart:cartReducer,
 });
+
+
+
+// const store = configureStore({
+//   reducer: {
+//     auth: authReducer,
+//     profile: profileReducer, 
+//   }
+// });
+
 export default rootReducer

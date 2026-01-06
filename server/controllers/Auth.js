@@ -1,8 +1,8 @@
 const user=require("../models/user");
 const otp=require("../models/otp");
 const otpGenerator=require("otp-generator");
-const bycrpt=require("bycrpt");
-const jwt=require("jesonwebtoken");
+const bycrpt=require("bcrypt");
+const jwt=require("jsonwebtoken");
 const dotenv=require("dotenv");
 
 //sendotp

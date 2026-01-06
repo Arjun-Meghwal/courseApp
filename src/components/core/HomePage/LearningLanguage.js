@@ -49,7 +49,7 @@ const LearningLanguage = () => {
       </div>
 
       {/* ===== CTA ===== */}
-      <div className="mt-10">
+      <div className="mt-1">
         <CTAButton active={true} linkto="/signup">
           Learn More
         </CTAButton>

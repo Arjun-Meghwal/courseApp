@@ -1,56 +1,60 @@
-const mongoose=require("mongoose");
-const { resetPasswordToken } = require("../controllers/ResetPassword");
+const mongoose = require("mongoose");
 
-const useSchema=new mongoose.Schema({
-  firstName:{
-    type:String,
-    required:true,
-    trim:true
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    accountType: {
+      type: String,
+      enum: ["Admin", "Student", "Instructor"],
+      required: true,
+    },
+    additionalDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
+    },
+    courses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
+    image: {
+      type: String,
+      required: true,
+    },
+    token: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
+    courseProgress: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CourseProgress",
+      },
+    ],
   },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  accountType:{
-    type:String,
-    enum:["Admin","Student","Instructor"],
-    required:true
-  },
-  additionaldetails:{
-    type:mongoose.Schema.ObjectId,
-    ref:"profile"
-  },
-  course:[
-    {
-      type:mongoose.Schema.ObjectId,
-      ref:"course"
-    }
-  ],
-  image:{
-    type:String,
-    required:true
-  },
-  toke:{
-    type:String
-  },
-  resetPasswordExpires:{
-    type:Date,
-  },
-  courseProgress:[
-    {
-    type:mongoose.Schema.ObjectId,
-    ref:"courseProgress"
-  }
-],
-});
-module.exports=mongoose.model("user",userSchema);
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("User", userSchema);

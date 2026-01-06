@@ -1,19 +1,19 @@
-const mongoose=require("mongoose");
- 
-const userprofile=new mongoose.Schema({
-  gender:{
-    types:String,
+const mongoose = require("mongoose");
+
+const profileSchema = new mongoose.Schema({
+  gender: {
+    type: String,
   },
-  dataofBirth:{
-    type:String
+  dateOfBirth: {
+    type: String,
   },
-  about:{
-    type:String,
-    trim:true
+  about: {
+    type: String,
+    trim: true,
   },
-  countactNumber:{
-    type:Number,
-    trim:true
-  }
+  contactNumber: {
+    type: Number,
+  },
 });
-module.exports=mongoose.model("profile",profileShema);
+
+module.exports = mongoose.model("profile", profileSchema);

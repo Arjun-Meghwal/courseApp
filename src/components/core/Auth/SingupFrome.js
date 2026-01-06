@@ -3,6 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+
 const SignupForm = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ const SignupForm = ({ setIsLoggedIn }) => {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto bg-richblack-800/90 backdrop-blur-md
+    <div className=" text-white w-full max-w-md mx-auto backdrop-blur-md
                     text-black rounded-2xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
 
       {/* Role buttons */}
@@ -79,7 +80,7 @@ const SignupForm = ({ setIsLoggedIn }) => {
           </label>
 
           <label className="w-full">
-            <p className="text-sm mb-1 text-richblack-200">
+            <p className="text-sm mb-1 text-white">
               Last Name <sup className="text-pink-500">*</sup>
             </p>
             <input
