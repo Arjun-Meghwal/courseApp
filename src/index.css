@@ -16,3 +16,12 @@ body {
          outline-none focus:ring-2 focus:ring-yellow-400
          placeholder-richblack-300;
 } */
+/* FIX FOR PASSWORD / AUTOFILL INPUT TEXT VISIBILITY */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0 1000px #1e293b inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}

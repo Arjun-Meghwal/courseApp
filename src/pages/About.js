@@ -183,10 +183,10 @@ const About = () => {
           We'd love to hear from you. Please fill out this form.
         </p>
 
-        <form className="max-w-xl mx-auto space-y-4 bg-richblack-700" >
+        <form className="max-w-xl mx-auto space-y-4 bg-[#020617]" >
 
           {/* First & Last Name */}
-          <div className="flex flex-col sm:flex-row gap-4 bg-richblack-900">
+          <div className="flex flex-col sm:flex-row gap-4 bg-[#020617]">
             <input
               type="text"
               className="w-full p-3 rounded-md text-black placeholder-gray-400 caret-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"

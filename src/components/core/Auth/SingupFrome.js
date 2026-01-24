@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
+import { setSignupData } from "../../../slices/authSlice";
+import { sendOtp } from "../../../services/operations/authAPI";
 
 const SignupForm = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [accountType, setAccountType] = useState("Student");
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -32,135 +38,117 @@ const SignupForm = ({ setIsLoggedIn }) => {
       return;
     }
 
-    setIsLoggedIn(true);
-    toast.success("Account created successfully!");
-    navigate("/Home");
+    // 1️⃣ Save signup data in redux
+    dispatch(
+      setSignupData({
+        firstName: formData.firstname,
+        lastName: formData.lastname,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmpassword,
+        accountType,
+      })
+    );
+
+    dispatch(sendOtp(formData.email, navigate));
   }
 
   return (
-    <div className=" text-white w-full max-w-md mx-auto backdrop-blur-md
-                    text-black rounded-2xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+    <div className="w-full max-w-md mx-auto rounded-2xl p-8 shadow-lg bg-richblack-800 text-white">
 
-      {/* Role buttons */}
-      <div className="flex justify-center gap-4 mb-8">
+      {/* Account Type */}
+      <div className="flex justify-center gap-4 mb-6">
         <button
           type="button"
-          className="px-5 py-2 rounded-full bg-richblack-700
-                     hover:bg-richblack-600 transition font-medium"
+          onClick={() => setAccountType("Student")}
+          className={`px-5 py-2 rounded-full ${accountType === "Student"
+              ? "bg-yellow-400 text-black"
+              : "bg-richblack-700"
+            }`}
         >
           Student
         </button>
+
         <button
           type="button"
-          className="px-5 py-2 rounded-full bg-richblack-700
-                     hover:bg-richblack-600 transition font-medium"
+          onClick={() => setAccountType("Instructor")}
+          className={`px-5 py-2 rounded-full ${accountType === "Instructor"
+              ? "bg-yellow-400 text-black"
+              : "bg-richblack-700"
+            }`}
         >
           Instructor
         </button>
       </div>
 
       <form onSubmit={submitHandler} className="space-y-5">
-
         {/* Name */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <label className="w-full">
-            <p className="text-sm mb-1 text-richblack-200">
-              First Name <sup className="text-pink-500">*</sup>
-            </p>
-            <input
-              required
-              type="text"
-              name="firstname"
-              value={formData.firstname}
-              onChange={changeHandler}
-              placeholder="First name"
-              className="w-full rounded-lg bg-richblack-700 px-3 py-2
-                         outline-none focus:ring-2 focus:ring-yellow-400"
-            />
-          </label>
+        <div className="flex gap-4">
+          <input
+            required
+            type="text"
+            name="firstname"
+            placeholder="First Name"
+            value={formData.firstname}
+            onChange={changeHandler}
+            className="w-full p-2 rounded bg-richblack-700"
+          />
 
-          <label className="w-full">
-            <p className="text-sm mb-1 text-white">
-              Last Name <sup className="text-pink-500">*</sup>
-            </p>
-            <input
-              required
-              type="text"
-              name="lastname"
-              value={formData.lastname}
-              onChange={changeHandler}
-              placeholder="Last name"
-              className="w-full rounded-lg bg-richblack-700 px-3 py-2
-                         outline-none focus:ring-2 focus:ring-yellow-400"
-            />
-          </label>
+          <input
+            required
+            type="text"
+            name="lastname"
+            placeholder="Last Name"
+            value={formData.lastname}
+            onChange={changeHandler}
+            className="w-full p-2 rounded bg-richblack-700"
+          />
         </div>
 
         {/* Email */}
-        <label>
-          <p className="text-sm mb-1 text-richblack-200">
-            Email Address <sup className="text-pink-500">*</sup>
-          </p>
+        <input
+          required
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={changeHandler}
+          className="w-full p-2 rounded bg-richblack-700"
+        />
+
+        {/* Password */}
+        <div className="relative">
           <input
             required
-            type="email"
-            name="email"
-            value={formData.email}
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={formData.password}
             onChange={changeHandler}
-            placeholder="Email address"
-            className="w-full rounded-lg bg-richblack-700 px-3 py-2
-                       outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full p-2 rounded bg-richblack-700"
           />
-        </label>
-
-        {/* Passwords */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <label className="w-full relative">
-            <p className="text-sm mb-1 text-richblack-200">
-              Create Password <sup className="text-pink-500">*</sup>
-            </p>
-            <input
-              required
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={changeHandler}
-              placeholder="Password"
-              className="w-full rounded-lg bg-richblack-700 px-3 py-2 pr-10
-                         outline-none focus:ring-2 focus:ring-yellow-400"
-            />
-            <span
-              onClick={() => setShowPassword((p) => !p)}
-              className="absolute right-3 top-[38px] cursor-pointer
-                         text-xl text-richblack-300 hover:text-white"
-            >
-              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-            </span>
-          </label>
-
-          <label className="w-full relative">
-            <p className="text-sm mb-1 text-richblack-200">
-              Confirm Password <sup className="text-pink-500">*</sup>
-            </p>
-            <input
-              required
-              type={showPassword ? "text" : "password"}
-              name="confirmpassword"
-              value={formData.confirmpassword}
-              onChange={changeHandler}
-              placeholder="Confirm password"
-              className="w-full rounded-lg bg-richblack-700 px-3 py-2 pr-10
-                         outline-none focus:ring-2 focus:ring-yellow-400"
-            />
-          </label>
+          <span
+            onClick={() => setShowPassword((p) => !p)}
+            className="absolute right-3 top-2 cursor-pointer"
+          >
+            {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+          </span>
         </div>
 
-        {/* Submit */}
+        {/* Confirm Password */}
+        <input
+          required
+          type={showPassword ? "text" : "password"}
+          name="confirmpassword"
+          placeholder="Confirm Password"
+          value={formData.confirmpassword}
+          onChange={changeHandler}
+          className="w-full p-2 rounded bg-richblack-700"
+        />
+
         <button
           type="submit"
-          className="w-full mt-6 rounded-lg bg-yellow-400 py-2.5
-                     text-black font-semibold hover:bg-yellow-300
-                     transition-all duration-200"
+          className="w-full bg-yellow-400 text-black py-2 rounded font-semibold"
         >
           Create Account
         </button>

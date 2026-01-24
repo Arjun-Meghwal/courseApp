@@ -32,7 +32,7 @@ const timeline = [
 const TimelineSection = () => {
   return (
     <div className="mt-24">
-      {/* 👇 width control like video */}
+      {/*  width control like video */}
       <div className="flex gap-16 items-center max-w-6xl mx-auto">
 
         {/* LEFT SIDE */}

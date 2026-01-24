@@ -1,17 +1,25 @@
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { verifyOtp } from "../services/operations/authAPI";
+
+import { signUp, sendOtp } from "../services/operations/authAPI";
 
 const VerifyEmail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading } = useSelector((state) => state.auth);
+  const { loading, signupData } = useSelector((state) => state.auth);
 
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const inputRefs = useRef([]);
+
+  // 🔒 Protect route if refreshed
+  useEffect(() => {
+    if (!signupData) {
+      navigate("/signup");
+    }
+  }, [signupData, navigate]);
 
   // handle input change
   const handleChange = (element, index) => {
@@ -21,7 +29,6 @@ const VerifyEmail = () => {
     newOtp[index] = element.value.slice(-1);
     setOtp(newOtp);
 
-    // move to next input
     if (element.value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
@@ -34,17 +41,32 @@ const VerifyEmail = () => {
     }
   };
 
-  // submit OTP
+  // submit OTP (REAL SIGNUP HERE)
   const submitHandler = (e) => {
     e.preventDefault();
 
     const enteredOtp = otp.join("");
-    if (enteredOtp.length < 6) {
+
+    if (enteredOtp.length !== 6) {
       toast.error("Please enter complete OTP");
       return;
     }
 
-    dispatch(verifyOtp(enteredOtp, navigate));
+    dispatch(
+      signUp(
+        {
+          ...signupData,
+          otp: enteredOtp,
+        },
+        navigate
+      )
+    );
+  };
+
+  // resend OTP
+  const resendOtpHandler = () => {
+    dispatch(sendOtp(signupData.email, navigate));
+    toast.success("OTP resent");
   };
 
   return (
@@ -56,7 +78,7 @@ const VerifyEmail = () => {
           <h1 className="text-2xl font-semibold mb-2">Verify email</h1>
 
           <p className="text-sm text-gray-400 mb-6">
-            A verification code has been sent to you. Enter the code below.
+            A verification code has been sent to your email
           </p>
 
           <form onSubmit={submitHandler}>
@@ -79,7 +101,7 @@ const VerifyEmail = () => {
               type="submit"
               className="w-full bg-yellow-400 text-black font-semibold py-3 rounded-md hover:bg-yellow-300 transition"
             >
-              Verify email
+              Verify & Create Account
             </button>
           </form>
 
@@ -92,10 +114,10 @@ const VerifyEmail = () => {
             </Link>
 
             <button
-              onClick={() => toast.success("OTP resent")}
+              onClick={resendOtpHandler}
               className="text-blue-400 hover:underline"
             >
-              Resend it
+              Resend OTP
             </button>
           </div>
         </div>

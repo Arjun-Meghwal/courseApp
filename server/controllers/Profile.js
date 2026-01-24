@@ -1,107 +1,53 @@
-const Profile = require("../models/profile");
+const Profile = require("../models/Profile");
 const User = require("../models/user");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
-// ================= UPDATE PROFILE =================
 exports.updateProfile = async (req, res) => {
   try {
-    const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
-    const userId = req.user.id;
+    const { dateOfBirth, about, contactNumber, gender } = req.body;
+    const user = await User.findById(req.user.id);
+    const profile = await Profile.findById(user.additionalDetails);
 
-    if (!contactNumber || !gender || !userId) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
+    profile.dateOfBirth = dateOfBirth;
+    profile.about = about;
+    profile.contactNumber = contactNumber;
+    profile.gender = gender;
 
-    const userDetails = await User.findById(userId);
-    const profileId = userDetails.additionalDetails;
-    const profileDetails = await Profile.findById(profileId);
+    await profile.save();
 
-    profileDetails.dateOfBirth = dateOfBirth;
-    profileDetails.about = about;
-    profileDetails.contactNumber = contactNumber;
-
-    await profileDetails.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Profile updated successfully",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Cannot update profile",
-    });
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ success: false });
   }
 };
 
-// ================= DELETE ACCOUNT =================
+exports.updateProfilePicture = async (req, res) => {
+  const image = req.files?.profileImage;
+  if (!image) return res.status(400).json({ success: false });
+
+  const upload = await uploadImageToCloudinary(image, process.env.FOLDER_NAME);
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { image: upload.secure_url },
+    { new: true }
+  );
+
+  res.json({ success: true, image: user.image });
+};
+
 exports.deleteAccount = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    const userDetails = await User.findById(userId);
-    if (!userDetails) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    await Profile.findByIdAndDelete(userDetails.additionalDetails);
-    await User.findByIdAndDelete(userId);
-
-    return res.status(200).json({
-      success: true,
-      message: "User deleted successfully",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Cannot delete user",
-    });
-  }
+  const user = await User.findById(req.user.id);
+  await Profile.findByIdAndDelete(user.additionalDetails);
+  await User.findByIdAndDelete(req.user.id);
+  res.json({ success: true });
 };
 
-// ================= GET USER DETAILS =================
 exports.getAllUserDetails = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    const userDetails = await User.findById(userId)
-      .populate("additionalDetails")
-      .exec();
-
-    return res.status(200).json({
-      success: true,
-      userDetails,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: "User details not found",
-    });
-  }
+  const user = await User.findById(req.user.id).populate("additionalDetails");
+  res.json({ success: true, user });
 };
 
-// ================= GET ENROLLED COURSES =================
 exports.getEnrolledCourses = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    const userDetails = await User.findById(userId)
-      .populate("courses")
-      .exec();
-
-    return res.status(200).json({
-      success: true,
-      enrolledCourses: userDetails.courses,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  const user = await User.findById(req.user.id).populate("courses");
+  res.json({ success: true, courses: user.courses });
 };

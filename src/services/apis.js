@@ -11,10 +11,11 @@ export const endpoints = {
 
 // ================= PROFILE ENDPOINTS =================
 export const profileEndpoints = {
-  GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
-  GET_USER_ENROLLED_COURSE_API: BASE_URL + "/profile/getEnrolledCourses",
+  UPDATE_PROFILE_API: "/api/v1/profile/updateProfile",
+  UPDATE_PROFILE_PICTURE_API: "/api/v1/profile/updateProfilePicture", // ✅ ADD
+  DELETE_PROFILE_API: "/api/v1/profile/deleteAccount",
+  GET_USER_DETAILS_API: "/api/v1/profile/getUserDetails",
 };
-
 // ================= COURSE CATEGORIES =================
 export const categoriesEndpoints = {
   CATEGORIES_API: BASE_URL + "/course/showAllCategories",

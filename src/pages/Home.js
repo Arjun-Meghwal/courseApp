@@ -50,7 +50,7 @@ const Home = () => {
         </div>
 
         {/* =====  video add ===== */}
-        <div className="mx-auto mt-16 w-11/12 max-w-maxContent">
+        <div className="mx-auto  w-11/12 max-w-maxContent h-[75%] w-[60%]">
           <div className="relative overflow-hidden rounded-xl border border-richblack-700 shadow-2xl">
             <video
               muted
@@ -68,7 +68,7 @@ const Home = () => {
 
 
       {/* ===== code section ===== */}
-      <div className="mt-24 w-11/12 mx-auto max-w-maxContent">
+      <div className="mt-1 w-9/12 mx-auto max-w-maxContent">
         <CodeBlocks
           position="flex-row"
           heading={
@@ -97,7 +97,7 @@ const Home = () => {
       </div>
 
       {/* ===== REVERSE CODE SECTION ===== */}
-      <div className="mt-24 w-11/12 mx-auto max-w-maxContent">
+      <div className=" w-9/12 mx-auto max-w-maxContent">
         <CodeBlocks
           position="flex-row-reverse"
           heading={
@@ -128,14 +128,14 @@ greet();`}
 <LearningLanguage/>     
 
       {/* ===== instructor section ===== */}
-      <div className="w-11/12 mx-auto max-w-maxContent flex flex-col
+      <div className="w-9/12 mx-auto max-w-maxContent flex flex-col
         items-center -gap-6 py-24 bg-richblack-900">
         <InstructorSection />
         <ReviewsSection />
       </div>
 
       {/* ===== FOOTER ===== */}
-      <Footer />
+      {/* <Footer /> */}
 
     </div>
   );

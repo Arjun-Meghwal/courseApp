@@ -13,9 +13,11 @@ import UpdatePassword from "./pages/UpdatePassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
 import Catalog from "./pages/Catalog";
-import MyProfile from "./components/core/dashboard.js/MyProfile";
+import MyProfile from "./components/core/Dashboard/MyProfile";
 import Dashboard from "./pages/Dashboard"
 import PrivateRoute from "./components/core/Auth/PrivateRoute"; 
+import DashboardLayout from "./components/core/Dashboard/DashboardLayout";
+import Settings from "./components/core/Dashboard/Settings";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -69,10 +71,18 @@ element={
   </privateRoute>
 }
 />   
-        <Route
-        path="dashboard/my-profile"
-        element={<MyProfile/>}
-        />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="my-profile" element={<MyProfile />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+
         </Routes>
         <Footer/>
       </div>

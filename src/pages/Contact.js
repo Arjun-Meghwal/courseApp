@@ -24,7 +24,7 @@ const Contact = () => {
       phone: `${countryCode}${formData.phone}`,
     };
 
-    console.log("CONTACT DATA 👉", finalData);
+    console.log("CONTACT DATA ", finalData);
   }
 
   return (

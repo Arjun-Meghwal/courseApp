@@ -4,9 +4,6 @@ import { logout } from "../../../services/operations/authAPI";
 import { useDispatch, useSelector } from "react-redux";
 import SidebarLink from "./SidebarLink";
 import { useNavigate } from "react-router-dom";
-import ConfirmationModel from "../../common/ConfirmationModel";
-import { VscSignOut } from "react-icons/vsc";
-
 
 const Sidebar = () => {
   const { user, loading: profileLoading } = useSelector(
@@ -16,16 +13,15 @@ const Sidebar = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [confirmationModal, setConfirmationModal] = useState(null);
 
-  // loading state
   if (profileLoading || authLoading) {
     return <div className="text-white p-4">Loading...</div>;
   }
 
   return (
-    <div className="flex h-full min-w-[220px] flex-col border-r border-richblack-700 bg-richblack-800 py-6">
+    <div className="flex min-h-[calc(100vh-3.5rem)] w-[220px] flex-col
+      border-r border-richblack-700 bg-richblack-800 py-6">
 
       {/* DASHBOARD LINKS */}
       <div className="flex flex-col gap-1">
@@ -43,37 +39,39 @@ const Sidebar = () => {
         })}
       </div>
 
-      {/* DIVIDER */}
-      <div className="mx-auto my-6 h-[1px] w-10/12 bg-richblack-600"></div>
+      {/* PUSH TO BOTTOM */}
+      <div className="mt-auto">
 
-      {/* SETTINGS  LOGOUT */}
-      <div className="flex flex-col gap-1">
-        <SidebarLink
-          link={{ name: "Settings", path: "/dashboard/settings" }}
-          iconName="VscSettingsGear"
-        />
+        <div className="mx-auto my-6 h-[1px] w-10/12 bg-richblack-600"></div>
 
-        <button
-          onClick={() =>
-            setConfirmationModal({
-              text1: "Are you sure?",
-              text2: "You will be logged out of your account",
-              btn1Text: "Logout",
-              btn2Text: "Cancel",
-              btn1Handler: () => dispatch(logout(navigate)),
-              btn2Handler: () => setConfirmationModal(null),
-            })
-          }
-          className="px-8 py-2 text-left text-sm text-richblack-300 hover:bg-richblack-700"
-        >
-          Logout
-        </button>
+        <div className="flex flex-col gap-1">
+          <SidebarLink
+            link={{ name: "Settings", path: "/dashboard/settings" }}
+            iconName="VscSettingsGear"
+          />
+
+          <button
+            onClick={() =>
+              setConfirmationModal({
+                text1: "Are you sure?",
+                text2: "You will be logged out of your account",
+                btn1Text: "Logout",
+                btn2Text: "Cancel",
+                btn1Handler: () => dispatch(logout(navigate)),
+                btn2Handler: () => setConfirmationModal(null),
+              })
+            }
+            className="px-8 py-2 text-left text-sm text-richblack-300 hover:bg-richblack-700"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
-      {/* CONFIRMATION MODAL  */}
+      {/* CONFIRMATION MODAL */}
       {confirmationModal && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/60">
-          <div className="rounded-lg bg-richblack-900 p-6 text-white">
+        <div className="  fixed inset-0 z-50 grid place-items-center bg-black/60">
+          <div className="border rounded-lg bg-richblack-900 p-6 text-white">
             <p className="text-lg font-semibold">{confirmationModal.text1}</p>
             <p className="mt-2 text-sm text-richblack-300">
               {confirmationModal.text2}

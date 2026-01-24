@@ -99,7 +99,7 @@ const ExploreNow = () => {
         </div>
 
         {/* Buttons */}
-        <div className="mt-6 flex justify-center gap-6">
+        <div className="mt-12 flex justify-center gap-6">
           <CTAButton active={true} linkto="/signup">
             <div className="flex items-center gap-1">
               Explore Full Catalog <FaArrowRight />
@@ -113,8 +113,8 @@ const ExploreNow = () => {
       </div>
 
       {/* ================= SECTION 2 ================= */}
-      <div className="mt-4 py-4 w-11/12">
-        <div className="w-11/12 max-w-maxContent mx-auto flex justify-between items-start gap-16">
+      <div className="mt-11 py-4 w-11/12">
+        <div className="w-9/12 max-w-maxContent mx-auto flex justify-between items-start gap-16">
           <h2 className="text-4xl font-semibold text-richblack-900 w-[45%]">
             Get the skills you need for a{" "}
             <HighlightText text="job that is in demand." />
@@ -126,7 +126,7 @@ const ExploreNow = () => {
               competitive requires more than professional skills.
             </p>
 
-            <CTAButton active={true} linkto="/signup">
+            <CTAButton active={true} linkto="/signup" className='mt-4'>
               Learn More
             </CTAButton>
           </div>
