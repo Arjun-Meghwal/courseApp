@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import { useSelector } from "react-redux"
 import { apiConnector } from "../../../../services/apiconnector"
 import { profileEndpoints } from "../../../../services/apis"
@@ -10,16 +10,29 @@ const EditProfile = () => {
   const { user } = useSelector((state) => state.profile)
 
   const [formData, setFormData] = useState({
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    dateOfBirth: user?.additionalDetails?.dateOfBirth || "",
-    gender: user?.additionalDetails?.gender || "",
-    contactNumber: user?.additionalDetails?.phoneNumber || "",
-    about: user?.additionalDetails?.about || "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    gender: "",
+    phoneNumber: "",
+    about: "",
   })
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
+        dateOfBirth: user.additionalDetails?.dateOfBirth ?? "",
+        gender: user.additionalDetails?.gender ?? "",
+        phoneNumber: user.additionalDetails?.phoneNumber ?? "",
+        about: user.additionalDetails?.about ?? "",
+      })
+    }
+  }, [user])
+
   const changeHandler = (e) => {
-    setFormData((prev) => ({
+    setFormData((prev) => ({  
       ...prev,
       [e.target.name]: e.target.value,
     }))
@@ -29,35 +42,25 @@ const EditProfile = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault()
+    console.log(" SUBMIT CLICKED");   
 
     try {
-      // const { token } = useSelector((state) => state.auth);
-
       const res = await apiConnector(
         "PUT",
-        profileEndpoints.UPDATE_PROFILE_PICTURE_API,
+        profileEndpoints.UPDATE_PROFILE_API,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
-          withCredentials: true,
         }
       );
-
-      if (!res.data.success) {
-        throw new Error(res.data.message)
-      }
-
-      toast.success("Profile updated successfully ")
+      toast.success("Profile updated successfully")
     } catch (error) {
       console.error(error)
-      toast.error("Profile update failed ")
+      toast.error("Profile update failed")
     }
   }
-
-
   return (
     <form
       onSubmit={submitHandler}
@@ -136,8 +139,8 @@ const EditProfile = () => {
           </label>
           <input
             type="text"
-            name="contactNumber"
-            value={formData.contactNumber}
+            name="phoneNumber"
+            value={formData.phoneNumber}
             onChange={changeHandler}
             placeholder="Enter Contact Number"
             className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"

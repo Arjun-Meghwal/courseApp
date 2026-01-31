@@ -5,36 +5,35 @@ const User = require("../models/user");
 // ================= AUTH =================
 exports.auth = async (req, res, next) => {
   try {
-    const token =
-      req.cookies.token ||
-      req.body.token ||
-      req.header("authorization")?.replace("Bearer ", "");
+    const authHeader = req.headers.authorization;
+    console.log("AUTH HEADER 👉", authHeader);
 
+    if (!authHeader) {
+      return res.status(401).json({
+        success: false,
+        message: "Authorization header missing",
+      });
+    }
+
+    const token = authHeader.split(" ")[1];
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Token is missing",
+        message: "Token missing from header",
       });
     }
 
-    try {
-      const decode = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decode;
-    } catch (error) {
-      return res.status(401).json({
-        success: false,
-        message: "Token is invalid",
-      });
-    }
-
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decode;
     next();
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Something went wrong while validating token",
+      message: "Token is invalid",
     });
   }
 };
+
 
 // ================= IS STUDENT =================
 exports.isStudent = async (req, res, next) => {

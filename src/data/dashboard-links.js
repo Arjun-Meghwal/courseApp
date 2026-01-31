@@ -48,7 +48,7 @@ export const sidebarLinks = [
   // },
 
   {
-    id: 5,
+    id: 2,
     name: "Enrolled Courses",
     path: "/dashboard/enrolled-courses",
     icon: VscMortarBoard,
@@ -71,7 +71,7 @@ export const sidebarLinks = [
   // },
 
   {
-    id: 7,
+    id: 4,
     name: "Settings",
     path: "/dashboard/settings",
     icon: VscSettingsGear,
