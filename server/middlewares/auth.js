@@ -3,12 +3,16 @@ require("dotenv").config();
 const User = require("../models/user");
 
 // ================= AUTH =================
+
 exports.auth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log("AUTH HEADER 👉", authHeader);
 
-    if (!authHeader) {
+    console.log("AUTH HEADER ", authHeader);
+    console.log("JWT SECRET ", process.env.JWT_SECRET);
+
+   
+    if (!authHeader || !authHeader.startsWith("Bearer ")){
       return res.status(401).json({
         success: false,
         message: "Authorization header missing",
@@ -16,6 +20,7 @@ exports.auth = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
+
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -23,10 +28,12 @@ exports.auth = async (req, res, next) => {
       });
     }
 
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decode;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+
     next();
   } catch (error) {
+    console.error("AUTH ERROR ", error.message);
     return res.status(401).json({
       success: false,
       message: "Token is invalid",

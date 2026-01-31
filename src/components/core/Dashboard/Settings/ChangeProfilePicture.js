@@ -30,7 +30,7 @@ const ChangeProfilePicture = () => {
         }
       );
 
-      // ✅ Redux update
+      // Redux
       dispatch(
         setUser({
           ...user,
@@ -45,7 +45,6 @@ const ChangeProfilePicture = () => {
     }
   };
 
-  // ✅ JSX RETURN MUST BE HERE
   return (
     <div className="mb-10 flex flex-col gap-6 rounded-xl bg-richblack-800 p-6
     shadow-[0_0_40px_0_rgba(0,0,0,0.35)]

@@ -1,13 +1,14 @@
-import React, { useState,useEffect } from "react"
-import { useSelector } from "react-redux"
-import { apiConnector } from "../../../../services/apiconnector"
-import { profileEndpoints } from "../../../../services/apis"
-
-import { toast } from "react-hot-toast"
-// import  api
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { apiConnector } from "../../../../services/apiconnector";
+import { profileEndpoints } from "../../../../services/apis";
+import { setUser } from "../../../../slices/profileSlice";
+import { toast } from "react-hot-toast";
 
 const EditProfile = () => {
-  const { user } = useSelector((state) => state.profile)
+  const { user } = useSelector((state) => state.profile);
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -16,7 +17,7 @@ const EditProfile = () => {
     gender: "",
     phoneNumber: "",
     about: "",
-  })
+  });
 
   useEffect(() => {
     if (user) {
@@ -27,22 +28,18 @@ const EditProfile = () => {
         gender: user.additionalDetails?.gender ?? "",
         phoneNumber: user.additionalDetails?.phoneNumber ?? "",
         about: user.additionalDetails?.about ?? "",
-      })
+      });
     }
-  }, [user])
-
+  }, [user]);
   const changeHandler = (e) => {
-    setFormData((prev) => ({  
+    setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }))
-  }
-
-  const { token } = useSelector((state) => state.auth)
+    }));
+  };
 
   const submitHandler = async (e) => {
-    e.preventDefault()
-    console.log(" SUBMIT CLICKED");   
+    e.preventDefault();
 
     try {
       const res = await apiConnector(
@@ -50,80 +47,67 @@ const EditProfile = () => {
         profileEndpoints.UPDATE_PROFILE_API,
         formData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          Authorization: `Bearer ${token}`,
         }
       );
-      toast.success("Profile updated successfully")
+
+      dispatch(setUser(res.data.user));
+
+      toast.success("Profile updated successfully");
     } catch (error) {
-      console.error(error)
-      toast.error("Profile update failed")
+      console.error("UPDATE PROFILE ERROR ", error.response?.data || error);
+      toast.error(error.response?.data?.message || "Profile update failed");
     }
-  }
+  };
+
   return (
     <form
       onSubmit={submitHandler}
       className="mb-14 rounded-xl bg-richblack-800 p-8 shadow-[0_0_40px_0_rgba(0,0,0,0.35)]"
     >
-      <h2 className="text-2xl font-semibold mb-2">
-        Profile Information
-      </h2>
+      <h2 className="text-2xl font-semibold mb-2">Profile Information</h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-
-        {/* First Name */}
         <div>
-          <label className="block text-sm mb-1">
-            First Name
-          </label>
+          <label className="block text-sm mb-1">First Name</label>
           <input
             type="text"
             name="firstName"
             value={formData.firstName}
             onChange={changeHandler}
-            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           />
         </div>
 
-        {/* Last Name */}
         <div>
-          <label className="block text-sm mb-1">
-            Last Name
-          </label>
+          <label className="block text-sm mb-1">Last Name</label>
           <input
             type="text"
             name="lastName"
             value={formData.lastName}
             onChange={changeHandler}
-            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           />
         </div>
 
-        {/* Date of Birth */}
         <div>
-          <label className="block text-sm mb-1">
-            Date of Birth
-          </label>
+          <label className="block text-sm mb-1">Date of Birth</label>
           <input
             type="date"
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={changeHandler}
-            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           />
         </div>
 
-        {/* Gender */}
         <div>
-          <label className="block text-sm mb-1">
-            Gender
-          </label>
+          <label className="block text-sm mb-1">Gender</label>
           <select
             name="gender"
             value={formData.gender}
             onChange={changeHandler}
-            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           >
             <option value="">Select</option>
             <option value="Male">Male</option>
@@ -132,57 +116,39 @@ const EditProfile = () => {
           </select>
         </div>
 
-        {/* Contact Number */}
         <div>
-          <label className="block text-sm mb-1">
-            Contact Number
-          </label>
+          <label className="block text-sm mb-1">Contact Number</label>
           <input
             type="text"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={changeHandler}
-            placeholder="Enter Contact Number"
-            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           />
         </div>
 
-        {/* About */}
         <div>
-          <label className="block text-sm mb-1">
-            About
-          </label>
+          <label className="block text-sm mb-1">About</label>
           <input
             type="text"
             name="about"
             value={formData.about}
             onChange={changeHandler}
-            placeholder="Enter Bio Details"
-            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           />
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="mt-8 flex justify-end gap-4">
         <button
-          type="button"
-          className="rounded-md bg-richblack-700 px-6 py-2 text-sm
-          text-richblack-200 hover:bg-richblack-600 transition-all"
-        >
-          Cancel
-        </button>
-
-        <button
           type="submit"
-          className="rounded-md bg-yellow-400 px-6 py-2 text-sm
-          font-semibold text-richblack-900 hover:bg-yellow-300 transition-all"
+          className="rounded-md bg-yellow-400 px-6 py-2 font-semibold"
         >
           Save
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default EditProfile
+export default EditProfile;
