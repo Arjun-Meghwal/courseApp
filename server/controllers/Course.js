@@ -11,7 +11,10 @@ exports.createCourse = async (req, res) => {
       courseDescription,
       whatYouWillLearn,
       price,
-      tag,
+      // tag,
+      // category,
+      // status,
+      // instruction,
     } = req.body;
 
     const thumbnail = req.files?.thumbnailImage;
@@ -83,7 +86,7 @@ exports.createCourse = async (req, res) => {
 };
 
 // show all courses
-exports.showAllCourse = async (req, res) => {
+exports.getAllCourses = async (req, res) => {
   try {
     const allCourses = await Course.find({})
       .populate("instructor")
@@ -102,7 +105,7 @@ exports.showAllCourse = async (req, res) => {
 };
 
 // category page details
-exports.getCategoryPageDetails = async (req, res) => {
+exports.getCourseDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
 

@@ -13,7 +13,6 @@ const UpdatePassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // token comes from URL
   const token = location.pathname.split("/").at(-1);
 
   const submitHandler = (e) => {
@@ -28,60 +27,82 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white px-4">
+    <div className="min-h-screen flex items-center justify-center 
+    bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] px-4 text-white">
+
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-lg">Loading...</div>
       ) : (
-        <div className="w-full max-w-md bg-slate-800 rounded-xl p-6 shadow-lg">
-          <h1 className="text-2xl font-semibold mb-2">
+        <div className="w-full max-w-md 
+        bg-white/5 backdrop-blur-xl 
+        border border-white/10 
+        rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] 
+        p-8 space-y-6">
+
+          <h1 className="text-3xl font-bold">
             Choose New Password
           </h1>
 
-          <p className="text-sm text-slate-300 mb-6">
+          <p className="text-sm text-richblack-300">
             Almost done. Enter your new password and you're all set.
           </p>
 
-          <form onSubmit={submitHandler} className="space-y-4">
+          <form onSubmit={submitHandler} className="space-y-5">
+
             <div>
-              <label className="block text-sm mb-1">
+              <label className="block text-sm mb-2 text-richblack-200">
                 New Password
               </label>
+
               <input
                 required
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter new password"
-                className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-3 rounded-lg 
+                bg-white/10 text-white placeholder-white/40
+                border border-white/10
+                focus:outline-none focus:ring-2 focus:ring-yellow-400
+                transition"
               />
             </div>
 
             <div>
-              <label className="block text-sm mb-1">
+              <label className="block text-sm mb-2 text-richblack-200">
                 Confirm New Password
               </label>
+
               <input
                 required
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm new password"
-                className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-3 rounded-lg 
+                bg-white/10 text-white placeholder-white/40
+                border border-white/10
+                focus:outline-none focus:ring-2 focus:ring-yellow-400
+                transition"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-yellow-400 text-black font-semibold py-2 rounded-md hover:bg-yellow-300 transition"
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-300 
+              text-black font-semibold py-3 rounded-lg
+              hover:scale-[1.02] transition duration-200"
             >
               Reset Password
             </button>
+
           </form>
+
         </div>
       )}
+
     </div>
   );
 };
 
 export default UpdatePassword;
-  

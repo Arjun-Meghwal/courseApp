@@ -3,7 +3,7 @@ import { Link, useLocation, matchPath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IoIosArrowDropdown } from "react-icons/io";
-
+import { categories } from "../../services/apis";
 import logo from "../../assets/logo.png";
 import { NavbarLinks } from "../../data/navbar-links";
 import { apiConnector } from "../../services/apiconnector";
@@ -25,7 +25,7 @@ const Navbar = () => {
       try {
         const res = await apiConnector(
           "GET",
-          categoriesEndpoints.CATEGORIES_API
+          categories.CATEGORIES_API
         );
         setSubLinks(res?.data?.data || []);
       } catch (e) {

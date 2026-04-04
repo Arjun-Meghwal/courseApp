@@ -14,14 +14,12 @@ const VerifyEmail = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const inputRefs = useRef([]);
 
-  // 🔒 Protect route if refreshed
   useEffect(() => {
     if (!signupData) {
       navigate("/signup");
     }
   }, [signupData, navigate]);
 
-  // handle input change
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return;
 
@@ -34,14 +32,12 @@ const VerifyEmail = () => {
     }
   };
 
-  // handle backspace
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
 
-  // submit OTP (REAL SIGNUP HERE)
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -63,21 +59,29 @@ const VerifyEmail = () => {
     );
   };
 
-  // resend OTP
   const resendOtpHandler = () => {
     dispatch(sendOtp(signupData.email, navigate));
     toast.success("OTP resent");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#020817] text-white px-4">
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="w-full max-w-md bg-[#020817] p-8 rounded-xl shadow-lg text-center">
-          <h1 className="text-2xl font-semibold mb-2">Verify email</h1>
+    <div className="min-h-screen flex items-center justify-center 
+    bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] px-4 text-white">
 
-          <p className="text-sm text-gray-400 mb-6">
+      {loading ? (
+        <div className="text-lg">Loading...</div>
+      ) : (
+        <div className="w-full max-w-md 
+        bg-white/5 backdrop-blur-xl 
+        border border-white/10 
+        rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] 
+        p-8 text-center space-y-6">
+
+          <h1 className="text-3xl font-bold">
+            Verify Email
+          </h1>
+
+          <p className="text-sm text-richblack-300">
             A verification code has been sent to your email
           </p>
 
@@ -92,36 +96,44 @@ const VerifyEmail = () => {
                   ref={(el) => (inputRefs.current[index] = el)}
                   onChange={(e) => handleChange(e.target, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="w-12 h-12 text-center text-lg rounded-md bg-[#0f172a] border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-12 h-12 text-center text-lg rounded-lg 
+                  bg-white/10 text-white
+                  border border-white/10
+                  focus:outline-none focus:ring-2 focus:ring-yellow-400
+                  transition"
                 />
               ))}
             </div>
 
             <button
               type="submit"
-              className="w-full bg-yellow-400 text-black font-semibold py-3 rounded-md hover:bg-yellow-300 transition"
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-300 
+              text-black font-semibold py-3 rounded-lg
+              hover:scale-[1.02] transition duration-200"
             >
               Verify & Create Account
             </button>
           </form>
 
-          <div className="flex justify-between items-center mt-4 text-sm">
+          <div className="flex justify-between items-center text-sm">
             <Link
               to="/login"
-              className="text-gray-400 hover:text-yellow-400"
+              className="text-richblack-300 hover:text-yellow-400 transition"
             >
               ← Back to login
             </Link>
 
             <button
               onClick={resendOtpHandler}
-              className="text-blue-400 hover:underline"
+              className="text-yellow-400 hover:underline"
             >
               Resend OTP
             </button>
           </div>
+
         </div>
       )}
+
     </div>
   );
 };

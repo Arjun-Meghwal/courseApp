@@ -1,21 +1,19 @@
 const express = require("express");
 const router = express.Router();
 
+const { auth, isInstructor } = require("../middlewares/auth");
 const {
-  updateProfile,
-  updateProfilePicture,   
-  deleteAccount,
-  getAllUserDetails,
-  getEnrolledCourses,
-} = require("../controllers/Profile");
+  createCourse,
+  getAllCourses,
+  getCourseDetails,
+} = require("../controllers/Course");
 
-const { auth } = require("../middlewares/auth");
-
+const {
+  updateCourseProgress
+}=require("../controllers/courseProgress");
 // routes
-router.put("/updateProfile", auth, updateProfile);
-router.put("/updateProfilePicture", auth, updateProfilePicture); // ✅ ADD
-router.delete("/deleteAccount", auth, deleteAccount);
-router.get("/getUserDetails", auth, getAllUserDetails);
-router.get("/getEnrolledCourses", auth, getEnrolledCourses);
+router.post("/createCourse", auth, isInstructor, createCourse);
+router.get("/getAllCourses", getAllCourses);
+router.get("/getCourseDetails", getCourseDetails);
 
 module.exports = router;

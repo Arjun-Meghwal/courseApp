@@ -8,7 +8,7 @@ const {
   updateProfilePicture,
   deleteAccount,
   getAllUserDetails,
-  getEnrolledCourses,
+  getEnrolledCourse,
 } = require("../controllers/Profile");
 
 
@@ -16,7 +16,7 @@ router.put("/updateProfile", auth, updateProfile);
 router.put("/updateProfilePicture", auth, updateProfilePicture);
 router.delete("/deleteAccount", auth, deleteAccount);
 router.get("/getUserDetails", auth, getAllUserDetails);
-router.get("/getEnrolledCourses", auth, getEnrolledCourses);
+router.get("/getEnrolledCourse", auth, getEnrolledCourse);
 
 
 module.exports = router;
