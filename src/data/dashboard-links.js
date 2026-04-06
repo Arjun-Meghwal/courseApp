@@ -1,79 +1,51 @@
-import {
-  VscAccount,
-  VscDashboard,
-  VscBook,
-  VscAdd,
-  VscMortarBoard,
-  VscCreditCard,
-  VscSettingsGear,
-} from "react-icons/vsc";
-import { AiOutlineShoppingCart } from "react-icons/ai"
-import { ACCOUNT_TYPE } from "../utils/accountType";
-/*
-  accountType:
-  - "Student"
-  - "Instructor"
-*/
-
+import { ACCOUNT_TYPE } from "../utils/constants";
 export const sidebarLinks = [
   {
     id: 1,
     name: "My Profile",
     path: "/dashboard/my-profile",
-    icon: VscAccount,
+    icon: "VscAccount",
   },
-
-  // {
-    // id: 2,
-    // name: "Dashboard",
-    // path: "/dashboard/instructor",
-    // type:ACCOUNT_TYPE.INSTRUCTOR,
-    // icon: VscDashboard,
-    // },
-
-  // {
-  //   id: 3,
-  //   name: "My Courses",
-  //   path: "/dashboard/my-courses",
-  //   icon: VscBook,
-  //   type: ACCOUNT_TYPE.INSTRUCTOR,
-  // },
-
-  // {
-  //   id: 4,
-  //   name: "Add Course",
-  //   path: "/dashboard/add-course",
-  //   icon: VscAdd,
-  //   type: ACCOUNT_TYPE.INSTRUCTOR,
-  // },
-
   {
     id: 2,
-    name: "Enrolled Courses",
-    path: "/dashboard/enrolled-courses",
-    icon: VscMortarBoard,
-    type: ACCOUNT_TYPE.STUDENT,
+    name: "Dashboard",
+    path: "/dashboard/instructor",
+    type: ACCOUNT_TYPE.INSTRUCTOR,
+    icon: "VscDashboard",
   },
   {
-    id:3,
-    name:"Cart",
-    path:"/dashboard/Cart",
-    icon: AiOutlineShoppingCart,
-    type:ACCOUNT_TYPE.STUDENT,
+    id: 3,
+    name: "My Courses",
+    path: "/dashboard/my-courses",
+    type: ACCOUNT_TYPE.INSTRUCTOR,
+    icon: "VscVm",
   },
-
-  // {
-  //   id: 6,
-  //   name: "Purchased Courses",
-  //   path: "/dashboard/purchased-courses",
-  //   icon: VscCreditCard,
-  //   type: ACCOUNT_TYPE.STUDENT,
-  // },
-
   {
     id: 4,
-    name: "Settings",
-    path: "/dashboard/settings",
-    icon: VscSettingsGear,
+    name: "Add Course",
+    path: "/dashboard/add-course",
+    type: ACCOUNT_TYPE.INSTRUCTOR,
+    icon: "VscAdd",
+  },
+  {
+    id: 5,
+    name: "Enrolled Courses",
+    path: "/dashboard/enrolled-courses",
+    type: ACCOUNT_TYPE.STUDENT,
+    icon: "VscMortarBoard",
+  },
+  {
+    id: 6,
+    id: 7,
+    name: "Cart",
+    path: "/dashboard/cart",
+    type: ACCOUNT_TYPE.STUDENT,
+    icon: "VscBookmark",
+  },
+  {
+    name: "Admin Panel",
+    path: "/dashboard/admin-panel",
+    type: ACCOUNT_TYPE.ADMIN,
+    icon: "VscHistory",
   },
 ];

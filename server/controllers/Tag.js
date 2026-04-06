@@ -1,4 +1,4 @@
-const tag=require("../models/tag");
+const tag=require("../models/Tag");
 
 // create tag handler function
 exports.createTage=async(req,res)=>{
@@ -54,7 +54,7 @@ exports.showAlltag=async(req,res)=>{
   }
 }
 
-const User = require("../models/user");
+const User = require("../models/User");
 
 exports.getEnrolledCourses = async (req, res) => {
   try {

@@ -303,3 +303,24 @@ export const markLectureAsComplete = async (data, token) => {
 
   return result;
 };
+export const getCatalogPageData = async (categoryId) => {
+  let result = null;
+
+  try {
+    const response = await apiConnector(
+      "POST",
+      courseEndpoints.CATALOG_PAGE_DATA_API,
+      { categoryId }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could not fetch catalog page data");
+    }
+
+    result = response?.data;
+  } catch (error) {
+    console.log("CATALOG PAGE API ERROR....", error);
+  }
+
+  return result;
+};

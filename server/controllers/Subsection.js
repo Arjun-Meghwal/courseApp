@@ -1,5 +1,5 @@
-const subSection=require("../models/subSection");
-const section=require("../models/section");
+const subSection=require("../models/SubSection");
+const section=require("../models/Section");
 
 // create subsection 
 exports.createSubSection=async(req,res)=>{

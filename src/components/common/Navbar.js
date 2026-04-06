@@ -11,6 +11,7 @@ import { categoriesEndpoints } from "../../services/apis";
 import { logout } from "../../services/operations/authAPI";
 import Catalog from "../../pages/Catalog";
 
+
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
@@ -39,38 +40,55 @@ const Navbar = () => {
     matchPath({ path: route }, location.pathname);
 
   return (
-    <div className="sticky top-0 z-[1000] flex h-14 items-center justify-center border-b border-richblack-700 bg-[#020617] text-white">
+    <div className="sticky top-0 z-[1000] flex h-16 items-center justify-center text-white 
+bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#020617] 
+border-b border-white/10 backdrop-blur-md">
+
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
 
         {/* LOGO */}
         <Link to="/">
-          <img src={logo} width={160} alt="Logo" />
-        </Link>
+          <img
+            src={logo}
+            width={160}
+            alt="Study Notion"
+            className="transition-transform duration-300 ease-out hover:scale-110 will-change-transform text-white"
+          />        </Link>
 
         {/* NAV LINKS */}
         <nav>
-          <ul className="flex gap-x-6 text-sm text-richblack-25">
+          <ul className="flex gap-x-8 text-[15px] font-medium text-richblack-200">
+
             {NavbarLinks.map((link, index) => (
               <li key={index} className="relative">
 
                 {link.title === "Catalog" ? (
-                  <div className="group flex cursor-pointer items-center gap-1">
-                    <span>Catalog</span>
-                    <IoIosArrowDropdown />
-                    <div className="invisible absolute left-1/2 top-[110%]
-                      z-[10] w-[200px] -translate-x-1/2 rounded-md
-                      bg-richblack-800 p-4 opacity-0 transition-all
-                      duration-200 group-hover:visible group-hover:opacity-100">
+                  <div className="group flex items-center gap-1 cursor-pointer">
+
+                    <span className="hover:text-yellow-400 transition">
+                      Catalog
+                    </span>
+
+                    <IoIosArrowDropdown className="transition group-hover:rotate-180" />
+
+                    {/* DROPDOWN */}
+                    <div className="invisible absolute left-1/2 top-[120%] 
+                  z-[10] w-[220px] -translate-x-1/2 rounded-xl 
+                  bg-richblack-800 shadow-xl p-4 opacity-0 
+                  transition-all duration-200 
+                  group-hover:visible group-hover:opacity-100">
+
                       <Catalog />
                     </div>
+
                   </div>
                 ) : (
                   <Link to={link.path}>
                     <span
                       className={`${matchRoute(link.path)
-                          ? "text-yellow-50"
-                          : "text-richblack-25"
-                        } hover:text-yellow-50`}
+                          ? "text-yellow-400"
+                          : "text-richblack-200"
+                        } hover:text-yellow-400 transition`}
                     >
                       {link.title}
                     </span>
@@ -79,75 +97,85 @@ const Navbar = () => {
 
               </li>
             ))}
+
           </ul>
         </nav>
 
         {/* RIGHT SIDE */}
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-5">
 
           {/* CART */}
           {user && user.accountType !== "Instructor" && (
-            <Link to="/dashboard/cart" className="relative">
-              <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
+            <Link to="/dashboard/cart" className="relative group">
+              <AiOutlineShoppingCart className="text-2xl text-richblack-200 group-hover:text-yellow-400 transition" />
+
               {totalItems > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-yellow-300 text-xs font-bold text-black">
+                <span className="absolute -right-2 -top-2 flex h-5 w-5 
+            items-center justify-center rounded-full bg-yellow-400 
+            text-xs font-bold text-black animate-pulse">
                   {totalItems}
                 </span>
               )}
             </Link>
           )}
 
-          {/* AUTH BUTTONS */}
+          {/* AUTH */}
           {!token && (
             <>
               <Link to="/login">
-                <button className="rounded-md border border-richblack-700 px-3 py-1 text-sm">
-                  Log in
+                <button className="px-4 py-1 rounded-md border border-richblack-600 
+            hover:border-yellow-400 hover:text-yellow-400 transition">
+                  Login
                 </button>
               </Link>
+
               <Link to="/signup">
-                <button className="rounded-md bg-yellow-50 px-3 py-1 text-sm text-black">
-                  Sign up
+                <button className="px-4 py-1 rounded-md bg-yellow-400 
+            text-black font-semibold hover:scale-95 transition">
+                  Signup
                 </button>
               </Link>
             </>
           )}
 
-          {/* PROFILE DROPDOWN */}
+          {/* PROFILE */}
           {token && user && (
             <div className="group relative">
+
               <img
                 src={
                   user.image ||
                   `https://api.dicebear.com/5.x/initials/svg?seed=${user.firstName}`
                 }
                 alt="profile"
-                className="h-8 w-8 cursor-pointer rounded-full"
+                className="h-9 w-9 rounded-full cursor-pointer border border-richblack-600 hover:border-yellow-400 transition"
               />
 
-              <div className="invisible absolute right-0 top-[110%]
-                z-[20] w-[160px] rounded-md bg-richblack-800
-                p-2 opacity-0 transition-all duration-200
-                group-hover:visible group-hover:opacity-100">
+              <div className="invisible absolute right-0 top-[120%] 
+            z-[20] w-[170px] rounded-xl bg-richblack-800 shadow-xl 
+            p-2 opacity-0 transition-all duration-200 
+            group-hover:visible group-hover:opacity-100">
 
                 <Link
                   to="/dashboard/my-profile"
-                  className="block rounded px-3 py-2 text-sm hover:bg-richblack-700"
+                  className="block px-3 py-2 rounded text-sm hover:bg-richblack-700"
                 >
                   Dashboard
                 </Link>
 
                 <button
                   onClick={() => dispatch(logout())}
-                  className="w-full rounded px-3 py-2 text-left text-sm hover:bg-richblack-700"
+                  className="w-full text-left px-3 py-2 rounded text-sm hover:bg-richblack-700"
                 >
                   Logout
                 </button>
+
               </div>
             </div>
           )}
 
         </div>
+
       </div>
     </div>
   );

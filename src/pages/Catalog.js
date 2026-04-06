@@ -1,47 +1,109 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
-const catalogData = [
-  "Python",
-  "Web Development",
-  "Android Development",
-  "Blockchain",
-  "Artificial Intelligence",
-  "Data Science",
-  "Cloud Computing",
-  "DevOps",
-  "CyberSecurity",
-];
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { apiConnector } from "../services/apiconnector"
+import { categories } from "../services/apis";
+import { getCatalogPageData } from "../services/operations/courseDetailsApi";
+import CourseSlider from "../components/core/Catalog/CourseSlider";
+import Course_Card from "../components/core/Catalog/Course_card"
+import Footer from "../components/core/HomePage/Footer";
 
 const Catalog = () => {
+  const { catalogName } = useParams();
+  const [catalogPageData, setCatalogPageData] = useState(null);
+  const [categoryId, setCategoryId] = useState("");
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const res = await apiConnector("GET", categories.CATEGORIES_API);
+
+      const category_id = res?.data?.data
+        ?.filter(
+          (ct) =>
+            ct.name.split(" ").join("-").toLowerCase() === catalogName
+        )[0]?._id;
+
+      setCategoryId(category_id);
+    };
+    getCategories();
+  }, [catalogName]);
+
+  useEffect(() => {
+    const getCategoryDetails = async () => {
+      try {
+        const res = await getCatalogPageData(categoryId);
+        setCatalogPageData(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (categoryId) {
+      getCategoryDetails();
+    }
+  }, [categoryId]);
+
   return (
-    <div
-      className="absolute left-1/2 top-full mt-4 z-[9999]
-      -translate-x-1/2 w-72 rounded-2xl 
-      bg-white/5 backdrop-blur-xl 
-      border border-white/10 
-      shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden"
-    >
+    <div>
+      <div>
+        <p>
+          {"Home/Catalog/"}
+          <span>
+            {catalogPageData?.data?.selectedCategory?.name}
+          </span>
+        </p>
 
-      {/* ARROW */}
-      <div className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 bg-white/5 border-l border-t border-white/10 backdrop-blur-xl" />
+        <p>{catalogPageData?.data?.selectedCategory?.name}</p>
+        <p>{catalogPageData?.data?.selectedCategory?.description}</p>
+      </div>
 
-      {/* LIST */}
-      <ul className="py-3">
-        {catalogData.map((item, index) => (
-          <li key={index}>
-            <Link
-              to={`/catalog/${item.toLowerCase().replace(/\s+/g, "-")}`}
-              className="block px-5 py-3 text-sm text-white/80 
-              hover:bg-white/10 hover:text-yellow-400 
-              transition-all duration-200"
-            >
-              {item}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div>
+        {/* section 1 */}
+        <div>
+          <div>course to get you started</div>
+          <div>
+            <p>most popular</p>
+            <p>new</p>
+          </div>
+          <div>
+            <CourseSlider
+              courses={catalogPageData?.data?.selectedCategory?.courses}
+            />
+          </div>
+        </div>
 
+        {/* section 2 */}
+        <div>
+          <div>
+            top courses in{" "}
+            {catalogPageData?.data?.selectedCategory?.name}
+          </div>
+          <div>
+            <CourseSlider
+              courses={catalogPageData?.data?.differentCategory?.courses}
+            />
+          </div>
+        </div>
+
+        {/* section 3 */}
+        <div>
+          <div>frequently bought</div>
+          <div className="py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              {catalogPageData?.data?.mostSellingCourses
+                ?.slice(0, 4)
+                .map((course, index) => (
+                  <Course_Card
+                    course={course}
+                    key={index}
+                    Height={"h-[400px]"}
+                  />
+                ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 };

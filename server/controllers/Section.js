@@ -1,9 +1,6 @@
-const section=require("../models/section");
-const course=require("../models/course");
-const { findByIdAndUpdate } = require("../models/subSection");
-const section = require("../models/section");
-const section = require("../models/section");
-
+const section=require("../models/Section");
+const course=require("../models/Course");
+const { findByIdAndUpdate } = require("../models/SubSection");
 exports.createSection=async(req,res)=>{
   try{
     // data fecth
