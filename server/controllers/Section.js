@@ -19,21 +19,21 @@ if(!sectionName || !courseId){
       courseId,{
         $push:{
 
-        courseContent:newSection>_id,
+        courseContent:newSection._id,
         }
       },
       {new:true},
     )
     // return response
     return res.status(200).json({
-      success:false,
+      success:true,
       message:'section created successfully',
-      updateCourseDetails,
+      updateCourse,
     });
 
   }
   catch(error){
-    return res.status(401).json({
+    return res.status(500).json({
       success:false,
       message:"section is not created",
     });
