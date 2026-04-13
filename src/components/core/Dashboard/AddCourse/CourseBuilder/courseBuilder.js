@@ -91,60 +91,84 @@ const handelChangeEditSectionName=(sectionId,sectionName)=>{
   setValue("sectionName",sectionName);
 }
   return (
-    <div className="text-white">
-      <p>course builder</p>
+    <div className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>
-            section name<sup>*</sup>
+      {/* Heading */}
+      <p className="text-2xl font-semibold text-richblack-5">
+        Course Builder
+      </p>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm text-richblack-5">
+            Section Name <sup className="text-pink-200">*</sup>
           </label>
 
           <input
             id="sectionName"
-            placeholder="add section name"
+            placeholder="Add a section to build your course"
             {...register("sectionName", { required: true })}
-            className="w-full"
+            className="form-style w-full"
           />
 
-          {errors.sectionName && <span>Section is required</span>}
+          {errors.sectionName && (
+            <p className="ml-2 text-xs tracking-wide text-pink-200">
+              This field is required
+            </p>
+          )}
         </div>
 
-        <div>
+        {/* Buttons */}
+        <div className="flex items-end gap-x-4">
           <IconBtn
             type="submit"
             text={
               editSectionName
                 ? "Edit Section Name"
-                : "Create Section Name"
+                : "Create Section"
             }
             outline={true}
-            customClasses={"text-white"}
+            customClasses={"text-yellow-50"}
           >
-            <BiAddToQueue className="text-yellow" />
+            <BiAddToQueue className="text-yellow-50" />
           </IconBtn>
 
           {editSectionName && (
             <button
               type="button"
               onClick={cancelEdit}
-              className="text-richblack-300 underline"
+              className="text-sm text-richblack-300 underline"
             >
-              cancel
+              Cancel Edit
             </button>
           )}
         </div>
       </form>
 
-      {course?.courseContent?.length > 0 &&
-       <NestedView handelChangeEditSectionName={handelChangeEditSectionName}/>}
+      {/* Nested Sections */}
+      {course?.courseContent?.length > 0 && (
+        <NestedView
+          handelChangeEditSectionName={handelChangeEditSectionName}
+        />
+      )}
 
+      {/* Footer Buttons */}
       <div className="flex justify-end gap-x-3">
-        <button onClick={goBack} className="rounded">
-          goBack
+        <button
+          onClick={goBack}
+          className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900"
+        >
+          Back
         </button>
 
-        <IconBtn text="next" onClick={goToNext} />
+        <button
+          onClick={goToNext}
+          className="flex items-center bg-yellow-500 cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

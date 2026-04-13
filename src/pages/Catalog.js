@@ -48,7 +48,7 @@ const Catalog = () => {
         <p>
           {"Home/Catalog/"}
           <span>
-            {catalogPageData?.data?.selectedCategory?.name}
+            {catalogPageData?.selectedCourses?.[0]?.category?.name}
           </span>
         </p>
 
@@ -66,7 +66,7 @@ const Catalog = () => {
           </div>
           <div>
             <CourseSlider
-              courses={catalogPageData?.data?.selectedCategory?.courses}
+              courses = { catalogPageData?.selectedCourses}
             />
           </div>
         </div>
@@ -79,7 +79,7 @@ const Catalog = () => {
           </div>
           <div>
             <CourseSlider
-              courses={catalogPageData?.data?.differentCategory?.courses}
+              courses={catalogPageData?.differentCourses}
             />
           </div>
         </div>

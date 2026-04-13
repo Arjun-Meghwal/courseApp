@@ -9,8 +9,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
   cart: cartReducer,
-  course:courseReducer,
-  viewCourse:courseReducer,
+  course: courseReducer,
+  viewCourse: viewCourseReducer
 });
 
 export default rootReducer;

@@ -26,7 +26,7 @@ import AddCourse from "./components/core/Dashboard/AddCourse";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/viewCourse/VideoDetails";
 import EditCourse from "./components/core/Dashboard/EditCourse/EditCourse";
-import MyCourses from "./components/core/Dashboard/MyCourses/Mycourses";
+import MyCourses from "./components/core/Dashboard/MyCourses/Mycourses"
 import CourseDetails from "./pages/CourseDetails";
 
 function App() {
@@ -41,18 +41,16 @@ function App() {
         <Navbar isLoggedIn={isLoggedIn} />
 
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-
-          <Route path="catalog" element={<Catalog />} />
-
-          <Route path="courses/:courseId" element={<CourseDetails />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/courses/:courseId" element={<CourseDetails />} />
 
           <Route
             path="/login"
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
-
           <Route
             path="/signup"
             element={<Signup setIsLoggedIn={setIsLoggedIn} />}
@@ -64,7 +62,7 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/about" element={<About />} />
 
-          {/* Dashboard */}
+          {/* Dashboard Routes */}
           <Route
             path="/dashboard"
             element={
@@ -73,9 +71,11 @@ function App() {
               </PrivateRoute>
             }
           >
+            {/* Common */}
             <Route path="my-profile" element={<MyProfile />} />
             <Route path="settings" element={<Settings />} />
 
+            {/* Student Routes */}
             {user?.accountType === ACCOUNT_TYPE.STUDENT && (
               <>
                 <Route path="cart" element={<Cart />} />
@@ -86,10 +86,11 @@ function App() {
               </>
             )}
 
+            {/* Instructor Routes */}
             {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
               <>
                 <Route path="add-course" element={<AddCourse />} />
-                <Route path="my-course" element={<MyCourses />} />
+                <Route path="my-courses" element={<MyCourses />} />
                 <Route
                   path="edit-course/:courseID"
                   element={<EditCourse />}
@@ -98,7 +99,7 @@ function App() {
             )}
           </Route>
 
-          {/* View Course (FIXED inside Routes) */}
+          {/* View Course */}
           <Route
             element={
               <PrivateRoute>
@@ -108,7 +109,7 @@ function App() {
           >
             {user?.accountType === ACCOUNT_TYPE.STUDENT && (
               <Route
-                path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+                path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
                 element={<VideoDetails />}
               />
             )}

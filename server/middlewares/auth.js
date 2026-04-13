@@ -4,10 +4,12 @@ const User = require("../models/User");
 
 // ================= AUTH =================
 
+
 exports.auth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
+    console.log("REQUEST HEADERS ", req.headers.authorization);
     console.log("AUTH HEADER ", authHeader);
     console.log("JWT SECRET ", process.env.JWT_SECRET);
 
@@ -30,7 +32,8 @@ exports.auth = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-
+    // console.log("DECODED TOKEN ", decoded);
+    // console.log("user",decoded.data.user);
     next();
   } catch (error) {
     console.error("AUTH ERROR ", error.message);

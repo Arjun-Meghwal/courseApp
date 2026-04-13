@@ -19,113 +19,131 @@ const NestedView = ({ handleChangeEditSectionName }) => {
   const handleDeleteSection = (sectionId) => { };
 
   return (
-    <div>
+    <div className="space-y-4">
       <div>
         {course?.courseContent?.map((section) => (
-          <details key={section._id} open>
-            <summary className="flex items-center justify-between gap-x-2">
+          <details
+            key={section._id}
+            open
+            className="rounded-md border border-richblack-700 bg-richblack-800"
+          >
+            {/* Section Header */}
+            <summary className="flex items-center justify-between px-4 py-3 border-b border-richblack-600 cursor-pointer">
+
               <div className="flex items-center gap-3">
-                <RxDropdownMenu />
-                <p>{section.sectionName}</p>
+                <RxDropdownMenu className="text-richblack-200" />
+                <p className="font-semibold text-richblack-5">
+                  {section.sectionName}
+                </p>
               </div>
 
-              <div className="flex items-center">
-                <button
-                  onClick={() =>
-                    handleChangeEditSectionName(
-                      section._id,
-                      section.sectionName
-                    )
-                  }
-                >
-                  <MdEdit />
+              <div className="flex items-center gap-3">
+                <button>
+                  <MdEdit
+                    className="text-richblack-200 hover:text-yellow-50"
+                    onClick={() =>
+                      handleChangeEditSectionName(
+                        section._id,
+                        section.sectionName
+                      )
+                    }
+                  />
                 </button>
 
-                <button
-                  onClick={() => {
-                    setConfirmationModal({
-                      text1: "delete this section",
-                      text2:
-                        "all the lectures in this section will be deleted",
-                      btn1Text: "Delete",
-                      btn2Text: "Cancel",
-                      btn1Handler: () =>
-                        handleDeleteSection(section._id),
-                      btn2Handler: () =>
-                        setConfirmationModal(null),
-                    });
-                  }}
-                >
-                  <RiDeleteBin6Line />
+                <button>
+                  <RiDeleteBin6Line
+                    className="text-richblack-200 hover:text-pink-200"
+                    onClick={() => {
+                      setConfirmationModal({
+                        text1: "delete this section",
+                        text2:
+                          "all the lectures in this section will be deleted",
+                        btn1Text: "Delete",
+                        btn2Text: "Cancel",
+                        btn1Handler: () =>
+                          handleDeleteSection(section._id),
+                        btn2Handler: () =>
+                          setConfirmationModal(null),
+                      });
+                    }}
+                  />
                 </button>
 
-                <span>|</span>
-                <BiDownArrow className="text-xl text-richblack-300" />
+                <span className="text-richblack-400">|</span>
+
+                <BiDownArrow className="text-richblack-300" />
               </div>
             </summary>
 
-            <div>
+            {/* Subsections */}
+            <div className="px-5 py-3 space-y-2">
               {section?.subSection?.map((data) => (
                 <div
                   key={data?._id}
-                  className="flex items-center justify-between gap-2"
+                  className="flex items-center justify-between rounded-md border border-richblack-700 px-3 py-2 hover:bg-richblack-700"
                 >
                   <div
                     onClick={() => setViewSubSection(data)}
                     className="flex items-center gap-2 cursor-pointer"
                   >
-                    <RxDropdownMenu />
-                    <p>{data.title}</p>
+                    <RxDropdownMenu className="text-richblack-300" />
+                    <p className="text-richblack-5 font-medium">
+                      {data.title}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-x-3">
-                    <button
-                      onClick={() =>
-                        setEditSubSection({
-                          ...data,
-                          sectionId: section._id,
-                        })
-                      }
-                    >
-                      <MdEdit />
+                    <button>
+                      <MdEdit
+                        className="text-richblack-300 hover:text-yellow-50"
+                        onClick={() =>
+                          setEditSubSection({
+                            ...data,
+                            sectionId: section._id,
+                          })
+                        }
+                      />
                     </button>
 
-                    <button
-                      onClick={() => {
-                        setConfirmationModal({
-                          text1: "delete this lecture",
-                          text2: "this lecture will be deleted",
-                          btn1Text: "Delete",
-                          btn2Text: "Cancel",
-                          btn1Handler: () =>
-                            handleDeleteSection(section._id),
-                          btn2Handler: () =>
-                            setConfirmationModal(null),
-                        });
-                      }}
-                    >
-                      <RiDeleteBin6Line />
+                    <button>
+                      <RiDeleteBin6Line
+                        className="text-richblack-300 hover:text-pink-200"
+                        onClick={() => {
+                          setConfirmationModal({
+                            text1: "delete this lecture",
+                            text2: "this lecture will be deleted",
+                            btn1Text: "Delete",
+                            btn2Text: "Cancel",
+                            btn1Handler: () =>
+                              handleDeleteSection(section._id),
+                            btn2Handler: () =>
+                              setConfirmationModal(null),
+                          });
+                        }}
+                      />
                     </button>
                   </div>
                 </div>
               ))}
 
+              {/* Add Lecture */}
               <button
                 onClick={() =>
                   setAddSubSection({
                     sectionId: section._id,
                   })
                 }
-                className="mt-4 flex items-center gap-2"
+                className="mt-3 flex items-center gap-2 text-yellow-50 font-semibold hover:underline"
               >
                 <AiOutlinePlus />
-                <p>Add lecture</p>
+                Add Lecture
               </button>
             </div>
           </details>
         ))}
       </div>
 
+      {/* Modals */}
       {addSubSection ? (
         <SubSectionModel
           modelData={addSubSection}

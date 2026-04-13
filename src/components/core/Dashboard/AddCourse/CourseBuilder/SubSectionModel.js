@@ -115,10 +115,13 @@ const SubSectionModel = ({
   };
 
   return (
-    <div>
-      <div>
-        <div>
-          <p>
+    <div className="fixed inset-0 z-[1000] grid h-screen w-screen place-items-center bg-black/40 backdrop-blur-sm">
+
+      <div className="w-11/12 max-w-[700px] rounded-xl border border-richblack-700 bg-richblack-800 shadow-md">
+
+        {/* Header */}
+        <div className="flex items-center justify-between rounded-t-xl border-b border-richblack-600 px-6 py-4">
+          <p className="text-xl font-semibold text-richblack-5">
             {view && "Viewing"} {add && "Adding"} {edit && "Editing"} Lecture
           </p>
 
@@ -127,11 +130,16 @@ const SubSectionModel = ({
               if (!loading) setModelData(null);
             }}
           >
-            <RxCross2 />
+            <RxCross2 className="text-richblack-200 hover:text-pink-200" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6 px-6 py-6"
+        >
+          {/* Upload */}
           <Upload
             name="lectureVideo"
             label="Lecture Video"
@@ -142,44 +150,60 @@ const SubSectionModel = ({
             editData={edit ? modelData.videoUrl : null}
           />
 
-          <div>
-            <label>Lecture Title</label>
+          {/* Title */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-sm font-medium text-richblack-200">
+              Lecture Title
+            </label>
+
             <input
               id="lectureTitle"
-              placeholder="enter lecture title"
+              placeholder="Enter lecture title"
               {...register("lectureTitle", { required: true })}
-              className="w-full"
+              className="form-style w-full"
             />
+
             {errors.lectureTitle && (
-              <span>lecture title is required</span>
+              <span className="text-xs text-pink-200">
+                Lecture title is required
+              </span>
             )}
           </div>
 
-          <div>
-            <label>Lecture Description</label>
+          {/* Description */}
+          <div className="flex flex-col space-y-2">
+            <label className="text-sm font-medium text-richblack-200">
+              Lecture Description
+            </label>
+
             <textarea
               id="lectureDesc"
-              placeholder="Enter lecture Description"
+              placeholder="Enter lecture description"
               {...register("lectureDesc", { required: true })}
-              className="w-full min-h-[130px]"
+              className="form-style min-h-[130px] w-full"
             />
+
             {errors.lectureDesc && (
-              <span>lecture Description is required</span>
+              <span className="text-xs text-pink-200">
+                Lecture description is required
+              </span>
             )}
           </div>
 
+          {/* Button */}
           {!view && (
-            <div>
-              <IconBtn
+            <div className="flex justify-end pt-2">
+              <button
                 type="submit"
-                text={
-                  loading
-                    ? "loading..."
-                    : edit
-                      ? "Save Changes"
-                      : "Save"
-                }
-              />
+                disabled={loading}
+                className="rounded-md bg-yellow-50 px-6 py-2 font-semibold text-richblack-900 transition-all duration-200 hover:scale-95 disabled:opacity-50"
+              >
+                {loading
+                  ? "Loading..."
+                  : edit
+                    ? "Save Changes"
+                    : "Save"}
+              </button>
             </div>
           )}
         </form>

@@ -324,3 +324,92 @@ export const getCatalogPageData = async (categoryId) => {
 
   return result;
 };
+export const addCourseToCategory = async (data, token) => {
+  const toastId = toast.loading("Loading...");
+  let success = false;
+  try {
+    const response = await apiConnector(
+      "POST",
+      ADD_COURSE_TO_CATEGORY_API,
+      data,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("ADD COURSE TO CATEGORY API RESPONSE............", response);
+    if (!response?.data?.success) {
+      throw new Error("Could Not Add Course To Category");
+    }
+    toast.success("Course Added To Category");
+    success = true;
+  } catch (error) {
+    success = false;
+    console.log("ADD COURSE TO CATEGORY API ERROR............", error);
+    toast.error(error.message);
+  }
+  toast.dismiss(toastId);
+  return success;
+};
+export const createCategory = async (data, token) => {
+  const toastId = toast.loading("Loading...");
+  let success = false;
+  try {
+    const response = await apiConnector("POST", CREATE_CATEGORY_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+    console.log("CREATE CATEGORY API RESPONSE............", response);
+    if (!response?.data?.success) {
+      throw new Error("Could Not Create Category");
+    }
+    toast.success("Category Created");
+    success = true;
+  } catch (error) {
+    success = false;
+    console.log("CREATE CATEGORY API ERROR............", error);
+    toast.error(error.message);
+  }
+  toast.dismiss(toastId);
+  return success;
+};
+export const createRating = async (data, token) => {
+  const toastId = toast.loading("Loading...");
+  let success = false;
+  try {
+    const response = await apiConnector("POST", CREATE_RATING_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+    console.log("CREATE RATING API RESPONSE............", response);
+    if (!response?.data?.success) {
+      throw new Error("Could Not Create Rating");
+    }
+    toast.success("Rating Posted");
+    success = true;
+  } catch (error) {
+    success = false;
+    console.log("CREATE RATING API ERROR............", error);
+    toast.error(error.response.data.message);
+  }
+  toast.dismiss(toastId);
+  return success;
+};
+export const searchCourses = async (searchQuery, dispatch) => {
+  // const toastId = toast.loading("Loading...")
+  dispatch(setProgress(50));
+  let result = null;
+  try {
+    const response = await apiConnector("POST", SEARCH_COURSES_API, {
+      searchQuery: searchQuery,
+    });
+    console.log("SEARCH COURSES API RESPONSE............", response);
+    if (!response?.data?.success) {
+      throw new Error("Could Not Search Courses");
+    }
+    result = response?.data?.data;
+  } catch (error) {
+    console.log("SEARCH COURSES API ERROR............", error);
+    toast.error(error.message);
+  }
+  // toast.dismiss(toastId)
+  dispatch(setProgress(100));
+  return result;
+};

@@ -95,7 +95,7 @@ exports.createCourse = async (req, res) => {
       },
       {
         $push: {
-          courses: newCourse._id,
+          courses: newCourse._id, 
         },
       },
       { new: true }
@@ -105,7 +105,7 @@ exports.createCourse = async (req, res) => {
       { _id: category },
       {
         $push: {
-          course: newCourse._id,
+          courses: newCourse._id,
         },
       },
       { new: true }
@@ -336,7 +336,7 @@ exports.getFullCourseDetails = async (req, res) => {
       courseID: courseId,
       userID: userId,
     })
-
+x
     console.log("courseProgressCount : ", courseProgressCount)
 
     if (!courseDetails) {

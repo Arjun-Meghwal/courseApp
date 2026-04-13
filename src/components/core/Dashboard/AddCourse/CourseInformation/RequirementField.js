@@ -48,13 +48,13 @@ const RequirementField = ({
           id={name}
           value={requirement}
           onChange={(e) => setRequirement(e.target.value)}
-          className="w-full"
+          className="w-full rounded-md bg-[#2C333F] px-3 py-2 text-richblack-5 border border-richblack-600"
         />
 
         <button
           type="button"
           onClick={handleAddRequirement}
-          className="font-semibold text-yellow-50"
+          className="font-semibold text-yellow-50 bg-yellow-500 px-3 py-1 rounded-md text-sm mt-2"
         >
           Add
         </button>
@@ -68,7 +68,7 @@ const RequirementField = ({
               <button
                 type="button"
                 onClick={() => handleRemoveRequirement(index)}
-                className="text-xs text-pure-greys-300"
+                className="text-xs text-pure-greys-300 bg-[#2C333F]"
               >
                 clear
               </button>
@@ -77,7 +77,9 @@ const RequirementField = ({
         </ul>
       )}
 
-      {error[name] && <span>{label} is required</span>}
+      {error?.[name] &&   
+      (<span>{label} 
+      is required</span>)}
     </div>
   );
 };
