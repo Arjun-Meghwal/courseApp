@@ -1,14 +1,23 @@
-const mongoose=require("mongoose");
- const subSectionSchema=new mongoose.Schema({
+const mongoose = require("mongoose");
 
-  title:{
-    type:String
+const subSectionSchema = new mongoose.Schema({
+
+  title: {
+    type: String,
   },
-  timeDuration:{
-    type:String
+
+  timeDuration: {
+    type: String,
   },
-  description:{
-    type:String
+
+  description: {
+    type: String,
   },
- });
- module.exports=mongoose.model("subSection",subSectionSchema);
+
+  videoUrl: {
+    type: String,
+  },
+
+});
+
+module.exports = mongoose.model("SubSection", subSectionSchema);

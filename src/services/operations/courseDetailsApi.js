@@ -112,12 +112,13 @@ export const createSection = async (data, token) => {
   try {
     const response = await apiConnector("POST", CREATE_SECTION_API, data, {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     });
 
     if (!response?.data?.success) throw new Error("Error");
 
     toast.success("Section Created");
-    result = response?.data?.updatedCourse;
+    result = response?.data?.data;
   } catch (error) {
     toast.error(error.message);
   }
@@ -131,12 +132,13 @@ export const updateSection = async (data, token) => {
   try {
     const response = await apiConnector("POST", UPDATE_SECTION_API, data, {
       Authorization: `Bearer ${token}`,
+
     });
 
     if (!response?.data?.success) throw new Error("Error");
 
     toast.success("Section Updated");
-    result = response?.data?.updatedCourse;
+    result = response?.data?.data;
   } catch (error) {
     toast.error(error.message);
   }
@@ -155,7 +157,7 @@ export const deleteSection = async (data, token) => {
     if (!response?.data?.success) throw new Error("Error");
 
     toast.success("Section Deleted");
-    result = response?.data?.updatedCourse;
+    result = response?.data?.data;
   } catch (error) {
     toast.error(error.message);
   }
@@ -171,6 +173,7 @@ export const createSubSection = async (data, token) => {
   try {
     const response = await apiConnector("POST", CREATE_SUBSECTION_API, data, {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     });
 
     if (!response?.data?.success) throw new Error("Error");
@@ -353,7 +356,7 @@ export const addCourseToCategory = async (data, token) => {
 export const createCategory = async (data, token) => {
   const toastId = toast.loading("Loading...");
   let success = false;
-  try {
+  try { 
     const response = await apiConnector("POST", CREATE_CATEGORY_API, data, {
       Authorization: `Bearer ${token}`,
     });

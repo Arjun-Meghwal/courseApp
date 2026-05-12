@@ -73,7 +73,7 @@ const CourseBuilder = () => {
 
     if (
       course.courseContent.some(
-        (section) => section.subSection.length === 0
+        (section) => section.subSection?.length === 0
       )
     ) {
       toast.error("please add atleast one lecture in each section");

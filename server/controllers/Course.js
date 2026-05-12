@@ -336,7 +336,7 @@ exports.getFullCourseDetails = async (req, res) => {
       courseID: courseId,
       userID: userId,
     })
-x
+
     console.log("courseProgressCount : ", courseProgressCount)
 
     if (!courseDetails) {

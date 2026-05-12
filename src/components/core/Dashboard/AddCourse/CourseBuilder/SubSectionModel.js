@@ -69,7 +69,7 @@ const SubSectionModel = ({
     }
 
     if (currentValues.lectureVideo !== modelData.videoUrl) {
-      formData.append("video", currentValues.lectureVideo);
+      formData.append("videoFile", currentValues.lectureVideo);
     }
 
     setLoading(true);
@@ -100,7 +100,7 @@ const SubSectionModel = ({
     formData.append("sectionId", modelData.sectionId);
     formData.append("title", data.lectureTitle);
     formData.append("description", data.lectureDesc);
-    formData.append("video", data.lectureVideo);
+    formData.append("videoFile", data.lectureVideo);
 
     setLoading(true);
 
