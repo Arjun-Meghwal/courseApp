@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
-import { ACCOUNT_TYPE } from "../../../utils/accountType";
+import { ACCOUNT_TYPE } from "../../../utils/constants";
 import { addToCart } from "../../../slices/cartSlice";
 
 const CourseDetailsCard = ({ course, setConfirmationModel, handleBuyCourse }) => {

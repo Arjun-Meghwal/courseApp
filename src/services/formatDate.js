@@ -1,12 +1,27 @@
-export const formatDate=(dataString)=>{
-  const option={year:"numeric",month:"long",day:"numeric"}
-  const date=new Date(dateString)
-  const formatteDate=date.toLocaleDateString("en-US",option)
-  const hour=date.getHours()
-  const minuts=date.getMinutes()
-  const period=hour>=12 ? "PM":"AM"
-  const formattedTime=`${hour %12}:${getMinutes
+export const formatDate = (dateString) => {
+
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  const date = new Date(dateString);
+
+  const formattedDate = date.toLocaleDateString(
+    "en-US",
+    options
+  );
+
+  const hour = date.getHours();
+
+  const minutes = date.getMinutes();
+
+  const period = hour >= 12 ? "PM" : "AM";
+
+  const formattedTime = `${hour % 12 || 12}:${minutes
     .toString()
-    .padStart(2,"0")} ${period}`
-    return `${formatteDate} | ${formattedTime}`
-  }
+    .padStart(2, "0")} ${period}`;
+
+  return `${formattedDate} | ${formattedTime}`;
+};

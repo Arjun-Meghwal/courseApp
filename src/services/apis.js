@@ -15,7 +15,7 @@ export const profileEndpoints = {
   UPDATE_PROFILE_PICTURE_API: BASE_URL + "/profile/updateProfilePicture",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteAccount",
   GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
-  GET_USER_ENROLLED_COURSE_API: BASE_URL + "/profile/getEnrolledCourse",
+  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourse",
 };
 
 // ================= STUDENT =================
@@ -39,7 +39,7 @@ export const courseEndpoints = {
   UPDATE_SECTION_API: BASE_URL + "/course/updateSection",
   DELETE_SECTION_API: BASE_URL + "/course/deleteSection",
 
-  CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection", 
+  CREATE_SUBSECTION_API: BASE_URL + "/course/createSubSection", 
   UPDATE_SUBSECTION_API: BASE_URL + "/course/updateSubSection",
   DELETE_SUBSECTION_API: BASE_URL + "/course/deleteSubSection",
 
@@ -52,7 +52,7 @@ export const courseEndpoints = {
   CREATE_RATING_API: BASE_URL + "/course/createRating",
   LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
   ADD_COURSE_TO_CATEGORY_API: BASE_URL + "/course/addCourseToCategory",
-  SEARCH_COURSES_API: BASE_URL + "/course/searchCourses",
+  SEARCH_COURSES_API: BASE_URL + "/course/searchCourse",
 };
 
 // ================= RATINGS =================

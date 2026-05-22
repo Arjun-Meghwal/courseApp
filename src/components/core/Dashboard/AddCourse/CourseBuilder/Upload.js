@@ -5,6 +5,7 @@ const Upload = ({
   label,
   register,
   errors,
+  setValue,
   video = false,
   viewData,
   editData,
@@ -18,14 +19,11 @@ const Upload = ({
       <input
         type="file"
         accept={video ? "video/*" : "image/*"}
-        {...register(name, { required: true })}
-      />
 
-      {viewData && (
-        <p className="text-sm text-green-400">
-          Current: {viewData}
-        </p>
-      )}
+        onChange={(e) => {
+          setValue(name, e.target.files[0]);
+        }}
+      />
 
       {editData && (
         <p className="text-sm text-yellow-400">

@@ -1,20 +1,26 @@
 const SubSection = require("../models/SubSection");
 const Section = require("../models/Section");
+const Course = require("../models/Course");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 // CREATE SUBSECTION
 exports.createSubSection = async (req, res) => {
   try {
-    const { sectionId, title, timeDuration, description } = req.body;
+    console.log("create subsection called");
+
+    const { sectionId, title, description } = req.body;
     const video = req.files?.videoFile;
 
-    if (!sectionId || !title || !timeDuration || !video) {
+    console.log("body hai", req.body);
+    console.log("files hai", req.files);
+
+    if (!sectionId || !title || !video) {
       return res.status(400).json({
         success: false,
         message: "all fields are required",
       });
     }
-    
+
     // upload video
     const uploadDetails = await uploadImageToCloudinary(
       video,
@@ -24,13 +30,12 @@ exports.createSubSection = async (req, res) => {
     // create subsection
     const subSectionDetails = await SubSection.create({
       title,
-      timeDuration,
       description,
       videoUrl: uploadDetails.secure_url,
     });
 
     // update section
-    const updatedSection = await Section.findByIdAndUpdate(
+    await Section.findByIdAndUpdate(
       sectionId,
       {
         $push: {
@@ -39,13 +44,30 @@ exports.createSubSection = async (req, res) => {
       },
       { new: true }
     );
+    // console.log("UPDATED SECTION", updatedSection);
+    // get updated course
+    const sectionDetails = await Section.findById(sectionId);
+
+    const updatedCourse = await Course.findOne({
+      courseContent:sectionId,
+    }
+    )
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      });
 
     return res.status(200).json({
       success: true,
       message: "subsection created successfully",
-      data: updatedSection,
+      data: updatedCourse,
     });
+
   } catch (error) {
+    console.log(error);
+
     return res.status(500).json({
       success: false,
       message: "internal server error",
@@ -53,8 +75,6 @@ exports.createSubSection = async (req, res) => {
     });
   }
 };
-
-
 
 // UPDATE SUBSECTION
 exports.updateSubSection = async (req, res) => {
@@ -73,12 +93,14 @@ exports.updateSubSection = async (req, res) => {
       { title },
       { new: true }
     );
+    console.log("UPDATED SECTION", updatedSubSection);
 
     return res.status(200).json({
       success: true,
       message: "subsection updated successfully",
       data: updatedSubSection,
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -86,8 +108,6 @@ exports.updateSubSection = async (req, res) => {
     });
   }
 };
-
-
 
 // DELETE SUBSECTION
 exports.deleteSubSection = async (req, res) => {
@@ -99,7 +119,8 @@ exports.deleteSubSection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "subsection deleted successfully",
-    });     
+    });
+
   } catch (error) {
     return res.status(500).json({
       success: false,

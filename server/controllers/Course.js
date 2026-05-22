@@ -237,6 +237,9 @@ exports.getInstructorCourses = async (req, res) => {
 
 //Edit Course Details
 exports.editCourse = async (req, res) => {
+  console.log("EDIT COURSE CONTROLLER HIT");
+  console.log(req.body);
+  console.log(req.files);
   try {
     const { courseId } = req.body
     const updates = req.body
@@ -247,7 +250,7 @@ exports.editCourse = async (req, res) => {
     }
 
     // If Thumbnail Image is found, update it
-    if (req.files) {
+    if (req.files && req.files.thumbnailImage) {
       console.log("thumbnail update")
       const thumbnail = req.files.thumbnailImage
       const thumbnailImage = await uploadImageToCloudinary(
@@ -259,17 +262,26 @@ exports.editCourse = async (req, res) => {
 
     // Update only the fields that are present in the request body
     for (const key in updates) {
-      if (updates.hasOwnProperty(key)) {
-        if (key === "tag" || key === "instructions") {
-          course[key] = JSON.parse(updates[key])
-        } else {
-          course[key] = updates[key]
+
+      if (key === "courseId") continue;
+
+      if (Object.prototype.hasOwnProperty.call(updates, key)) { 
+
+        if (
+          (key === "tag" || key === "instructions") &&
+          typeof updates[key] === "string"
+        ) {
+          course[key] = JSON.parse(updates[key]);
+        }
+        else {
+          course[key] = updates[key];
         }
       }
     }
 
     await course.save()
-
+    console.log("course saved")
+    console.log("FETCHING UPDATED COURSE");
     const updatedCourse = await Course.findOne({
       _id: courseId,
     })

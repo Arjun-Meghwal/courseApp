@@ -8,6 +8,12 @@ export async function getUserEnrolledCourse(token) {
   let result = [];
   try {
     console.log(" before calling bakend api");
+    console.log("PROFILE ENDPOINTS", profileEndpoints);
+
+    console.log(
+      "URL =>",
+      profileEndpoints.GET_USER_ENROLLED_COURSES_API
+    );
     const response = await apiConnector(
       "GET",
       profileEndpoints.GET_USER_ENROLLED_COURSES_API,

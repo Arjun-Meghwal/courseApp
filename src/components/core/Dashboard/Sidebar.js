@@ -26,7 +26,7 @@ const Sidebar = () => {
       {/* DASHBOARD LINKS */}
       <div className="flex flex-col gap-1">
         {sidebarLinks.map((link) => {
-          if (link.accountType && user?.accountType !== link.accountType)
+          if (link.type && user?.accountType !== link.type)
             return null;
 
           return (

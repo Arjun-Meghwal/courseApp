@@ -13,7 +13,10 @@ if(!sectionName || !courseId){
   });
 }
     // create section
-    const newSection = await Section.create({sectionName});
+    const newSection = await Section.create({
+    sectionName,
+      course: courseId,
+});
     // update course with section objects
     const updateCourse=await  Course.findByIdAndUpdate(
       courseId,{
@@ -50,35 +53,35 @@ if(!sectionName || !courseId){
 exports.updateSection = async (req, res) => {
   try {
 
-    const { sectionName, sectionId } = req.body;
+    const { sectionName, sectionId, courseId } = req.body;
 
-    if (!sectionName || !sectionId) {
-      return res.status(401).json({
-        success: false,
-        message: "update section required all data",
-      });
-    }
-
-    const updatedSection = await Section.findByIdAndUpdate(
+    await Section.findByIdAndUpdate(
       sectionId,
       { sectionName },
       { new: true }
     );
 
+    const updatedCourse = await Course.findById(courseId)
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      });
+
     return res.status(200).json({
       success: true,
       message: "section updated successfully",
-      data: updatedSection,
+      data: updatedCourse,
     });
 
   } catch (error) {
-
-    console.log(error);
 
     return res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 

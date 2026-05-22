@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, matchPath } from "react-router-dom";
+import { Link, useLocation, matchPath,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IoIosArrowDropdown } from "react-icons/io";
@@ -16,6 +16,7 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [subLinks, setSubLinks] = useState([]);
 
@@ -177,7 +178,7 @@ const Navbar = () => {
                 </Link>
 
                 <button
-                  onClick={() => dispatch(logout())}
+                  onClick={() => dispatch(logout(navigate))}
                   className="w-full text-left px-3 py-2 rounded text-sm hover:bg-richblack-700"
                 >
                   Logout

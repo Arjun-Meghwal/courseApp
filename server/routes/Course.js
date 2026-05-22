@@ -3,7 +3,7 @@ const express = require("express")
 const router = express.Router()
 
 // Import the Controllers
-
+console.log("COURSE ROUTES LOADED");
 // Course Controllers Import
 const {
   createCourse,
@@ -76,7 +76,19 @@ router.get("/getAllCourses", getAllCourses)
 // Get Details for a Specific Courses
 router.post("/getCourseDetails", getCourseDetails)
 // Edit a Course
-router.post("/editCourse", auth, isInstructor, isDemo, editCourse)
+router.post(
+  "/editCourse",
+
+  (req, res, next) => {
+    console.log("EDIT ROUTE HIT");
+    next();
+  },
+
+  auth,
+  isInstructor,
+  isDemo,
+  editCourse
+)
 // Get all Courses of a Specific Instructor
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 //Get full course details

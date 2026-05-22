@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
-import { setEditCourse, setStep } from '../../../../../slices/courseSlice'
-import { COURSE_STATUS } from '../../../../../utils/constants';
-import { addCourseToCategory, editcourseDetails } from '../../../../../services/operations/courseDetailsApi';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { setEditCourse, setStep } from "../../../../../slices/courseSlice";
+import { COURSE_STATUS } from "../../../../../utils/constants";
+import { editcourseDetails } from "../../../../../services/operations/courseDetailsApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PublishCourse = () => {
   const {
@@ -19,6 +19,7 @@ const PublishCourse = () => {
   const { course } = useSelector((state) => state.course);
 
   const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,26 +29,40 @@ const PublishCourse = () => {
     }
   }, [course, setValue]);
 
-  const goBack = () => dispatch(setStep(2));
+  const goBack = () => {
+    dispatch(setStep(2));
+  };
 
-  const goToMyCourses = () => navigate("/dashboard/my-courses");
+  const goToMyCourses = () => {
+    navigate("/dashboard/my-courses");
+  };
 
   const handlePublish = async () => {
     setLoading(true);
 
     try {
+      // no changes made
       if (
-        (course?.status === COURSE_STATUS.PUBLISHED && getValues("public")) ||
-        (course?.status === COURSE_STATUS.DRAFT && !getValues("public"))
+        (course?.status === COURSE_STATUS.PUBLISHED &&
+          getValues("public")) ||
+        (course?.status === COURSE_STATUS.DRAFT &&
+          !getValues("public"))
       ) {
         goToMyCourses();
         dispatch(setStep(1));
-        dispatch(setEditCourse(null));
+        dispatch(setEditCourse(false));
         return;
       }
 
       const formData = new FormData();
-      formData.append("courseId", course._id);
+
+      console.log("COURSE STATE", course);
+
+      formData.append(
+        "courseId",
+        course?.data?._id || course?._id
+      );
+
       formData.append(
         "status",
         getValues("public")
@@ -57,82 +72,80 @@ const PublishCourse = () => {
 
       const result = await editcourseDetails(formData, token);
 
-      const addCourseCategory = await addCourseToCategory(
-        {
-          categoryId: course.category,
-          courseId: course._id,
-        },
-        token
-      );
+      if (result) {
+        toast.success("Course Published Successfully");
 
-      if (result && addCourseCategory) {
-        goToMyCourses();
         dispatch(setStep(1));
-        dispatch(setEditCourse(null));
+        dispatch(setEditCourse(false));
+
+        goToMyCourses();
       } else {
         toast.error("Something went wrong");
       }
     } catch (error) {
-      console.error(error);
+      console.log("PUBLISH COURSE ERROR:", error);
       toast.error("Error while publishing course");
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
-  const onSubmit = () => handlePublish();
+  const onSubmit = () => {
+    handlePublish();
+  };
 
   return (
-    <div className="w-full">
-      <div className="rounded-xl border border-richblack-700 bg-richblack-800 p-6 shadow-md">
+    <div className="rounded-md border border-richblack-700 bg-richblack-800 p-6">
 
-        {/* Heading */}
-        <h2 className="text-2xl font-semibold text-richblack-5">
-          Publish Settings
-        </h2>
+      <h2 className="text-2xl font-semibold text-richblack-5">
+        Publish Settings
+      </h2>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-6 flex flex-col gap-6"
+      >
 
-          {/* Checkbox */}
-          <div className="flex items-center gap-3 rounded-lg bg-richblack-700 p-4">
-            <input
-              type="checkbox"
-              id="public"
-              className="h-5 w-5 rounded bg-richblack-500 text-yellow-50 focus:ring-2 focus:ring-yellow-50"
-              {...register("public")}
-            />
-            <label
-              htmlFor="public"
-              className="text-richblack-200 font-medium"
-            >
-              Make this course public
-            </label>
-          </div>
+        {/* Checkbox */}
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="public"
+            {...register("public")}
+            className="h-4 w-4 cursor-pointer"
+            defaultChecked={course?.status === COURSE_STATUS.PUBLISHED}
+          />
 
-          {/* Buttons */}
-          <div className="mt-8 flex justify-end gap-4">
+          <label
+            htmlFor="public"
+            className="text-richblack-100"
+          >
+            Make this course public
+          </label>
+        </div>
 
-            <button
-              type="button"
-              disabled={loading}
-              onClick={goBack}
-              className="rounded-md bg-richblack-300 px-5 py-2 font-semibold text-richblack-900 transition-all duration-200 hover:scale-95 disabled:opacity-50"
-            >
-              Back
-            </button>
+        {/* Buttons */}
+        <div className="flex justify-end gap-4">
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-md bg-yellow-50 px-5 py-2 font-semibold text-richblack-900 transition-all duration-200 hover:scale-95 disabled:opacity-50"
-            >
-              {loading ? "Saving..." : "Save Changes"}
-            </button>
+          <button
+            type="button"
+            onClick={goBack}
+            disabled={loading}
+            className="rounded-md bg-richblack-300 px-5 py-2 font-semibold text-richblack-900"
+          >
+            Back
+          </button>
 
-          </div>
-        </form>
-      </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="rounded-md bg-yellow-500 px-5 py-2 font-semibold text-richblack-900"
+          >
+            {loading ? "Publishing..." : "Save Changes"}
+          </button>
+
+        </div>
+      </form>
     </div>
   );
 };

@@ -65,23 +65,27 @@ const CourseBuilder = () => {
     dispatch(setEditCourse(true));
   };
 
+  console.log("FINAL COURSE STATE", course);
   const goToNext = () => {
     if (course?.courseContent?.length === 0) {
       toast.error("please add atleast one section");
       return;
     }
+    console.log("SECTION DATA", course?.courseContent);
+    const hasEmptySection = course?.courseContent?.some(
+      (section) =>
+        !section?.subSection || section.subSection.length === 0
+    );
 
-    if (
-      course.courseContent.some(
-        (section) => section.subSection?.length === 0
-      )
-    ) {
+    if (hasEmptySection) {
       toast.error("please add atleast one lecture in each section");
       return;
     }
+    console.log("SECTION DATA", course?.courseContent);
 
     dispatch(setStep(3));
   };
+  
 const handelChangeEditSectionName=(sectionId,sectionName)=>{
   if(editSectionName===sectionId){
     cancelEdit();
@@ -91,57 +95,82 @@ const handelChangeEditSectionName=(sectionId,sectionName)=>{
   setValue("sectionName",sectionName);
 }
   return (
-    <div className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
-
+    <div
+      className="
+    w-11/12 max-w-2xl
+    rounded-2xl
+    border border-richblack-700
+    bg-richblack-800
+    shadow-[0_0_40px_rgba(0,0,0,0.6)]
+    animate-scaleIn
+  "
+    >
       {/* Heading */}
-      <p className="text-2xl font-semibold text-richblack-5">
-        Course Builder
-      </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-richblack-5 tracking-tight">
+            Course Builder
+          </h2>
+
+          <p className="mt-1 text-sm text-richblack-300">
+            Organize your course into sections and lectures
+          </p>
+        </div>
+
+        <div className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-1 text-sm font-medium text-yellow-50">
+          Step 2 of 3
+        </div>
+      </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-5 rounded-xl border border-richblack-700 bg-richblack-900/60 p-6"
+      >
 
-        <div className="flex flex-col space-y-2">
-          <label className="text-sm text-richblack-5">
-            Section Name <sup className="text-pink-200">*</sup>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-richblack-100">
+            Section Name
           </label>
 
           <input
             id="sectionName"
-            placeholder="Add a section to build your course"
+            placeholder="Enter section name..."
             {...register("sectionName", { required: true })}
-            className="form-style w-full"
+            className="w-full rounded-xl border border-richblack-600 bg-richblack-700 px-4 py-3 text-richblack-5 outline-none transition-all duration-200 placeholder:text-richblack-400 focus:border-yellow-50 focus:ring-2 focus:ring-yellow-500/30"
           />
 
           {errors.sectionName && (
-            <p className="ml-2 text-xs tracking-wide text-pink-200">
-              This field is required
+            <p className="text-xs font-medium text-pink-200">
+              Section name is required
             </p>
           )}
         </div>
 
         {/* Buttons */}
-        <div className="flex items-end gap-x-4">
-          <IconBtn
+        <div className="flex items-center gap-4">
+
+          <button
             type="submit"
-            text={
-              editSectionName
-                ? "Edit Section Name"
-                : "Create Section"
-            }
-            outline={true}
-            customClasses={"text-yellow-50"}
+            disabled={loading}
+            className="flex items-center gap-2 rounded-xl bg-yellow-400 px-5 py-3 font-semibold text-richblack-900 transition-all duration-200 hover:scale-[1.02] hover:bg-yellow-300 active:scale-95"
           >
-            <BiAddToQueue className="text-yellow-50" />
-          </IconBtn>
+            <BiAddToQueue className="text-lg" />
+
+            {loading
+              ? "Processing..."
+              : editSectionName
+                ? "Update Section"
+                : "Create Section"}
+          </button>
 
           {editSectionName && (
             <button
               type="button"
               onClick={cancelEdit}
-              className="text-sm text-richblack-300 underline"
+              className="rounded-lg border border-richblack-600 px-4 py-2 text-sm text-richblack-300 transition-all hover:border-richblack-400 hover:text-richblack-5"
             >
-              Cancel Edit
+              Cancel
             </button>
           )}
         </div>
@@ -149,25 +178,28 @@ const handelChangeEditSectionName=(sectionId,sectionName)=>{
 
       {/* Nested Sections */}
       {course?.courseContent?.length > 0 && (
-        <NestedView
-          handelChangeEditSectionName={handelChangeEditSectionName}
-        />
+        <div className="rounded-xl border border-richblack-700 bg-richblack-900/40 p-4">
+          <NestedView
+            handelChangeEditSectionName={handelChangeEditSectionName}
+          />
+        </div>
       )}
 
-      {/* Footer Buttons */}
-      <div className="flex justify-end gap-x-3">
+      {/* Footer */}
+      <div className="flex justify-end gap-4 border-t border-richblack-700 pt-6">
+
         <button
           onClick={goBack}
-          className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900"
+          className="rounded-xl border border-richblack-600 px-5 py-2.5 font-semibold text-richblack-100 transition-all duration-200 hover:bg-richblack-700"
         >
           Back
         </button>
 
         <button
           onClick={goToNext}
-          className="flex items-center bg-yellow-500 cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900"
+          className="rounded-xl bg-yellow-400 px-6 py-2.5 font-semibold text-richblack-900 transition-all duration-200 hover:scale-[1.02] hover:bg-yellow-300 active:scale-95"
         >
-          Next
+          Continue
         </button>
       </div>
     </div>
