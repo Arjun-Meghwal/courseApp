@@ -28,6 +28,7 @@ import VideoDetails from "./components/core/viewCourse/VideoDetails";
 import EditCourse from "./components/core/Dashboard/EditCourse/EditCourse";
 import MyCourses from "./components/core/Dashboard/MyCourses/Mycourses"
 import CourseDetails from "./pages/CourseDetails";
+import InstructorDashboard from "./components/core/Dashboard/InstructoDashboard/InstructorDashboard";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,7 +45,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:catalogName" element={<Catalog />} />
           <Route path="/courses/:courseId" element={<CourseDetails />} />
 
           <Route
@@ -83,6 +84,10 @@ function App() {
                   path="enrolled-courses"
                   element={<EnrolledCourse />}
                 />
+                {/* <Route
+                  path="/courses/:courseId"
+                  element={<CourseDetails />}
+                /> */}
               </>
             )}
 
@@ -95,7 +100,11 @@ function App() {
                   path="edit-course/:courseId"
                   element={<EditCourse />}
                 />
-              </>
+                <Route
+                path="instructor"
+                element={<InstructorDashboard/>}
+                />    
+                </>
             )}
           </Route>
 

@@ -35,3 +35,35 @@ export async function getUserEnrolledCourse(token) {
   toast.dismiss(toastId)
   return result;
 };
+
+export async function getInstructorDashboard(token, dispatch) {
+
+  let result = []
+
+  try {
+    console.log("BEFORE Calling BACKEND API FOR INSTRUCTOR DASHBOARD");
+
+    const response = await apiConnector(
+      "GET",
+      profileEndpoints.GET_INSTRUCTOR_DASHBOARD_API,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    )
+
+    console.log("AFTER Calling BACKEND API FOR INSTRUCTOR DASHBOARD");
+
+    if (!response.data.success) {
+      throw new Error(response.data.message)
+    }
+
+    result = response.data.data;
+
+  } catch (error) {
+    console.log("GET_INSTRUCTOR_DASHBOARD_API API ERROR............", error)
+    toast.error("Could Not Get Instructor Dashboard")
+  }
+
+  return result
+}

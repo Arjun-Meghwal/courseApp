@@ -45,9 +45,10 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
     if (!orderResponse?.data?.success) {
       throw new Error(orderResponse?.data?.message);
     }
+    console.log("Razorpay key ",process.env.REACT_APP_RAZORPAY_KEY)
 
     const options = {
-      key: process.env.REACT_APP_RAZORPAY_KEY,
+      key: "rzp_test_SuqYwdUVQZHqEv",
       currency: orderResponse.data.data.currency,
       amount: `${orderResponse.data.data.amount}`,
       order_id: orderResponse.data.data.id,

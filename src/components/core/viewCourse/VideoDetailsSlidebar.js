@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const VideoDetailsSlidebar = ({ setReviewModel }) => {
   const [activeStatus, setActiveStatus] = useState("");
@@ -8,15 +8,16 @@ const VideoDetailsSlidebar = ({ setReviewModel }) => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { sectionId, subsectionId } = useParams();
+
+  const { sectionId, subSectionId } = useParams();
 
   const {
-    courseSectionData,
+    courseSectionData = [],
     courseEntireData,
-    totalNoOdLectures,
-    completedLectures,
-  } = useSelector((state) => state.viewcourse);
-
+    totalNoOfLecture = 0,
+    completedLecture = [],
+  } = useSelector((state) => state.viewCourse || {});
+console.log("completelecture", completedLecture); 
   useEffect(() => {
     const setActiveFlags = () => {
       if (!courseSectionData?.length) return;
@@ -26,99 +27,144 @@ const VideoDetailsSlidebar = ({ setReviewModel }) => {
       );
 
       const currentSubSectionIndex =
-        courseSectionData?.[currentSectionIndex]?.subsection?.findIndex(
-          (data) => data._id === subsectionId
+        courseSectionData?.[currentSectionIndex]?.subSection?.findIndex(
+          (data) => data._id === subSectionId
         );
 
       const activeSubSectionId =
-        courseSectionData?.[currentSectionIndex]?.subsection?.[currentSubSectionIndex]?._id;
+        courseSectionData?.[currentSectionIndex]?.subSection?.[
+          currentSubSectionIndex
+        ]?._id;
 
       setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
       setVideoBarActive(activeSubSectionId);
     };
 
     setActiveFlags();
-  }, [courseSectionData, courseEntireData, location.pathname]);
+  }, [
+    courseSectionData,
+    location.pathname,
+    sectionId,
+    subSectionId,
+  ]);
+  
 
   return (
-    <div>
-      <div>
-        {/* for button and heading */}
-        <div>
-          {/* for button */}
-          <div>
-            <div
-              onClick={() => {
-                navigate("/dashboard/enrolled-courses");
-              }}
-            >
-              back
-            </div>
+    <div className="h-[calc(100vh-3.5rem)] w-[280px] bg-richblack-900 border-r border-richblack-700 overflow-y-auto">
 
-            <div>
-              <button onClick={() => setReviewModel(true)}>
-                Add review
-              </button>
-            </div>
-          </div>
+      {/* Header */}
+      <div className="border-b border-richblack-700 p-4">
 
-          {/* heading */}
-          <div>
-            <p>{courseEntireData?.courseName}</p>
-            <p>
-              {completedLectures?.length}/{totalNoOdLectures}
-            </p>
-          </div>
+        <div className="flex items-center justify-between mb-4">
 
-          {/* section + subsection */}
-          <div>
-            {courseSectionData?.map((course, index) => (
-              <div
-                key={index}
-                onClick={() => setActiveStatus(course._id)}
-              >
-                {/* section */}
-                <div>
-                  <div>{course?.sectionName}</div>
-                </div>
+          <button
+            onClick={() => navigate("/dashboard/enrolled-courses")}
+            className="text-richblack-5 text-sm"
+          >
+            ← Back
+          </button>
 
-                {/* subsection */}
-                <div>
-                  {activeStatus === course?._id && (
-                    <div>
-                      {course?.subsection?.map((topic, index) => (
-                        <div
-                          key={index}
-                          className={`flex gap-2 p-5 ${videobarActive === topic._id
-                              ? "bg-yellow-200 text-richblack-900"
-                              : "bg-richblack-900 text-white"
-                            }`}
-                          onClick={() => {
-                            navigate(
-                              `/view-course/${courseEntireData?._id}/section/${course?._id}/sub-section/${topic?._id}`
-                            );
-                            setVideoBarActive(topic._id);
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={completedLectures.includes(topic?._id)}
-                            onChange={() => { }}
-                          />
+          <button
+            onClick={() => setReviewModel(true)}
+            className="bg-yellow-500 text-richblack-900 px-3 py-2 rounded-md text-sm font-semibold"
+          >
+            Review
+          </button>
 
-                          <span>{topic.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
+
+        <h2 className="text-xl font-bold text-richblack-5">
+          {courseEntireData?.courseName}
+        </h2>
+
+        <p className="text-richblack-300 text-sm mt-1">
+          {completedLecture?.length}/{totalNoOfLecture} Lectures Completed
+        </p>
+
       </div>
+
+      {/* Sections */}
+      <div>
+
+        {courseSectionData?.map((course) => (
+          <div
+            key={course._id}
+            className="border-b border-richblack-700"
+          >
+
+            {/* Section Header */}
+            <div
+              onClick={() =>
+                setActiveStatus(
+                  activeStatus === course._id ? "" : course._id
+                )
+              }
+              className="flex items-center justify-between bg-richblack-700 px-4 py-3 cursor-pointer"
+            >
+
+              <p className="font-medium text-richblack-5">
+                {course?.sectionName}
+              </p>
+
+              <span className="text-richblack-5">
+                {activeStatus === course._id ? "⌃" : "⌄"}
+              </span>
+
+            </div>
+
+            {/* Lectures */}
+            {/* Lectures */}
+            {activeStatus === course._id && (
+              <div>
+                {course?.subSection?.map((topic) => (
+                  <div
+                    key={topic._id}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer text-sm transition-all
+        ${videobarActive === topic._id
+                        ? "bg-yellow-500 text-richblack-900"
+                        : "bg-richblack-800 text-richblack-25 hover:bg-richblack-700"
+                      }`}
+                    onClick={() => {
+                      navigate(
+                        `/view-course/${courseEntireData?._id}/section/${course?._id}/sub-section/${topic?._id}`
+                      );
+                      setVideoBarActive(topic._id);
+                    }}
+                  >
+                    {console.log(
+                      "topic id =>",
+                      topic._id,
+                      "completedLecture =>",
+                      completedLecture,
+                      "matched =>",
+                      completedLecture?.some(
+                        (id) => String(id) === String(topic._id)
+                      )
+                    )}
+
+                    <input
+                      type="checkbox"
+                      checked={
+                        completedLecture?.some(
+                          (id) => String(id) === String(topic._id)
+                        )
+                      }
+                      readOnly
+                    />
+
+                    <span>{topic?.title}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        ))}
+
+      </div>
+
     </div>
   );
 };
 
-export default VideoDetailsSlidebar; 
+export default VideoDetailsSlidebar;

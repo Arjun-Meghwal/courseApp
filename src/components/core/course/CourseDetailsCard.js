@@ -6,7 +6,11 @@ import toast from "react-hot-toast";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
 import { addToCart } from "../../../slices/cartSlice";
 
-const CourseDetailsCard = ({ course, setConfirmationModel, handleBuyCourse }) => {
+const CourseDetailsCard = ({
+  course,
+  setConfirmationModel,
+  handleBuyCourse,
+}) => {
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
 
@@ -47,52 +51,77 @@ const CourseDetailsCard = ({ course, setConfirmationModel, handleBuyCourse }) =>
   const isEnrolled = course?.studentsEnrolled?.includes(user?._id);
 
   return (
-    <div>
+    <div className="w-[360px] bg-richblack-700 border border-richblack-600">
+
+      {/* Thumbnail */}
       <img
         src={ThumbnailImage}
-        alt="Thumbnail"
-        className="max-h-[300px] min-h-[180px] rounded-xl"
+        alt="course img"
+        className="w-full h-[220px] object-cover"
       />
 
-      <div>Rs. {CurrentPrice}</div>
+      {/* Content */}
+      <div className="p-6">
 
-      <div className="flex flex-col gap-y-6">
+        {/* Price */}
+        <h2 className="text-3xl font-bold text-richblack-5 mb-5">
+          ₹{CurrentPrice}
+        </h2>
+
+        {/* Buy Button */}
         <button
-          className="bg-yellow-50 w-full text-richblack-900"
           onClick={
             isEnrolled
               ? () => navigate("/dashboard/enrolled-courses")
               : handleBuyCourse
           }
+          className="w-full bg-yellow-500 text-richblack-900 py-3 rounded-md font-semibold"
         >
           {isEnrolled ? "Go to Course" : "Buy Now"}
         </button>
 
+        {/* Add To Cart */}
         {!isEnrolled && (
-          <button onClick={handleAddToCart}>Add to cart</button>
+          <button
+            onClick={handleAddToCart}
+            className="w-full bg-richblack-800 text-richblack-5 py-3 rounded-md font-semibold mt-3 border border-richblack-600"
+          >
+            Add to Cart
+          </button>
         )}
-      </div>
 
-      <div>
-        <p>3-day money-back guarantee</p>
-        <p>This course includes:</p>
+        {/* Guarantee */}
+        <p className="text-center text-xs text-richblack-300 mt-5">
+          30-Day Money-Back Guarantee
+        </p>
 
-        <div className="flex flex-col gap-y-3">
-          {course?.instructions?.map((item, index) => (
-            <p key={index} className="flex gap-2">
-              <span>{item}</span>
-            </p>
-          ))}
+        {/* Includes */}
+        <div className="mt-8">
+          <p className="font-semibold text-richblack-5 mb-4">
+            This course includes:
+          </p>
+
+          <div className="flex flex-col gap-3">
+            {course?.instructions?.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-2 text-caribbeangreen-200 text-sm"
+              >
+                <span>✓</span>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div>
+        {/* Share */}
         <button
-          className="mx-auto flex items-center"
           onClick={handleShare}
+          className="w-full text-center text-yellow-50 mt-8 font-medium"
         >
           Share
         </button>
+
       </div>
     </div>
   );

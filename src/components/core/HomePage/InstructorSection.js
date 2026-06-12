@@ -1,10 +1,12 @@
 import React from "react";
 import Instructor from "../../../assets/Instructor.png";
 import HighlightText from "../../HighlightText";
-import CTABUtton from "../HomePage/Button";
+import CTAButton from "../HomePage/Button";
 import { FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const InstructorSection = () => {
+  const {token}=useSelector((state)=>state.auth);
   return (
     <div className="mt-16">
       {/*  width controlled  */}
@@ -33,12 +35,15 @@ const InstructorSection = () => {
           </p>
 
           <div className="w-fit">
-            <CTABUtton active={true} linkto={"/signup"}>
+            <CTAButton
+              active={true}
+              linkto={token ? "/dashboard/my-profile" : "/signup"}
+            >
               <div className="flex items-center gap-2">
                 Start Teaching Today
                 <FaArrowRight />
               </div>
-            </CTABUtton>
+            </CTAButton>
           </div>
         </div>
 

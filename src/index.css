@@ -54,3 +54,9 @@ input:-webkit-autofill:active {
 .animate-scaleIn {
   animation: scaleIn 0.3s ease;
 }
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+.swiper-slide {
+  height: auto;
+}

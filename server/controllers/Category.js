@@ -86,12 +86,16 @@ exports.categoryPageDetails = async (req, res) => {
     const mostSellingCourses = allCourses
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 10);
+      console.log("most selling courses", mostSellingCourses);
 
     res.status(200).json({
-      selectedCourses: selectedCourses,
-      differentCourses: differentCourses,
-      mostSellingCourses: mostSellingCourses,
-      success: true,
+      success:true,
+      data:{
+        selectedCategory,
+      selectedCourses,
+      differentCourses,
+      mostSellingCourses,
+      },
     });
   } catch (error) {
     return res.status(500).json({

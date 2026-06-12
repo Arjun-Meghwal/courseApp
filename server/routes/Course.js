@@ -92,7 +92,8 @@ router.post(
 // Get all Courses of a Specific Instructor
 router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 //Get full course details
-router.post("/getFullCourseDetails", auth, getFullCourseDetails)
+router.post("/getFullCourseDetails",auth, getFullCourseDetails)
+// router.posr("/getCourseDetails",getCourseDetails)
 // Delete a Course
 router.delete("/deleteCourse", auth, isDemo, deleteCourse)
 // Search Courses

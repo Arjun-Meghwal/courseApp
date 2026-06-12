@@ -157,15 +157,10 @@ exports.getAllCourses = async (req, res) => {
 };
 
 //getCourseDetails
-
-
-
-
-
 exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
-    const courseDetails = await Course.find({ _id: courseId }).populate({
+    const courseDetails = await Course.findOne({ _id: courseId }).populate({
       path: "instructor",
       populate: { path: "additionalDetails" }
     })
@@ -321,9 +316,12 @@ exports.editCourse = async (req, res) => {
 
 //get full course details
 exports.getFullCourseDetails = async (req, res) => {
+  console.log("req Body",req.body)
   try {
+    console.log("GET FULL COURSE DETAILS CONTROLLER HIT");
     const { courseId } = req.body
-    const userId = req.user.id
+    const userId = req.user?req .user.id : null
+    console.log("courseId : ", courseId)
     const courseDetails = await Course.findOne({
       _id: courseId,
     })
@@ -334,7 +332,13 @@ exports.getFullCourseDetails = async (req, res) => {
         },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      .populate({
+        path: "ratingAndReviews",
+        populate: {
+          path: "user",
+          select: "firstName lastName image",
+        },
+      })
       .populate({
         path: "courseContent",
         populate: {
@@ -344,10 +348,14 @@ exports.getFullCourseDetails = async (req, res) => {
       .exec()
 
 
-    let courseProgressCount = await CourseProgress.findOne({
-      courseID: courseId,
-      userID: userId,
-    })
+    let courseProgressCount = null
+
+    if (userId) {
+      courseProgressCount = await CourseProgress.findOne({
+        courseId: courseId,
+        userId: userId,
+      })
+    }
 
     console.log("courseProgressCount : ", courseProgressCount)
 
@@ -380,11 +388,10 @@ exports.getFullCourseDetails = async (req, res) => {
       data: {
         courseDetails,
         totalDuration,
-        completedVideos: courseProgressCount?.completedVideos
-          ? courseProgressCount?.completedVideos
-          : ["none"],
+        completedVideos:
+          courseProgressCount?.completedVideos || [],
       },
-    })
+    }); 
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -490,53 +497,81 @@ exports.searchCourse = async (req, res) => {
 
 //mark lecture as completed
 exports.markLectureAsComplete = async (req, res) => {
-  const { courseId, subSectionId, userId } = req.body
-  if (!courseId || !subSectionId || !userId) {
+  const { courseId, subSectionId } = req.body;
+  const userId = req.user.id;
+console.log("MARK LECTURE AS COMPLETE CONTROLLER HIT");
+console.log("req body",req.body);
+console.log("user",req.user);
+  if (!courseId || !subSectionId) {
     return res.status(400).json({
       success: false,
       message: "Missing required fields",
-    })
+    });
   }
+
   try {
-    progressAlreadyExists = await CourseProgress.findOne({
-      userID: userId,
-      courseID: courseId,
-    })
-    const completedVideos = progressAlreadyExists.completedVideos
-    if (!completedVideos.includes(subSectionId)) {
+    console.log("MODEL => ", CourseProgress.modelName);
+    const progressAlreadyExists =
+      await CourseProgress.findOne({
+        userId: userId,
+        courseId: courseId,
+      });
+
+    console.log("CREATE OBJECT => ", {
+      courseId,
+      userId,
+      completedVideos: [subSectionId],
+    });
+console.log("progressAlreadyExists : ", progressAlreadyExists)
+    if (!progressAlreadyExists) {
+      // console.log("CREATE OBJECT => ", {
+      //   courseId,
+      //   userId,
+      //   completedVideos: [subSectionId],
+      // });
+      const newProgress = await CourseProgress.create({
+        courseId,
+        userId,
+        completedVideos: [subSectionId],
+      });
+
+      console.log("NEW PROGRESS => ", newProgress);
+
+      return res.status(200).json({
+        success: true,
+        message: "Lecture marked as complete",
+      });
+    }
+
+    if (
+      !progressAlreadyExists.completedVideos.some(
+        (id) => id.toString() === subSectionId
+      )
+    ) {
       await CourseProgress.findOneAndUpdate(
         {
-          userID: userId,
-          courseID: courseId,
+          userId: userId,
+          courseId: courseId,
         },
         {
-          $push: { completedVideos: subSectionId },
+          $push: {
+            completedVideos: subSectionId,
+          },
         }
-      )
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Lecture already marked as complete",
-      })
+      );
     }
-    await CourseProgress.findOneAndUpdate(
-      {
-        userId: userId,
-        courseID: courseId,
-      },
-      {
-        completedVideos: completedVideos,
-      }
-    )
+
     return res.status(200).json({
       success: true,
       message: "Lecture marked as complete",
-    })
+    });
   } catch (error) {
+    console.log("FULL ERROR => ", error);
+    console.log("ERROR MESSAGE => ", error.message);
+
     return res.status(500).json({
       success: false,
       message: error.message,
-    })
+    });
   }
-
-}
+};

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buyCourse } from '../services/operations/studentFeatureAPI';
 import { fetchCourseDetails } from '../services/operations/courseDetailsApi';
-import GetAvgRating from '../utils/avgRatting';
+import GetAvgRating from '../utils/avgRating';
 import Error from '../pages/Error';
 import ConfirmationModel from '../components/common/ConfirmationModel';
 import RatingStars from '../components/common/RatingStars'
@@ -32,7 +32,7 @@ const CourseDetails = () => {
       }
       catch (error) {
         console.log("could not fetch course details");
-      }
+      }                          
     }
     getCourseFullDetails();
   }, [courseId]);
@@ -40,7 +40,13 @@ const CourseDetails = () => {
   const [avgReviewCount, setAvgReviewCount] = useState(0);
 
   useEffect(() => {
-    const count = GetAvgRating(courseData?.data?.CourseDetails?.ratingAndReviews);
+    const count = GetAvgRating(
+      courseData?.data?.ratingAndReviews || []
+    );
+    console.log(
+      "REVIEWS =>",
+      courseData?.data?.ratingAndReviews
+    );
     setAvgReviewCount(count);
   }, [courseData])
 
@@ -48,7 +54,7 @@ const CourseDetails = () => {
 
   useEffect(() => {
     let lectures = 0;
-    courseData?.data?.CourseDetails?.courseContent?.forEach((sec) => {
+    courseData?.data?.courseContent?.forEach((sec) => {
       lectures += sec?.subSection?.length || 0;
     })
     setTotalNoOfLecture(lectures);
@@ -98,7 +104,7 @@ const CourseDetails = () => {
   const {
     _id: course_id,
     courseName,
-    courseDescripation,
+    courseDescription,
     thumbnail,
     price,
     whatYouWillLearn,
@@ -107,125 +113,293 @@ const CourseDetails = () => {
     instructor,
     studentsEnrolled,
     createdAt,
-  } = courseData.data?.CourseDetails;
+  } = courseData.data || {};
 
   return (
-    <div className="bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white min-h-screen">
+    <div className="bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white">
 
-      <div className="max-w-maxContent mx-auto px-6 py-10">
+      {/* HERO SECTION */}
+      <div className="max-w-[850px] mx-auto px-6 py-12">
 
-        <div className="space-y-4">
+        <div className="flex flex-col lg:flex-row justify-between gap-10">
 
-          <p className="text-4xl font-bold">{courseName}</p>
+          {/* LEFT SIDE */}
+          <div className="lg:w-[65%] space-y-4">
 
-          <p className="text-richblack-300 max-w-[700px]">
-            {courseDescripation}
-          </p>
+            <h1 className="text-5xl font-bold">
+              {courseName}
+            </h1>
 
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-yellow-400 font-semibold">
-              {avgReviewCount}
-            </span>
-
-            <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-
-            <span className="text-richblack-300">
-              ({ratingAndReviews?.length} review)
-            </span>
-
-            <span className="text-richblack-300">
-              ({studentsEnrolled?.length} student enrolled)
-            </span>
-          </div>
-
-          <div>
             <p className="text-richblack-300">
-              Created by{" "}
-              <span className="text-yellow-400">
-                {instructor?.firstName}
+              {courseDescription}
+            </p>
+
+            <div className="flex items-center gap-3">
+              <span className="text-yellow-50 font-semibold">
+                {avgReviewCount}
+              </span>
+
+              <RatingStars
+                Review_Count={avgReviewCount}
+                Star_Size={20}
+              />
+
+              <span className="text-richblack-300">
+                ({ratingAndReviews?.length} Reviews)
+              </span>
+
+              <span className="text-richblack-300">
+                {studentsEnrolled?.length} Students
+              </span>
+            </div>
+
+            <p className="text-richblack-300">
+              Created By{" "}
+              <span className="text-yellow-50">
+                {instructor?.firstName} {instructor?.lastName}
               </span>
             </p>
+
+            <div className="flex gap-6 text-sm text-richblack-300">
+              <p>Created At {formatDate(createdAt)}</p>
+              <p>English</p>
+            </div>
+
           </div>
 
-          <div className="flex gap-6 text-sm text-richblack-300">
-            <p>created At {formatDate(createdAt)}</p>
-            <p>English</p>
-          </div>
+          {/* RIGHT SIDE CARD */}
+          <div className="lg:w-[350px] shrink-0">
 
-          <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-4 shadow-xl">
             <CourseDetailsCard
-              course={courseData?.data?.courseDetails}
+              course={courseData?.data }
               setConfirmationModel={setConfirmationModel}
               handleBuyCourse={handleBuyCourse}
             />
+
           </div>
 
         </div>
 
       </div>
 
-      <div className="max-w-maxContent mx-auto px-6 py-10">
-        <p className="text-2xl font-semibold mb-4 capitalize">
-          what you will learn
-        </p>
+      <div className="max-w-[850px] mx-auto px-6 py-10">
 
-        <div className="bg-white/5 p-6 rounded-xl border border-white/10 text-richblack-300 leading-relaxed">
-          {whatYouWillLearn}
+        <div className="border border-richblack-700 rounded-md p-6">
+
+          <h2 className="text-3xl font-semibold text-richblack-5 mb-4">
+            What you'll learn
+          </h2>
+
+          <p className="text-richblack-300">
+            {whatYouWillLearn}
+          </p>
+
         </div>
+
       </div>
 
-      <div className="max-w-maxContent mx-auto px-6 py-10">
+      <div className="max-w-[850px] mx-auto px-6 py-10">
 
         <div className="flex justify-between items-center mb-4">
-          <p className="text-2xl font-semibold capitalize">
-            course content :
-          </p>
+
+          <h2 className="text-3xl font-semibold text-richblack-5">
+            Course Content
+          </h2>
 
           <button
             onClick={() => setIsActive([])}
-            className="text-yellow-400 hover:underline text-sm"
+            className="text-yellow-50 text-sm"
           >
-            collapse all sections
+            Collapse all sections
           </button>
+
         </div>
 
-        <div className="flex gap-x-6 text-sm text-richblack-300 mb-6 flex-wrap">
-          <span>{courseContent.length} sections</span>
-          <span>{totalNoOfLecture} lectures</span>
-          <span>{courseData.data?.totalDuration}</span>
+        <div className="flex gap-4 text-sm text-richblack-300 mb-5">
+
+          <span>{courseContent?.length} Section(s)</span>
+
+          <span>{totalNoOfLecture} Lecture(s)</span>
+
+          <span>{courseData?.data?.totalDuration}</span>
+
         </div>
 
-        <div className="space-y-4">
-          {courseContent?.map((section, index) => (
+        <div className="border border-richblack-700 rounded-md overflow-hidden">
+
+          {courseContent?.map((section) => (
+
             <div
-              key={index}
-              className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition"
+              key={section._id}
+              className="border-b border-richblack-700 last:border-b-0"
             >
+
+              {/* Section Header */}
               <div
-                className="flex justify-between cursor-pointer"
+                className="flex justify-between items-center bg-richblack-700 px-5 py-4 cursor-pointer"
                 onClick={() => handleActive(section._id)}
               >
-                <p>{section.sectionName}</p>
-                <span>
-                  {isActive.includes(section._id) ? "-" : "+"}
-                </span>
+
+                <div className="flex items-center gap-2">
+
+                  <span>
+                    {isActive.includes(section._id) ? "⌄" : "›"}
+                  </span>
+
+                  <p className="text-richblack-5">
+                    {section.sectionName}
+                  </p>
+
+                </div>
+
+                <p className="text-yellow-50 text-sm">
+                  {section.subSection?.length} Lecture(s)
+                </p>
+
               </div>
 
+              {/* Lectures */}
               {isActive.includes(section._id) && (
-                <div className="mt-3 text-richblack-300 text-sm space-y-1">
-                  {section.subSection?.map((sub, i) => (
-                    <p key={i}>
-                      • {sub.title}
-                    </p>
+
+                <div className="bg-richblack-800">
+
+                  {section.subSection?.map((sub) => (
+
+                    <div
+                      key={sub._id}
+                      onClick={() =>
+                        navigate(
+                          `/view-course/${courseId}/section/${section._id}/sub-section/${sub._id}`
+                        )
+                      }
+                      className="px-5 py-4 border-t border-richblack-700 text-richblack-300"
+                    >
+
+                      📖 {sub.title}
+
+                    </div>
+
                   ))}
+
                 </div>
+
               )}
+
             </div>
+
           ))}
+
+        </div>
+
+      </div>
+  
+      {/* Author */}
+      <div className="max-w-[850px] mx-auto px-6 py-10">
+
+        <h2 className="text-3xl font-semibold text-richblack-5 mb-5">
+          Author
+        </h2>
+
+        <div className="flex items-center gap-3">
+
+          <img
+            src={instructor?.image}
+            alt="author"
+            className="h-10 w-10 rounded-full object-cover"
+          />
+
+          <p className="text-lg font-semibold text-richblack-5">
+            {instructor?.firstName} {instructor?.lastName}
+          </p>
+
         </div>
 
       </div>
 
+      {/* Reviews */}
+      <div className="max-w-[850px] mx-auto px-6 py-10">
+
+        <div className="max-w-[650px] border border-richblack-700 rounded-md p-6">
+
+          <h2 className="text-3xl font-bold text-richblack-5 mb-5">
+            Reviews
+          </h2>
+
+          {/* Rating Summary */}
+          <div className="flex items-center gap-4 mb-8">
+
+            <span className="text-5xl font-bold text-richblack-5">
+              {avgReviewCount}
+            </span>
+
+            <div>
+
+              <RatingStars
+                Review_Count={avgReviewCount}
+                Star_Size={18}
+              />
+
+              <p className="text-richblack-300 text-sm mt-1">
+                ({ratingAndReviews?.length} Ratings)
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* Reviews List */}
+          <div>
+
+            {ratingAndReviews?.map((review, index) => (
+
+              <div
+                key={review._id}
+                className={`py-5 ${index !== ratingAndReviews.length - 1
+                    ? "border-b border-richblack-700"
+                    : ""
+                  }`}
+              >
+
+                <div className="flex items-start gap-3">
+
+                  <img
+                    src={
+                      review?.user?.image ||
+                      `https://api.dicebear.com/5.x/initials/svg?seed=${review?.user?.firstName}`
+                    }
+                    alt=""
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+
+                  <div>
+
+                    <p className="font-semibold text-richblack-5">
+                      {review?.user?.firstName}{" "}
+                      {review?.user?.lastName}
+                    </p>
+
+                    <RatingStars
+                      Review_Count={review?.rating}
+                      Star_Size={14}
+                    />
+
+                    <p className="text-richblack-300 text-sm mt-2">
+                      {review?.review}
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
       {confirmationModel && <ConfirmationModel modelData={confirmationModel} />}
 
     </div>

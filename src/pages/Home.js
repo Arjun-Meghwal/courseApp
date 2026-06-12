@@ -9,8 +9,10 @@ import Banner from "../assets/Banner.mp4";
 import ReviewsSection from '../components/core/HomePage/ReviewsSection';
 import ExploreNow from '../components/core/HomePage/ExploreNow';
 import LearningLanguage from '../components/core/HomePage/LearningLanguage';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+  const {token}=useSelector((state)=>state.auth);
   return (
     <div className="bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white overflow-x-hidden">
 
@@ -41,10 +43,16 @@ const Home = () => {
         </p>
 
         <div className="flex gap-6 mt-8 flex-wrap justify-center">
-          <CTAButton active={true} linkto="/signup">
+          <CTAButton
+            active={true}
+            linkto={token ? "/dashboard/my-profile" : "/signup"}
+          >
             Learn more
           </CTAButton>
-          <CTAButton active={false} linkto="/login">
+          <CTAButton
+            active={false}
+            linkto={token ? "/dashboard/my-profile" : "/login"}
+          >
             Book a demo
           </CTAButton>
         </div>

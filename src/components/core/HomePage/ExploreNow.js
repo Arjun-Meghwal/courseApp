@@ -3,6 +3,7 @@ import { FaUser, FaBook, FaArrowRight } from "react-icons/fa";
 import HighlightText from "../../HighlightText";
 import CTAButton from "./Button";
 import { HomePageExplore } from "../../../data/homepage-explore";
+import { useSelector } from "react-redux";
 
 const tabs = [
   "Free",
@@ -13,6 +14,7 @@ const tabs = [
 ];
 
 const ExploreNow = () => {
+  const {token} =useSelector((state)=>state.auth);
   const [activeTab, setActiveTab] = useState("Free");
   const [activeCard, setActiveCard] = useState(0);
 
@@ -100,13 +102,18 @@ const ExploreNow = () => {
 
         {/* Buttons */}
         <div className="mt-12 flex justify-center gap-6">
-          <CTAButton active={true} linkto="/signup">
+          <CTAButton
+            active={true}
+            linkto={token ? "/dashboard/my-profile" : "/signup"}
+          >
             <div className="flex items-center gap-1">
               Explore Full Catalog <FaArrowRight />
             </div>
           </CTAButton>
-
-          <CTAButton active={false} linkto="/signup">
+          <CTAButton
+            active={true}
+            linkto={token ? "/dashboard/my-profile" : "/signup"}
+          >
             Learn More
           </CTAButton>
         </div>
@@ -126,7 +133,9 @@ const ExploreNow = () => {
               competitive requires more than professional skills.
             </p>
 
-            <CTAButton active={true} linkto="/signup" className='mt-4'>
+            <CTAButton
+        active={true}
+        linkto={token ? "/dashboard/my-profile" : "/login"} className='mt-4'>
               Learn More
             </CTAButton>
           </div>

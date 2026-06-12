@@ -16,6 +16,7 @@ export const profileEndpoints = {
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteAccount",
   GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
   GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourse",
+  GET_INSTRUCTOR_DASHBOARD_API:BASE_URL + "/profile/getInstructorDashboardDetails",
 };
 
 // ================= STUDENT =================
@@ -27,7 +28,7 @@ export const studentEndpoints = {
 
 // ================= COURSE =================
 export const courseEndpoints = {
-  COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails",
+  GET_FULL_COURSE_DETAILS_AUTHENTICATED: BASE_URL + "/course/getFullCourseDetails",
   COURSE_CATEGORIES_API: BASE_URL + "/course/showAllCategories",
   GET_ALL_COURSE_API: BASE_URL + "/course/getAllCourses",
 
@@ -46,6 +47,7 @@ export const courseEndpoints = {
   GET_ALL_INSTRUCTOR_COURSES_API:
     BASE_URL + "/course/getInstructorCourses",
 
+  COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED:
     BASE_URL + "/course/getFullCourseDetails",
 
@@ -70,5 +72,5 @@ export const catalogData = {
 
 // ================= CONTACT =================
 export const contactusEndpoint = {
-  CONTACT_US_API: BASE_URL + "/reach/contact",
+  CONTACT_US_API: BASE_URL + "/contact/contactUs",
 };

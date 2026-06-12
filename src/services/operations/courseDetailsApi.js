@@ -2,8 +2,7 @@ import { toast } from "react-hot-toast";
 import { setProgress } from "../../slices/loadingBarSlice";
 import { updateCompletedLectures } from "../../slices/courseSlice";
 import { apiConnector } from '../apiconnector'; 
-import { courseEndpoints } from "../apis";
-
+import { courseEndpoints ,catalogData} from "../apis";
 const {
   COURSE_DETAILS_API,
   COURSE_CATEGORIES_API,
@@ -263,12 +262,21 @@ export const fetchInstructorCourses = async (token) => {
 };
 
 export const fetchCourseDetails = async (courseId) => {
-  const response = await apiConnector(
-    "POST",
-    COURSE_DETAILS_API,
-    { courseId }
-  );
-  return response?.data?.data;
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "POST",
+      courseEndpoints.COURSE_DETAILS_API,
+      {
+        courseId,
+      }
+    );
+    console.log("COURSE DETAILS RESPONSE", response);
+    result = response?.data;
+  } catch (error) {
+    console.log("COURSE DETAILS API ERROR", error);
+  }
+  return result;
 };
 
 export const getFullCourseDetails = async (courseId, token) => {
@@ -280,6 +288,7 @@ export const getFullCourseDetails = async (courseId, token) => {
       Authorization: `Bearer ${token}`,
     }
   );
+  console.log("FULL COURSE DETAILS API RESPONSE............", response);
   return response?.data?.data;
 };
 
@@ -287,6 +296,7 @@ export const markLectureAsComplete = async (data, token) => {
   let result = null;
 
   try {
+    console.log("MARK LECTURE COMPLETE API CALLED WITH DATA", data);
     const response = await apiConnector(
       "POST",
       LECTURE_COMPLETION_API,
@@ -302,18 +312,21 @@ export const markLectureAsComplete = async (data, token) => {
 
     result = response?.data;
   } catch (error) {
+    console.log("MARK LECTURE COMPLETE API ERROR", error.response?.data);
     toast.error("Error updating lecture progress");
   }
 
   return result;
 };
 export const getCatalogPageData = async (categoryId) => {
+
   let result = null;
 
   try {
+
     const response = await apiConnector(
       "POST",
-      courseEndpoints.CATALOG_PAGE_DATA_API,
+      catalogData.CATALOG_PAGE_DATA_API,
       { categoryId }
     );
 
@@ -322,8 +335,12 @@ export const getCatalogPageData = async (categoryId) => {
     }
 
     result = response?.data;
+    console.log("CATALOG PAGE API success RESPONSE ....", response);
+
   } catch (error) {
+
     console.log("CATALOG PAGE API ERROR....", error);
+
   }
 
   return result;

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import CountryDropdown from "../components/common/CountryDropdown";
+import { contactusEndpoint } from "../services/apis";
+import { apiConnector } from "../services/apiconnector";
 
 const Contact = () => {
   const [countryCode, setCountryCode] = useState("+91");
@@ -16,15 +18,34 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
 
     const finalData = {
-      ...formData,
-      phone: `${countryCode}${formData.phone}`,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      message: formData.message,
+      phoneNo: `${countryCode}${formData.phone}`,
     };
 
-    console.log("CONTACT DATA ", finalData);
+    console.log("CONTACT DATA", finalData);
+
+    try {
+      console.log("API URL =>", contactusEndpoint.CONTACT_US_API);
+      const response = await apiConnector(
+        "POST",
+        contactusEndpoint.CONTACT_US_API,
+
+        finalData
+      );
+
+      console.log("CONTACT RESPONSE", response);
+
+      alert("Message Sent Successfully");
+    } catch (error) {
+      console.log("CONTACT ERROR", error);
+    }
   }
 
   return (

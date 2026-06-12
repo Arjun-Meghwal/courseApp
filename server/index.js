@@ -6,7 +6,7 @@ const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
 const paymentRoutes = require("./routes/Payments");
 const courseRoutes = require("./routes/Course");
-
+const contactRoutes=require("./routes/ContactUs")
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -26,7 +26,10 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000", // Adjust this if your frontend runs on a different port
+    origin: [
+      "http://localhost:3000",
+      "http://192.168.203.138:3000",
+    ],
     credentials: true,
   })
 );
@@ -47,6 +50,12 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 
+app.use("/api/v1/contact", contactRoutes);
+// require("dotenv").config();
+
+
+console.log("MAIL_USER =", process.env.MAIL_USER);
+console.log("CONTACT_MAIL =", process.env.CONTACT_MAIL);
 // Default Route
 app.get("/", (req, res) => {
   return res.json({

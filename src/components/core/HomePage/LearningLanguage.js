@@ -5,8 +5,11 @@ import CTAButton from "./Button";
 import progressImg from "../../../assets/progress.png";
 import compareImg from "../../../assets/compaire.svg";
 import calendarImg from "../../../assets/calender.svg";
+import { useSelector } from "react-redux";
+// const { token } = useSelector((state) => state.auth);
 
 const LearningLanguage = () => {
+  const { token } = useSelector((state) => state.auth);
   return (
     <div className="flex flex-col items-center text-center gap-8 mt-32">
 
@@ -50,7 +53,11 @@ const LearningLanguage = () => {
 
       {/* ===== CTA ===== */}
       <div className="mt-1">
-        <CTAButton active={true} linkto="/signup">
+
+        <CTAButton
+          active={true}
+          linkto={token ? "/dashboard/my-profile" : "/login"}
+        >
           Learn More
         </CTAButton>
       </div>

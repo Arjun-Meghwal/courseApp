@@ -47,12 +47,12 @@ export const sidebarLinks = [
     path: "/dashboard/admin-panel",
     type: ACCOUNT_TYPE.ADMIN,
     icon: "VscHistory",
-  },
-  {
-    id:8,
-    name:"purches History",
-    path:"/dashboard/purches-history",
-    type:ACCOUNT_TYPE.STUDENT,
-    icon:"VscHistory",
   }
+  // {
+  //   id:8,
+  //   name:"purchase History",
+  //   path:"/dashboard/purchase-history",
+  //   type:ACCOUNT_TYPE.STUDENT,
+  //   icon:"VscHistory",
+  // }
 ];
