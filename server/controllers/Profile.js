@@ -11,7 +11,7 @@ exports.updateProfile = async (req, res) => {
       lastName,
       dateOfBirth,
       about,
-      phoneNumber,
+      contactNumber,
       gender,
     } = req.body;
 
@@ -20,15 +20,29 @@ exports.updateProfile = async (req, res) => {
       { firstName, lastName },
       { new: true }
     );
+    console.log("USER =>", JSON.stringify(user, null, 2));
+    console.log("ADDITIONAL DETAILS =>", user?.additionalDetails);
+    let profile = await Profile.findById(user.additionalDetails);
 
-    const profile = await Profile.findById(user.additionalDetails);
+    if (!profile) {
+      profile = await Profile.create({
+        gender: "",
+        dateOfBirth: "",
+        about: "",
+        contactNumber: "",
+      });
+
+      user.additionalDetails = profile._id;
+      await user.save();
+    }
 
     profile.dateOfBirth = dateOfBirth;
     profile.about = about;
-    profile.phoneNumber = phoneNumber;
+    profile.contactNumber = contactNumber;
     profile.gender = gender;
 
     await profile.save();
+    console.log("PROFILE =>", profile);
 
     const updatedUser = await User.findById(req.user.id)
       .populate("additionalDetails");
@@ -118,7 +132,11 @@ exports.getAllUserDetails = async (req, res) => {
 
     const user = await User.findById(req.user.id)
       .populate("additionalDetails");
-
+console.log("user details",user)
+    console.log(
+      "GET USER =>",
+      JSON.stringify(user, null, 2)
+    );
     return res.json({
       success: true,
       user,

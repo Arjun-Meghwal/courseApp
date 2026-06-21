@@ -1,20 +1,30 @@
 const nodemailer = require("nodemailer");
 
 const mailSender = async (email, title, body) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
-  });
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
 
-  return await transporter.sendMail({
-    from: `"OTP Service" <${process.env.MAIL_USER}>`,
-    to: email,
-    subject: title,
-    html: body,
-  });
+    const info = await transporter.sendMail({
+      from: `"OTP Service" <${process.env.MAIL_USER}>`,
+      to: email,
+      subject: title,
+      html: body,
+    });
+
+    console.log("Mail Sent Successfully");
+    console.log(info);
+    console.log("mail sent",info)
+    return info;
+  } catch (error) {
+    console.log("MAIL ERROR =>", error);
+    throw error;
+  }
 };
 
 module.exports = mailSender;

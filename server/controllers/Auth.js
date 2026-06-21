@@ -169,7 +169,10 @@ exports.login = async (req, res) => {
     const existingUser = await User.findOne({ email }).populate(
       "additionalDetails"
     );
-
+    console.log(
+      "LOGIN USER =>",
+      JSON.stringify(existingUser, null, 2)
+    );
     if (!existingUser) {
       return res.status(401).json({
         success: false,

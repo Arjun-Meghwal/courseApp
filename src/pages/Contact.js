@@ -48,126 +48,134 @@ const Contact = () => {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#020617]
-                    text-white px-4 py-20">
 
-      <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-10">
+return (
+  <div
+    className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#020617]
+    text-white px-4 sm:px-6 py-10 sm:py-16 md:py-20 overflow-x-hidden"
+  >
+    <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
 
-        {/* LEFT INFO */}
-        <div className="rounded-2xl p-8 space-y-10
-                        bg-white/5 backdrop-blur-xl
-                        border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]
-                        hover:scale-[1.01] transition">
+      {/* LEFT INFO */}
+      <div
+        className="rounded-2xl p-5 sm:p-6 md:p-8 space-y-8 sm:space-y-10
+        bg-white/5 backdrop-blur-xl
+        border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]
+        hover:scale-[1.01] transition"
+      >
 
-          <InfoBlock
-            title="Chat with us"
-            subtitle="Our friendly team is here to help."
-            value="info@studynotion.com"
-            highlight
-          />
+        <InfoBlock
+          title="Chat with us"
+          subtitle="Our friendly team is here to help."
+          value="info@studynotion.com"
+          highlight
+        />
 
-          <InfoBlock
-            title="Visit us"
-            subtitle="Come and say hello at our office HQ."
-            value={
-              <>
-                Akshya Nagar 1st Block 1st Cross <br />
-                bhopal-462039
-              </>
-            }
-          />
+        <InfoBlock
+          title="Visit us"
+          subtitle="Come and say hello at our office HQ."
+          value={
+            <>
+              Akshya Nagar 1st Block 1st Cross <br />
+              bhopal-462039
+            </>
+          }
+        />
 
-          <InfoBlock
-            title="Call us"
-            subtitle="Mon–Fri from 8am to 5pm"
-            value="+91 4523898756"
-          />
-        </div>
-
-        {/* RIGHT FORM */}
-        <div className="rounded-2xl p-8
-                        bg-white/5 backdrop-blur-xl
-                        border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]
-                        hover:scale-[1.01] transition">
-
-          <h2 className="text-3xl font-bold mb-2">
-            Got an idea? We’ve got the skills.
-          </h2>
-
-          <p className="text-white/70 mb-8">
-            Tell us more about yourself and what you’ve got in mind.
-          </p>
-
-          <form onSubmit={submitHandler} className="space-y-6">
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <ModernInput
-                name="firstName"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={changeHandler}
-              />
-              <ModernInput
-                name="lastName"
-                placeholder="Last Name"
-                value={formData.lastName}
-                onChange={changeHandler}
-              />
-            </div>
-
-            <ModernInput
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={changeHandler}
-            />
-
-            {/* PHONE */}
-            <div>
-              <div className="flex gap-2">
-                <CountryDropdown
-                  value={countryCode}
-                  onChange={setCountryCode}
-                />
-
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone number"
-                  value={formData.phone}
-                  onChange={changeHandler}
-                  required
-                  className="input-modern"
-                />
-              </div>
-            </div>
-
-            <textarea
-              name="message"
-              rows="5"
-              placeholder="Enter your message here"
-              value={formData.message}
-              onChange={changeHandler}
-              className="input-modern resize-none"
-            />
-
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-300 
-              text-black font-semibold py-3 rounded-lg
-              hover:scale-[1.02] transition duration-200"
-            >
-              Send Message
-            </button>
-
-          </form>
-        </div>
-
+        <InfoBlock
+          title="Call us"
+          subtitle="Mon–Fri from 8am to 5pm"
+          value="+91 4523898756"
+        />
       </div>
+
+      {/* RIGHT FORM */}
+      <div
+        className="rounded-2xl p-5 sm:p-6 md:p-8
+        bg-white/5 backdrop-blur-xl
+        border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]
+        hover:scale-[1.01] transition"
+      >
+
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+          Got an idea? We’ve got the skills.
+        </h2>
+
+        <p className="text-white/70 mb-6 sm:mb-8 text-sm sm:text-base">
+          Tell us more about yourself and what you’ve got in mind.
+        </p>
+
+        <form onSubmit={submitHandler} className="space-y-5 sm:space-y-6">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ModernInput
+              name="firstName"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={changeHandler}
+            />
+            <ModernInput
+              name="lastName"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={changeHandler}
+            />
+          </div>
+
+          <ModernInput
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={changeHandler}
+          />
+
+          {/* PHONE */}
+          <div>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <CountryDropdown
+                value={countryCode}
+                onChange={setCountryCode}
+              />
+
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone number"
+                value={formData.phone}
+                onChange={changeHandler}
+                required
+                className="input-modern w-full"
+              />
+            </div>
+          </div>
+
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Enter your message here"
+            value={formData.message}
+            onChange={changeHandler}
+            className="input-modern resize-none w-full"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-300
+            text-black font-semibold py-3 rounded-lg
+            hover:scale-[1.02] transition duration-200"
+          >
+            Send Message
+          </button>
+
+        </form>
+      </div>
+
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default Contact;

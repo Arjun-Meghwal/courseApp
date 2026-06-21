@@ -15,7 +15,13 @@ const {
 
 /* ================= SEND OTP ================= */
 export function sendOtp(email, navigate) {
+  console.log("SENDOTP_API =", SENDOTP_API);
+  // alert(SENDOTP_API);
   return async (dispatch) => {
+
+    console.log("SENDOTP_API =", SENDOTP_API);
+    // alert(SENDOTP_API);
+
     const toastId = toast.loading("Sending OTP...");
     dispatch(setLoading(true));
 
@@ -35,9 +41,18 @@ export function sendOtp(email, navigate) {
       toast.success("OTP sent successfully");
       navigate("/verify-email");
     } catch (error) {
-      console.log("SEND OTP ERROR:", error);
-      toast.error(error.response?.data?.message || "Failed to send OTP");
-    } finally {
+      console.log("FULL ERROR =>", error);
+      console.log("MESSAGE =>", error.message);
+      console.log("RESPONSE =>", error.response);
+      console.log("REQUEST =>", error.request);
+
+      alert(error.message);
+
+      toast.error(
+        error.response?.data?.message || "Failed to send OTP"
+      );
+    }
+     finally {
       dispatch(setLoading(false));
       toast.dismiss(toastId);
     }
@@ -89,7 +104,8 @@ export function login(email, password, navigate) {
       );
 
       console.log("LOGIN RESPONSE:", response);
-
+      console.log("LOGIN USER =", response.data.user);
+      console.log("LOGIN ADDITIONAL =", response.data.user?.additionalDetails);
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
@@ -123,7 +139,7 @@ export function logout(navigate) {
   return (dispatch) => {
     dispatch(setToken(null));
     dispatch(setUser(null));
-    dispatch(resetCart());
+    // dispatch(resetCart());
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -136,6 +152,9 @@ export function logout(navigate) {
 /* ================= RESET PASSWORD TOKEN ================= */
 export function getResetPasswordToken(email, setEmailSent) {
   return async (dispatch) => {
+    console.log("RESET PASSWORD FUNCTION CALLED");
+    console.log("EMAIL =", email);
+    console.log("URL =", RESETPASSTOKEN_API);
     const toastId = toast.loading("Sending reset email...");
     dispatch(setLoading(true));
 

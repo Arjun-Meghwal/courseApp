@@ -31,8 +31,9 @@ const ReviewsSection = () => {
   }, []);
   const sliderData = [...reviews, ...reviews, ...reviews];
   return (
-    <div className="mt-24 text-center w-11/12 mx-auto">
-      <h2 className="text-4xl font-semibold text-white mb-14">
+    <div className="mt-16 sm:mt-24 text-center w-11/12 mx-auto overflow-x-hidden">
+
+      <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-10 sm:mb-14">
         Reviews from other learners
       </h2>
 
@@ -50,12 +51,15 @@ const ReviewsSection = () => {
           breakpoints={{
             320: {
               slidesPerView: 1,
+              spaceBetween: 12,
             },
             768: {
               slidesPerView: 2,
+              spaceBetween: 16,
             },
             1024: {
               slidesPerView: 3,
+              spaceBetween: 20,
             },
           }}
         >
@@ -63,55 +67,60 @@ const ReviewsSection = () => {
             <SwiperSlide key={`${item._id}-${index}`}>
               <div
                 className="
-                bg-richblack-800
-                p-6
-                rounded-xl
-                border
-                border-richblack-700
-                min-h-[220px]
-                text-left
-              "
+              bg-richblack-800
+              p-4 sm:p-6
+              rounded-xl
+              border
+              border-richblack-700
+              min-h-[220px]
+              text-left
+            "
               >
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-3 sm:gap-4 mb-4">
+
                   <img
                     src={item.user?.image}
                     alt="user"
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
                   />
 
-                  <div>
-                    <p className="text-white font-semibold">
+                  <div className="min-w-0">
+                    <p className="text-white font-semibold break-words">
                       {item.user?.firstName} {item.user?.lastName}
                     </p>
 
-                    <p className="text-sm text-richblack-400">
+                    <p className="text-xs sm:text-sm text-richblack-400 break-words">
                       {item.course?.courseName}
                     </p>
                   </div>
+
                 </div>
 
-                <p className="text-richblack-300 text-sm mb-6">
+                <p className="text-richblack-300 text-sm mb-6 break-words">
                   {item.review}
                 </p>
 
                 <div className="flex items-center gap-2">
+
                   <span className="text-yellow-400 font-semibold">
                     {item.rating}.0
                   </span>
 
-                  <div className="flex gap-1 text-yellow-400">
+                  <div className="flex gap-1 text-yellow-400 flex-wrap">
                     {Array(Math.max(1, Math.floor(item.rating)))
                       .fill(0)
                       .map((_, i) => (
                         <FaStar key={i} />
                       ))}
                   </div>
+
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       )}
+
     </div>
   );
 };

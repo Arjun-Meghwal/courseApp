@@ -34,16 +34,18 @@ const Footer = () => {
   const bottomLinks = ["Privacy Policy", "Terms", "Cookie Policy"];
 
   return (
-    <footer className="bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white">
+    <footer className="bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white overflow-x-hidden">
 
-      <div className="max-w-maxContent mx-auto px-6 py-14">
+      <div className="max-w-maxContent mx-auto px-4 sm:px-6 py-10 sm:py-14">
 
         {/* TOP GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 sm:gap-10">
 
           {/* LOGO + SOCIAL */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">StudyNotion</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              StudyNotion
+            </h3>
 
             <ul className="space-y-2 text-sm text-richblack-300">
               {footerData[0].links.map((item, i) => (
@@ -60,17 +62,30 @@ const Footer = () => {
 
             {/* SOCIAL ICONS */}
             <div className="flex gap-4 mt-5 text-lg">
-              <a href="#"><FaFacebook className="hover:text-yellow-400" /></a>
-              <a href="#"><FaGoogle className="hover:text-yellow-400" /></a>
-              <a href="#"><FaTwitter className="hover:text-yellow-400" /></a>
-              <a href="#"><FaYoutube className="hover:text-yellow-400" /></a>
+              <a href="#">
+                <FaFacebook className="hover:text-yellow-400" />
+              </a>
+
+              <a href="#">
+                <FaGoogle className="hover:text-yellow-400" />
+              </a>
+
+              <a href="#">
+                <FaTwitter className="hover:text-yellow-400" />
+              </a>
+
+              <a href="#">
+                <FaYoutube className="hover:text-yellow-400" />
+              </a>
             </div>
           </div>
 
           {/* OTHER SECTIONS */}
           {footerData.slice(1).map((section, index) => (
             <div key={index}>
-              <h4 className="font-semibold mb-4">{section.title}</h4>
+              <h4 className="font-semibold mb-4">
+                {section.title}
+              </h4>
 
               <ul className="space-y-2 text-sm text-richblack-300">
                 {section.links.map((item, i) => (
@@ -90,9 +105,9 @@ const Footer = () => {
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-richblack-300 gap-3">
+        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-richblack-300 gap-4">
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap justify-center gap-4 text-center">
             {bottomLinks.map((item, i) => (
               <Link
                 key={i}
@@ -104,13 +119,14 @@ const Footer = () => {
             ))}
           </div>
 
-          <div>
+          <div className="text-center">
             © {new Date().getFullYear()} StudyNotion. All rights reserved.
           </div>
 
         </div>
 
       </div>
+
     </footer>
   );
 };

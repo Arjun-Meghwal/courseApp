@@ -11,6 +11,7 @@ const Catalog = () => {
   const { catalogName } = useParams();
   const [catalogPageData, setCatalogPageData] = useState(null);
   const [categoryId, setCategoryId] = useState("");
+  const [activeTab, setActiveTab] = useState("Most Popular");
 
   useEffect(() => {
     const getCategories = async () => {
@@ -49,92 +50,116 @@ const Catalog = () => {
     }
   }, [categoryId]);
 
-  return (
-    <div className=" bg-[#020617] text-white">
-      {/* Hero Section */}
-      <div className="bg-richblack-800 px-6 lg:px-20 py-10">
 
-        <p className="text-sm text-richblack-300">
-          {"Home/Catalog/"}
+  return (
+    <div className="bg-[#020617] text-white overflow-x-hidden">
+
+      {/* Hero Section */}
+      <div className="bg-richblack-800 px-4 sm:px-6 lg:px-20 py-8 sm:py-10">
+
+        <p className="text-xs sm:text-sm text-richblack-300 break-words">
+          Home/Catalog/
           <span className="text-yellow-50">
-            {/* {catalogPageData?.data?.selectedCategory?.name} */}
             {catalogName}
           </span>
         </p>
 
-        <h1 className="text-4xl font-bold mt-4">
-          {/* {catalogPageData?.data?.selectedCategory?.name} */}
+        <h1 className="text-3xl sm:text-4xl font-bold mt-4 break-words">
           {catalogName}
         </h1>
 
-        <p className="text-richblack-300 mt-4 max-w-[700px]">
+        <p className="text-richblack-300 mt-4 max-w-[700px] text-sm sm:text-base">
           {catalogPageData?.data?.selectedCategory?.description}
         </p>
+
       </div>
 
       {/* Content */}
-      <div className="w-11/12 max-w-maxContent mx-auto py-12">
+      <div className="w-11/12 max-w-maxContent mx-auto py-8 sm:py-12">
 
         {/* Section 1 */}
         <div>
-          <div className="text-3xl font-semibold mb-5">
+
+          <div className="text-2xl sm:text-3xl font-semibold mb-5">
             Courses to get you started
           </div>
 
-          <div className="flex gap-6 border-b border-richblack-700 mb-10">
-            <p className="text-yellow-50 border-b border-yellow-50 pb-2 cursor-pointer">
+          <div className="flex gap-4 sm:gap-6 border-b border-richblack-700 mb-8 sm:mb-10 overflow-x-auto">
+
+            <p
+              onClick={() => setActiveTab("Most Popular")}
+              className={`pb-2 cursor-pointer whitespace-nowrap ${activeTab === "Most Popular"
+                  ? "text-yellow-50 border-b border-yellow-50"
+                  : "text-richblack-300"
+                }`}
+            >
               Most Popular
             </p>
 
-            <p className="text-richblack-300 pb-2 cursor-pointer">
+            <p
+              onClick={() => setActiveTab("New")}
+              className={`pb-2 cursor-pointer whitespace-nowrap ${activeTab === "New"
+                  ? "text-yellow-50 border-b border-yellow-50"
+                  : "text-richblack-300"
+                }`}
+            >
               New
             </p>
 
           </div>
 
           <CourseSlider
-            Courses={catalogPageData?.data?.selectedCourses||[]}
+            Courses={
+              activeTab === "Most Popular"
+                ? catalogPageData?.data?.selectedCourses || []
+                : catalogPageData?.data?.differentCourses || []
+            }
           />
+
         </div>
 
         {/* Section 2 */}
-        <div className="mt-16">
+        <div className="mt-12 sm:mt-16">
 
-          <h2 className="text-3xl font-semibold mb-8">
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8">
             Top Courses in{" "}
             {catalogPageData?.data?.selectedCategory?.name}
           </h2>
 
           <CourseSlider
-            Courses={catalogPageData?.data?.differentCourses ||[]}
+            Courses={catalogPageData?.data?.differentCourses || []}
           />
+
         </div>
 
         {/* Section 3 */}
-        <div className="mt-16">
+        <div className="mt-12 sm:mt-16">
 
-          <h2 className="text-3xl font-semibold mb-8">
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8">
             Frequently Bought
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+
             {catalogPageData?.data?.mostSellingCourses
               ?.slice(0, 4)
               .map((course, index) => (
-                <Course_card 
+                <Course_card
                   key={index}
                   course={course}
-                  Height={"h-[400px]"}
+                  Height={"h-[350px] sm:h-[400px]"}
                 />
               ))}
+
           </div>
 
         </div>
+
       </div>
 
-      {/* <Footer /> */}
     </div>
   );
+
 };
 
 export default Catalog;

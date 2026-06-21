@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const session = require("express-session");
+const passport = require("passport");
 
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
@@ -28,7 +30,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "http://192.168.203.138:3000",
+      "http://192.168.186.138:3000",
     ],
     credentials: true,
   })
@@ -63,7 +65,26 @@ app.get("/", (req, res) => {
     message: "Your server is up and running....",
   });
 });
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
+require("./config/passport");
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);
 });
+
+// //google setuap
+// const passport = require("passport");
+
+// require("./config/passport");
+
+// app.use(passport.initialize());
+// app.use(passport.session());

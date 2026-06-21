@@ -7,8 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import rootReducer from './reducer';
 import { configureStore } from '@reduxjs/toolkit';
-
-
+import "video-react/dist/video-react.css";
 
 const store=configureStore({
   reducer:rootReducer,

@@ -1,10 +1,11 @@
-import React from "react";
 import SingupFrome from "./SingupFrome";
 import Loginform from "./Loginform";
 import frame from "../../../assets/frame.jpg";
 import image from "../../../assets/group.png";
+import React, { useState } from "react";
 
 const Templates = ({ title, desc1, desc2, formtype, setIsLoggedIn }) => {
+  const [accountType, setAccountType] = useState("Student");
   return (
     <div className="min-h-[calc(100vh-3.5rem)] w-full 
     bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] 
@@ -31,7 +32,11 @@ const Templates = ({ title, desc1, desc2, formtype, setIsLoggedIn }) => {
 
           <div className="mt-4">
             {formtype === "Signup" ? (
-              <SingupFrome setIsLoggedIn={setIsLoggedIn} />
+              <SingupFrome
+                setIsLoggedIn={setIsLoggedIn}
+                accountType={accountType}
+                setAccountType={setAccountType}
+              />
             ) : (
               <Loginform setIsLoggedIn={setIsLoggedIn} />
             )}
@@ -44,18 +49,13 @@ const Templates = ({ title, desc1, desc2, formtype, setIsLoggedIn }) => {
           </div>
 
           <button
-            className="flex items-center justify-center gap-3 rounded-lg 
-            border border-white/10 bg-white/5 backdrop-blur-md
-            py-3 hover:bg-white/10 transition-all duration-200"
+            onClick={() => {
+              window.location.href =
+                `http://localhost:4000/api/v1/auth/google?accountType=${accountType}`;
+            }}
+            className="flex items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/5 py-3"
           >
-            <img
-              src="https://www.svgrepo.com/show/355037/google.svg"
-              alt="Google"
-              className="w-5 h-5"
-            />
-            <span className="font-semibold text-white">
-              Continue with Google
-            </span>
+            Continue with Google
           </button>
 
         </div>

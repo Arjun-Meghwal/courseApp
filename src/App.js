@@ -29,6 +29,8 @@ import EditCourse from "./components/core/Dashboard/EditCourse/EditCourse";
 import MyCourses from "./components/core/Dashboard/MyCourses/Mycourses"
 import CourseDetails from "./pages/CourseDetails";
 import InstructorDashboard from "./components/core/Dashboard/InstructoDashboard/InstructorDashboard";
+import GoogleSuccess from "./pages/GoogleSuccess";
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -123,6 +125,12 @@ function App() {
               />
             )}
           </Route>
+
+
+          <Route
+          path="/google-success"
+          element={<GoogleSuccess/>}
+          />
         </Routes>
 
         <Footer />

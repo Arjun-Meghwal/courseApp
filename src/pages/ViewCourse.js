@@ -42,30 +42,31 @@
       setCourseSpecificDetails();
     }, [])
 
-    return (
-      <>
-        <div className="flex h-[calc(100vh-3.5rem)] bg-[#020617] text-white">
+return (
+  <>
+    <div className="flex flex-col md:flex-row h-[calc(100vh-3.5rem)] bg-[#020617] text-white overflow-hidden">
 
-          {/* Sidebar */}
-          <VideoDetailsSlidebar
-            setReviewModel={setReviewModel}
-          />
+      {/* Sidebar */}
+      <VideoDetailsSlidebar
+        setReviewModel={setReviewModel}
+      />
 
-          {/* Main Content */}
-          <div className="flex-1 overflow-y-auto">
-            <Outlet />
-          </div>
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        <Outlet />
+      </div>
 
-        </div>
+    </div>
 
-        {reviewModel && (
-          <CourseReviewModel
-            setReviewModel={setReviewModel}
-          />
-        )}
-      </>
-    )
-    
+    {reviewModel && (
+      <CourseReviewModel
+        setReviewModel={setReviewModel}
+      />
+    )}
+  </>
+)
+
+
   }
 
   export default ViewCourse

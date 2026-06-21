@@ -16,57 +16,55 @@ const Course_card = ({ course, Height }) => {
 
   }, [course]);
 
-  return (
+return (
+  <Link to={`/courses/${course?._id}`}>
 
-    <Link to={`/courses/${course?._id}`}>
+    <div className="bg-richblack-800 rounded-xl overflow-hidden h-full hover:scale-[1.02] transition-all duration-200">
 
-      <div className='bg-richblack-800 rounded-xl overflow-hidden'>
+      <div>
+        <img
+          src={course?.thumbnail}
+          alt="course thumbnail"
+          className={`${Height} w-full object-cover`}
+        />
+      </div>
 
-        <div>
+      <div className="p-3 sm:p-4">
 
-          <img
-            src={course?.thumbnail}
-            alt='course thumbnail'
-            className={`${Height} w-full object-cover`}
-          />
+        <p className="text-base sm:text-lg font-semibold text-richblack-5 line-clamp-2">
+          {course?.courseName}
+        </p>
 
-        </div>
+        <p className="text-richblack-300 text-xs sm:text-sm mt-1">
+          {course?.instructor?.firstName}{" "}
+          {course?.instructor?.lastName}
+        </p>
 
-        <div className='p-4'>
+        <div className="flex flex-wrap items-center gap-2 mt-2">
 
-          <p className='text-lg font-semibold text-richblack-5'>
-            {course?.courseName}
-          </p>
+          <span className="text-yellow-50 font-semibold text-sm sm:text-base">
+            {avgReviewCount || 0}
+          </span>
 
-          <p className='text-richblack-300 text-sm mt-1'>
-            {course?.instructor?.firstName}{" "}
-            {course?.instructor?.lastName}
-          </p>
+          <RatingStars Review_Count={avgReviewCount} />
 
-          <div className='flex items-center gap-2 mt-2'>
-
-            <span className='text-yellow-50 font-semibold'>
-              {avgReviewCount || 0}
-            </span>
-
-            <RatingStars Review_Count={avgReviewCount} />
-
-            <span className='text-richblack-300 text-sm'>
-              {course?.ratingAndReviews?.length} Ratings
-            </span>
-
-          </div>
-
-          <p className='text-yellow-50 font-bold text-xl mt-3'>
-            Rs. {course?.price}
-          </p>
+          <span className="text-richblack-300 text-xs sm:text-sm">
+            {course?.ratingAndReviews?.length} Ratings
+          </span>
 
         </div>
+
+        <p className="text-yellow-50 font-bold text-lg sm:text-xl mt-3">
+          Rs. {course?.price}
+        </p>
 
       </div>
 
-    </Link>
-  )
+    </div>
+
+  </Link>
+);
+
 }
 
 export default Course_card

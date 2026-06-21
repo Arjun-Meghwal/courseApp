@@ -49,122 +49,124 @@ console.log("completelecture", completedLecture);
   ]);
   
 
-  return (
-    <div className="h-[calc(100vh-3.5rem)] w-[280px] bg-richblack-900 border-r border-richblack-700 overflow-y-auto">
+return (
+  <div
+    className="
+      h-auto md:h-[calc(100vh-3.5rem)]
+      w-full md:w-[280px]
+      bg-richblack-900
+      border-b md:border-b-0 md:border-r
+      border-richblack-700
+      overflow-y-auto
+    "
+  >
+    {/* Header */}
+    <div className="border-b border-richblack-700 p-4">
 
-      {/* Header */}
-      <div className="border-b border-richblack-700 p-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 items-start sm:items-center justify-between mb-4">
 
-        <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={() => navigate("/dashboard/enrolled-courses")}
+          className="text-richblack-5 text-sm"
+        >
+          ← Back
+        </button>
 
-          <button
-            onClick={() => navigate("/dashboard/enrolled-courses")}
-            className="text-richblack-5 text-sm"
-          >
-            ← Back
-          </button>
-
-          <button
-            onClick={() => setReviewModel(true)}
-            className="bg-yellow-500 text-richblack-900 px-3 py-2 rounded-md text-sm font-semibold"
-          >
-            Review
-          </button>
-
-        </div>
-
-        <h2 className="text-xl font-bold text-richblack-5">
-          {courseEntireData?.courseName}
-        </h2>
-
-        <p className="text-richblack-300 text-sm mt-1">
-          {completedLecture?.length}/{totalNoOfLecture} Lectures Completed
-        </p>
+        <button
+          onClick={() => setReviewModel(true)}
+          className="bg-yellow-500 text-richblack-900 px-3 py-2 rounded-md text-sm font-semibold w-full sm:w-auto"
+        >
+          Review
+        </button>
 
       </div>
 
-      {/* Sections */}
-      <div>
+      <h2 className="text-lg sm:text-xl font-bold text-richblack-5 break-words">
+        {courseEntireData?.courseName}
+      </h2>
 
-        {courseSectionData?.map((course) => (
+      <p className="text-richblack-300 text-sm mt-1">
+        {completedLecture?.length}/{totalNoOfLecture} Lectures Completed
+      </p>
+
+    </div>
+
+    {/* Sections */}
+    <div>
+
+      {courseSectionData?.map((course) => (
+        <div
+          key={course._id}
+          className="border-b border-richblack-700"
+        >
+
+          {/* Section Header */}
           <div
-            key={course._id}
-            className="border-b border-richblack-700"
+            onClick={() =>
+              setActiveStatus(
+                activeStatus === course._id ? "" : course._id
+              )
+            }
+            className="flex items-center justify-between bg-richblack-700 px-4 py-3 cursor-pointer"
           >
 
-            {/* Section Header */}
-            <div
-              onClick={() =>
-                setActiveStatus(
-                  activeStatus === course._id ? "" : course._id
-                )
-              }
-              className="flex items-center justify-between bg-richblack-700 px-4 py-3 cursor-pointer"
-            >
+            <p className="font-medium text-richblack-5 text-sm sm:text-base break-words">
+              {course?.sectionName}
+            </p>
 
-              <p className="font-medium text-richblack-5">
-                {course?.sectionName}
-              </p>
+            <span className="text-richblack-5 shrink-0">
+              {activeStatus === course._id ? "⌃" : "⌄"}
+            </span>
 
-              <span className="text-richblack-5">
-                {activeStatus === course._id ? "⌃" : "⌄"}
-              </span>
+          </div>
 
-            </div>
+          {/* Lectures */}
+          {activeStatus === course._id && (
+            <div>
+              {course?.subSection?.map((topic) => (
+                <div
+                  key={topic._id}
+                  className={`flex items-center gap-3 px-4 py-3 cursor-pointer text-sm transition-all
+${videobarActive === topic._id
+                      ? "bg-yellow-500 text-richblack-900"
+                      : "bg-richblack-800 text-richblack-25 hover:bg-richblack-700"
+                    }`}
+                  onClick={() => {
+                    navigate(
+                      `/view-course/${courseEntireData?._id}/section/${ course?._id}/sub-section/${topic?._id}`
+                    );
+                    setVideoBarActive(topic._id);
+                  }}
+                >
 
-            {/* Lectures */}
-            {/* Lectures */}
-            {activeStatus === course._id && (
-              <div>
-                {course?.subSection?.map((topic) => (
-                  <div
-                    key={topic._id}
-                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer text-sm transition-all
-        ${videobarActive === topic._id
-                        ? "bg-yellow-500 text-richblack-900"
-                        : "bg-richblack-800 text-richblack-25 hover:bg-richblack-700"
-                      }`}
-                    onClick={() => {
-                      navigate(
-                        `/view-course/${courseEntireData?._id}/section/${course?._id}/sub-section/${topic?._id}`
-                      );
-                      setVideoBarActive(topic._id);
-                    }}
-                  >
-                    {console.log(
-                      "topic id =>",
-                      topic._id,
-                      "completedLecture =>",
-                      completedLecture,
-                      "matched =>",
+                  <input
+                    type="checkbox"
+                    checked={
                       completedLecture?.some(
                         (id) => String(id) === String(topic._id)
                       )
-                    )}
+                    }
+                    readOnly
+                    className="shrink-0"
+                  />
 
-                    <input
-                      type="checkbox"
-                      checked={
-                        completedLecture?.some(
-                          (id) => String(id) === String(topic._id)
-                        )
-                      }
-                      readOnly
-                    />
+                  <span className="break-words">
+                    {topic?.title}
+                  </span>
 
-                    <span>{topic?.title}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+                </div>
+              ))}
+            </div>
+          )}
 
-          </div>
-        ))}
-
-      </div>
+        </div>
+      ))}
 
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default VideoDetailsSlidebar;

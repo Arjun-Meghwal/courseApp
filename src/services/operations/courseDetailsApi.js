@@ -262,6 +262,7 @@ export const fetchInstructorCourses = async (token) => {
 };
 
 export const fetchCourseDetails = async (courseId) => {
+  console.log("course id received =>",courseId)
   let result = null;
   try {
     const response = await apiConnector(

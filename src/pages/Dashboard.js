@@ -15,21 +15,24 @@ const Dashboard = () => {
     )
   }
 
-  return (
-    <div className="flex min-h-screen bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white">
 
-      <div className="border-r border-white/10 bg-white/5 backdrop-blur-lg">
-        <Sidebar />
-      </div>
+return (
+  <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white overflow-x-hidden">
 
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 shadow-xl min-h-[calc(100vh-3rem)]">
-          <Outlet />
-        </div>
-      </div>
-
+    <div className="md:border-r border-white/10 bg-white/5 backdrop-blur-lg">
+      <Sidebar />
     </div>
-  )
+
+    <div className="flex-1 p-3 sm:p-4 md:p-6 overflow-auto">
+      <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-4 sm:p-5 md:p-6 shadow-xl min-h-[calc(100vh-1rem)] md:min-h-[calc(100vh-3rem)]">
+        <Outlet />
+      </div>
+    </div>
+
+  </div>
+)
+
+
 }
 
 export default Dashboard

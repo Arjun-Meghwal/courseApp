@@ -197,107 +197,108 @@ const VideoDetails = () => {
 
     setLoading(false);
   };
-  return (
-    <div className="flex flex-col gap-6 p-6 text-white w-full">
+ 
+return (
+  <div className="flex flex-col gap-4 sm:gap-6 p-3 sm:p-6 text-white w-full">
 
-      {!videoData ? (
+    {!videoData ? (
 
-        <div className="flex h-[400px] items-center justify-center text-xl text-richblack-300">
-          No data found
-        </div>
+      <div className="flex h-[300px] sm:h-[400px] items-center justify-center text-lg sm:text-xl text-richblack-300">
+        No data found
+      </div>
 
-      ) : (
+    ) : (
 
-        <>
-          <div className="overflow-hidden rounded-xl border border-richblack-700 bg-richblack-800 shadow-lg">
+      <>
+        {/* Video */}
+        <div className="overflow-hidden rounded-xl border border-richblack-700 bg-richblack-800 shadow-lg">
 
-            <Player
-              ref={playyerRef}
-              aspectRatio="16:9"
-              playsInline
-              onEnded={() => setVideoEnded(true)}
-              src={videoData?.videoUrl}
-            >
+          <Player
+            ref={playyerRef}
+            aspectRatio="16:9"
+            playsInline
+            onEnded={() => setVideoEnded(true)}
+            src={videoData?.videoUrl}
+          >
 
-              <AiFillPlayCircle />
+            <AiFillPlayCircle />
 
-              {videoEnded && (
+            {videoEnded && (
 
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-black/70">
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 sm:gap-4 bg-black/70 p-4">
 
-                    {!isCompleted && (
-                      <IconBtn
-                        disabled={loading}
-                        onClick={handleLectureCompletion}
-                        text={!loading ? "Mark As Complete" : "Marking..."}
-                      />
-                    )}
-
+                {!isCompleted && (
                   <IconBtn
                     disabled={loading}
-                    onClick={() => {
-                      if (playyerRef?.current) {
-                        playyerRef.current.seek(0);
-                        setVideoEnded(false);
-                      }
-                    }}
-                    text="Replay"
-                    customClasses="text-xl"
+                    onClick={handleLectureCompletion}
+                    text={!loading ? "Mark As Complete" : "Marking..."}
                   />
+                )}
 
-                  <div className="flex gap-4">
+                <IconBtn
+                  disabled={loading}
+                  onClick={() => {
+                    if (playyerRef?.current) {
+                      playyerRef.current.seek(0);
+                      setVideoEnded(false);
+                    }
+                  }}
+                  text="Replay"
+                  customClasses="text-base sm:text-xl"
+                />
 
-                    {!isFirstVideo() && (
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
 
-                      <button
-                        disabled={loading}
-                        onClick={goToPrevVideo}
-                        className="rounded-lg bg-richblack-700 px-5 py-2 text-white hover:bg-richblack-600"
-                      >
-                        Previous
-                      </button>
+                  {!isFirstVideo() && (
+                    <button
+                      disabled={loading}
+                      onClick={goToPrevVideo}
+                      className="rounded-lg bg-richblack-700 px-4 sm:px-5 py-2 text-white hover:bg-richblack-600"
+                    >
+                      Previous
+                    </button>
+                  )}
 
-                    )}
-
-                    {!isLastideo() && (
-
-                      <button
-                        disabled={loading}
-                        onClick={goToNextVideo}
-                        className="rounded-lg bg-yellow-50 px-5 py-2 font-semibold text-richblack-900 hover:scale-95 transition-all"
-                      >
-                        Next
-                      </button>
-
-                    )}
-
-                  </div>
+                  {!isLastideo() && (
+                    <button
+                      disabled={loading}
+                      onClick={goToNextVideo}
+                      className="rounded-lg bg-yellow-50 px-4 sm:px-5 py-2 font-semibold text-richblack-900 hover:scale-95 transition-all"
+                    >
+                      Next
+                    </button>
+                  )}
 
                 </div>
 
-              )}
+              </div>
 
-            </Player>
+            )}
 
-          </div>
+          </Player>
 
-          <div className="rounded-xl bg-richblack-800 p-6">
+        </div>
 
-            <h1 className="text-3xl font-bold text-richblack-5">
-              {videoData?.title}
-            </h1>
+        {/* Details */}
+        <div className="rounded-xl bg-richblack-800 p-4 sm:p-6">
 
-            <p className="mt-4 text-base leading-7 text-richblack-300">
-              {videoData?.description}
-            </p>
+          <h1 className="text-xl sm:text-3xl font-bold text-richblack-5 break-words">
+            {videoData?.title}
+          </h1>
 
-          </div>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-6 sm:leading-7 text-richblack-300">
+            {videoData?.description}
+          </p>
 
-        </>
-      )}
+        </div>
 
-    </div>
-  );
+      </>
+    )}
+
+  </div>
+);
+
+
 }
 
 export default VideoDetails

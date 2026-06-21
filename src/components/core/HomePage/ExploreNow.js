@@ -25,20 +25,21 @@ const ExploreNow = () => {
   const courses = selectedTabData?.courses || [];
 
   return (
-    <div className="w-full mt-20">
+    <div className="w-full mt-12 sm:mt-20 overflow-x-hidden">
 
-      {/* ================= TOP SECTION ================= */}
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-white">
+      {/* TOP SECTION */}
+      <div className="text-center px-4">
+        <h2 className="text-3xl sm:text-4xl font-bold text-white">
           Unlock the <span className="text-cyan-400">Power of Code</span>
         </h2>
-        <p className="mt-3 text-richblack-300">
+
+        <p className="mt-3 text-richblack-300 text-sm sm:text-base">
           Learn to Build Anything You Can Imagine
         </p>
 
         {/* Tabs */}
-        <div className="flex justify-center mt-10">
-          <div className="flex bg-richblack-800 rounded-full p-1 gap-1">
+        <div className="flex justify-center mt-8 sm:mt-10">
+          <div className="flex overflow-x-auto max-w-full bg-richblack-800 rounded-full p-1 gap-1">
             {tabs.map((tab) => (
               <button
                 key={tab}
@@ -46,8 +47,8 @@ const ExploreNow = () => {
                   setActiveTab(tab);
                   setActiveCard(0);
                 }}
-                className={`px-6 py-2 rounded-full text-sm transition
-                  ${activeTab === tab
+                className={`px-4 sm:px-6 py-2 rounded-full text-sm whitespace-nowrap transition
+                ${activeTab === tab
                     ? "bg-richblack-900 text-white"
                     : "text-richblack-300 hover:text-white"
                   }`}
@@ -59,7 +60,7 @@ const ExploreNow = () => {
         </div>
 
         {/* Cards */}
-        <div className="mt-16 flex justify-center gap-8 flex-wrap">
+        <div className="mt-12 sm:mt-16 flex justify-center gap-6 sm:gap-8 flex-wrap px-4">
           {courses.map((course, index) => {
             const isActive = activeCard === index;
 
@@ -67,8 +68,8 @@ const ExploreNow = () => {
               <div
                 key={index}
                 onClick={() => setActiveCard(index)}
-                className={`w-[320px] p-6 rounded-xl text-left cursor-pointer transition-all
-                  ${isActive
+                className={`w-full sm:w-[320px] p-6 rounded-xl text-left cursor-pointer transition-all
+                ${isActive
                     ? "bg-white text-black relative"
                     : "bg-richblack-800 text-richblack-300 hover:bg-richblack-700"
                   }`}
@@ -81,7 +82,9 @@ const ExploreNow = () => {
                   {course.heading}
                 </h3>
 
-                <p className="text-sm mb-6">{course.description}</p>
+                <p className="text-sm mb-6">
+                  {course.description}
+                </p>
 
                 <hr className="border-dashed border-richblack-400 mb-4" />
 
@@ -90,6 +93,7 @@ const ExploreNow = () => {
                     <FaUser />
                     {course.level}
                   </div>
+
                   <div className="flex items-center gap-2">
                     <FaBook />
                     {course.lessonNumber} Lessons
@@ -101,7 +105,7 @@ const ExploreNow = () => {
         </div>
 
         {/* Buttons */}
-        <div className="mt-12 flex justify-center gap-6">
+        <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
           <CTAButton
             active={true}
             linkto={token ? "/dashboard/my-profile" : "/signup"}
@@ -110,6 +114,7 @@ const ExploreNow = () => {
               Explore Full Catalog <FaArrowRight />
             </div>
           </CTAButton>
+
           <CTAButton
             active={true}
             linkto={token ? "/dashboard/my-profile" : "/signup"}
@@ -119,40 +124,41 @@ const ExploreNow = () => {
         </div>
       </div>
 
-      {/* ================= SECTION 2 ================= */}
-      <div className="mt-11 py-4 w-11/12">
-        <div className="w-9/12 max-w-maxContent mx-auto flex justify-between items-start gap-16">
-          <h2 className="text-4xl font-semibold text-richblack-900 w-[45%]">
+      {/* SECTION 2 */}
+      <div className="mt-11 py-4 w-11/12 mx-auto">
+        <div className="w-full max-w-maxContent mx-auto flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-16">
+
+          <h2 className="text-3xl sm:text-4xl font-semibold text-richblack-900 w-full lg:w-[45%]">
             Get the skills you need for a{" "}
             <HighlightText text="job that is in demand." />
           </h2>
 
-          <div className="w-[40%] flex flex-col gap-6 text-richblack-600">
+          <div className="w-full lg:w-[40%] flex flex-col gap-6 text-richblack-600">
             <p>
               The modern StudyNotion dictates its own terms. Today, to be
               competitive requires more than professional skills.
             </p>
 
             <CTAButton
-        active={true}
-        linkto={token ? "/dashboard/my-profile" : "/login"} className='mt-4'>
+              active={true}
+              linkto={token ? "/dashboard/my-profile" : "/login"}
+            >
               Learn More
             </CTAButton>
           </div>
+
         </div>
       </div>
 
-      {/* =================  IMAGE ================= */}
+      {/* IMAGE SECTION */}
       <div className="w-11/12 max-w-7xl mx-auto my-3">
-        <div className="flex flex-col lg:flex-row gap- items-center">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
 
-          {/* LEFT CONTENT */}
-          <div className="flex flex-col gap-8 w-full lg:w-[45%]">
+          {/* LEFT */}
+          <div className="flex flex-col gap-6 sm:gap-8 w-full lg:w-[45%]">
 
-            {/* ITEM 1 */}
             <div className="flex gap-5 items-start">
-              <div className="w-12 h-12 rounded-full bg-blue-100
-                    flex items-center justify-center shadow">
+              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shadow">
                 <FaUser className="text-blue-600 text-xl" />
               </div>
 
@@ -166,10 +172,8 @@ const ExploreNow = () => {
               </div>
             </div>
 
-            {/* ITEM 2 */}
             <div className="flex gap-5 items-start">
-              <div className="w-12 h-12 rounded-full bg-pink-100
-                    flex items-center justify-center shadow">
+              <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center shadow">
                 <FaBook className="text-pink-600 text-xl" />
               </div>
 
@@ -183,10 +187,8 @@ const ExploreNow = () => {
               </div>
             </div>
 
-            {/* ITEM 3 */}
             <div className="flex gap-5 items-start">
-              <div className="w-12 h-12 rounded-full bg-emerald-100
-                    flex items-center justify-center shadow">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center shadow">
                 <FaArrowRight className="text-emerald-600 text-xl" />
               </div>
 
@@ -200,10 +202,8 @@ const ExploreNow = () => {
               </div>
             </div>
 
-            {/* ITEM 4 */}
             <div className="flex gap-5 items-start">
-              <div className="w-12 h-12 rounded-full bg-yellow-100
-                    flex items-center justify-center shadow">
+              <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center shadow">
                 <FaBook className="text-yellow-600 text-xl" />
               </div>
 
@@ -219,27 +219,19 @@ const ExploreNow = () => {
 
           </div>
 
-
           {/* RIGHT IMAGE */}
           <div className="relative w-full lg:w-[45%] h-[320px] sm:h-[380px] lg:h-[420px]">
 
-            {/* IMAGE */}
             <img
               src={require("../../../assets/learning.avif")}
               alt="learning"
               className="w-full h-full object-cover rounded-xl"
             />
 
-            {/* STATS CARD */}
-            <div
-              className="absolute -bottom-10 left-1/2 -translate-x-1/2
-               bg-[#064E3B] text-white
-               w-[90%] sm:w-[80%]
-               flex justify-around items-center
-               py-5 rounded-xl shadow-2xl"
-            >
+            <div className="absolute -bottom-8 sm:-bottom-10 left-1/2 -translate-x-1/2 bg-[#064E3B] text-white w-[90%] sm:w-[80%] flex justify-around items-center py-5 rounded-xl shadow-2xl">
+
               <div className="text-center">
-                <p className="text-3xl font-bold">10</p>
+                <p className="text-2xl sm:text-3xl font-bold">10</p>
                 <p className="text-xs sm:text-sm text-white/80">
                   YEARS OF EXPERIENCE
                 </p>
@@ -248,18 +240,20 @@ const ExploreNow = () => {
               <div className="w-[1px] h-12 bg-white/30"></div>
 
               <div className="text-center">
-                <p className="text-3xl font-bold">250</p>
+                <p className="text-2xl sm:text-3xl font-bold">250</p>
                 <p className="text-xs sm:text-sm text-white/80">
                   TYPE OF COURSES
                 </p>
               </div>
+
             </div>
-          </div>
 
           </div>
 
         </div>
       </div>
+
+    </div>
   );
 };
 

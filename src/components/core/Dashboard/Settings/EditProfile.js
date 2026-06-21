@@ -15,7 +15,7 @@ const EditProfile = () => {
     lastName: "",
     dateOfBirth: "",
     gender: "",
-    phoneNumber: "",
+    contactNumber: "",
     about: "",
   });
 
@@ -26,7 +26,7 @@ const EditProfile = () => {
         lastName: user.lastName ?? "",
         dateOfBirth: user.additionalDetails?.dateOfBirth ?? "",
         gender: user.additionalDetails?.gender ?? "",
-        phoneNumber: user.additionalDetails?.phoneNumber ?? "",
+        contactNumber: user.additionalDetails?.contactNumber ?? "",
         about: user.additionalDetails?.about ?? "",
       });
     }
@@ -50,9 +50,13 @@ const EditProfile = () => {
           Authorization: `Bearer ${token}`,
         }
       );
-
       dispatch(setUser(res.data.user));
 
+      localStorage.setItem(
+        "user",
+        JSON.stringify(res.data.user)
+      );
+      
       toast.success("Profile updated successfully");
     } catch (error) {
       console.error("UPDATE PROFILE ERROR ", error.response?.data || error);
@@ -120,8 +124,8 @@ const EditProfile = () => {
           <label className="block text-sm mb-1">Contact Number</label>
           <input
             type="text"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            name="contactNumber"
+            value={formData.contactNumber}
             onChange={changeHandler}
             className="w-full px-3 py-2 rounded-md bg-slate-700 outline-none"
           />

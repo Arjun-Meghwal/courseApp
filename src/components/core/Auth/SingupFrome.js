@@ -6,12 +6,13 @@ import { useDispatch } from "react-redux";
 
 import { setSignupData } from "../../../slices/authSlice";
 import { sendOtp } from "../../../services/operations/authAPI";
-
-const SignupForm = ({ setIsLoggedIn }) => {
+const SignupForm = ({
+  setIsLoggedIn,
+  accountType,
+  setAccountType,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [accountType, setAccountType] = useState("Student");
 
   const [formData, setFormData] = useState({
     firstname: "",
