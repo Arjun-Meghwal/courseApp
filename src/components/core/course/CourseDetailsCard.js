@@ -5,6 +5,13 @@ import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
 import { addToCart } from "../../../slices/cartSlice";
+import {
+  addCourseToCart,
+} from "../../../services/operations/cartApi";
+
+import {
+  setCart,
+} from "../../../slices/cartSlice";
 
 const CourseDetailsCard = ({
   course,
@@ -22,25 +29,39 @@ const CourseDetailsCard = ({
     price: CurrentPrice,
   } = course;
 
-  const handleAddToCart = () => {
-    if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
-      toast.error("You are instructor, you can't buy a course");
+  const handleAddToCart = async () => {
+
+    // Instructor can't buy
+    if (user && user.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+      toast.error("You are an instructor, you can't buy a course");
       return;
     }
 
-    if (token) {
-      dispatch(addToCart(course));
+    // User not logged in
+    if (!token) {
+      setConfirmationModel({
+        text1: "You are not logged in",
+        text2: "Please login to add to cart",
+        btn1Text: "Login",
+        btn2Text: "Cancel",
+        btn1Handler: () => navigate("/login"),
+        btn2Handler: () => setConfirmationModel(null),
+      });
       return;
     }
 
-    setConfirmationModel({
-      text1: "You are not logged in",
-      text2: "Please login to add to cart",
-      btn1Text: "Login",
-      btn2Text: "Cancel",
-      btn1Handler: () => navigate("/login"),
-      btn2Handler: () => setConfirmationModel(null),
-    });
+    // Add Course
+    const response = await addCourseToCart(
+      course._id,
+      token
+    );
+
+    if (response?.success) {
+      dispatch(setCart(response.cart));
+      toast.success(response.message);
+    } else {
+      toast.error(response?.message || "Unable to add course");
+    }
   };
 
   const handleShare = () => {

@@ -156,9 +156,16 @@ const enrollStudents = async (courses, userId) => {
         $push: {
           courses: courseId,
         },
+
+        $pull: {
+          cart: courseId,
+        },
       },
-      { new: true }
+      {
+        new: true,
+      }
     );
+    
 await CourseProgress.create({
   courseId: courseId,
   userId: userId,

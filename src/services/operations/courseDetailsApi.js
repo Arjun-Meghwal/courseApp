@@ -281,6 +281,7 @@ export const fetchCourseDetails = async (courseId) => {
 };
 
 export const getFullCourseDetails = async (courseId, token) => {
+  console.log("TOKEN =>", token);
   const response = await apiConnector(
     "POST",
     GET_FULL_COURSE_DETAILS_AUTHENTICATED,

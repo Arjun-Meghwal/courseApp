@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { getUserEnrolledCourse } from "../../../services/operations/profileAPI";
 import { useNavigate } from "react-router-dom";
-
 const EnrolledCourse = () => {
 
   const { token } = useSelector((state) => state.auth);
@@ -39,12 +38,13 @@ const EnrolledCourse = () => {
   // navigate(url);
 
   return (
+    
     <div className="text-white p-4 sm:p-6">
+   
 
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">
         Enrolled Courses
       </h2>
-
       {!enrolledCourses ? (
 
         <div>Loading...</div>

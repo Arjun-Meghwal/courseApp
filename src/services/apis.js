@@ -74,3 +74,16 @@ export const catalogData = {
 export const contactusEndpoint = {
   CONTACT_US_API: BASE_URL + "/contact/contactUs",
 };
+
+// ai end point
+export const aiEndpoints = {
+  ASK_AI_API: `${BASE_URL}/ai/ask-ai`,
+  RECOMMEND_COURSE_API: `${BASE_URL}/ai/recommend-course`,
+
+};
+//cart add
+export const cartEndpoints = {
+  ADD_TO_CART_API: BASE_URL + "/cart/add",
+  REMOVE_FROM_CART_API: BASE_URL + "/cart/remove",
+  GET_CART_API: BASE_URL + "/cart/get",
+};

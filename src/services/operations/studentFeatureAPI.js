@@ -2,7 +2,9 @@ import { toast } from "react-hot-toast";
 import { apiConnector } from '../apiconnector'
 import { studentEndpoints } from "../apis";
 import { setPaymentLoading } from "../../slices/courseSlice";
-import { resetCart } from "../../slices/cartSlice";
+// import { resetCart } from "../../slices/cartSlice";
+import { setCart } from "../../slices/cartSlice";
+import { getCart } from "./cartApi";
 
 const {
   COURSE_PAYMENT_API,
@@ -123,7 +125,12 @@ export const verifyPayment = async (bodyData, token, navigate, dispatch) => {
     if (!response?.data?.success) {
       throw new Error(response?.data?.message);
     }
-    dispatch(resetCart()); 
+    // dispatch(resetCart()); 
+    const cartResponse = await getCart(token);
+
+    if (cartResponse?.success) {
+      dispatch(setCart(cartResponse.cart));
+    }
     toast.success("Payment successful");
     navigate("/dashboard/enrolled-courses");
   } catch (error) {

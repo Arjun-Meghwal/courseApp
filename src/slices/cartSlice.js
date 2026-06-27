@@ -2,61 +2,36 @@ import { createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
 const initialState = {
-
-  cart: localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart"))
-    : [],
-
-  total: localStorage.getItem("total")
-    ? JSON.parse(localStorage.getItem("total"))
-    : 0,
-
-  totalItems: localStorage.getItem("totalItems")
-    ? JSON.parse(localStorage.getItem("totalItems"))
-    : 0,
+  cart: [],
+  total: 0,
+  totalItems: 0,
 };
 
 const cartSlice = createSlice({
-
   name: "cart",
 
   initialState,
 
   reducers: {
 
-    addToCart(state, action) {
+    setCart(state, action) {
 
-      const course = action.payload;
+      state.cart = action.payload;
 
-      const alreadyExists = state.cart.find(
-        (item) => item._id === course._id
-      );
+      state.totalItems = action.payload.length;
 
-      if (alreadyExists) {
-        toast.error("Course already in cart");
-        return;
-      }
-
-      state.cart.push(course);
-
-      state.totalItems = state.cart.length;
-
-      state.total = state.cart.reduce(
-        (acc, curr) => acc + Number(curr.price),
+      state.total = action.payload.reduce(
+        (acc, item) => acc + Number(item.price),
         0
       );
-
-      localStorage.setItem("cart", JSON.stringify(state.cart));
-      localStorage.setItem("total", JSON.stringify(state.total));
-      localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
-
-      toast.success("Item added");
     },
 
     removeFromCart(state, action) {
 
+      const { courseId, userId } = action.payload;
+
       state.cart = state.cart.filter(
-        (item) => item._id !== action.payload
+        (item) => item._id !== courseId
       );
 
       state.totalItems = state.cart.length;
@@ -66,29 +41,35 @@ const cartSlice = createSlice({
         0
       );
 
-      localStorage.setItem("cart", JSON.stringify(state.cart));
-      localStorage.setItem("total", JSON.stringify(state.total));
-      localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
+      localStorage.setItem(
+        `cart_${userId}`,
+        JSON.stringify(state.cart)
+      );
+
+      localStorage.setItem(
+        `total_${userId}`,
+        JSON.stringify(state.total)
+      );
+
+      localStorage.setItem(
+        `totalItems_${userId}`,
+        JSON.stringify(state.totalItems)
+      );
 
       toast.success("Item removed");
     },
 
     resetCart(state) {
-
       state.cart = [];
-
       state.total = 0;
-
       state.totalItems = 0;
-
-      localStorage.removeItem("cart");
-      localStorage.removeItem("total");
-      localStorage.removeItem("totalItems");
     },
   },
 });
 
 export const {
+  setCart,
+  loadCart,
   addToCart,
   removeFromCart,
   resetCart,

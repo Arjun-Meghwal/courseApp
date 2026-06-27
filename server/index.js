@@ -15,7 +15,7 @@ const cors = require("cors");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
-
+const aiRoutes = require("./routes/AI");
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
@@ -30,7 +30,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "http://192.168.186.138:3000",
+      "http://192.168.5.138:3000",
     ],
     credentials: true,
   })
@@ -53,6 +53,7 @@ app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 
 app.use("/api/v1/contact", contactRoutes);
+app.use("/api/v1/ai", aiRoutes);
 // require("dotenv").config();
 
 
@@ -88,3 +89,8 @@ app.listen(PORT, () => {
 
 // app.use(passport.initialize());
 // app.use(passport.session());
+
+//cart add
+const cartRoutes = require("./routes/Cart");
+
+app.use("/api/v1/cart", cartRoutes);

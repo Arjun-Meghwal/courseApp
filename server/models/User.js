@@ -53,6 +53,12 @@ const userSchema = new mongoose.Schema(
         ref: "CourseProgress",
       },
     ],
+    cart: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
   },
   { timestamps: true }
 );

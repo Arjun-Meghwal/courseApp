@@ -60,3 +60,21 @@ input:-webkit-autofill:active {
 .swiper-slide {
   height: auto;
 }
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #161d29;
+  border-radius: 20px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #ffd60a;
+  border-radius: 20px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ffcc00;
+}
