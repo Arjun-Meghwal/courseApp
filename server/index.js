@@ -30,7 +30,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "http://192.168.5.138:3000",
+      "http://192.168.187.138:3000",
       "https://course-app-three-iota.vercel.app",
     ],
     credentials: true,
